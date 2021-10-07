@@ -21,7 +21,8 @@
 # IN THE SOFTWARE.
 
 """
-A library for algebraic treatment of paraxial (i.e. axis-aligned) rectangles.
+An algebra for paraxial (i.e. axis-aligned) rectangles.
+
 
 This module aims to simplify working with bounding boxes and overlapping areas
 of paraxial rectangles.
@@ -123,6 +124,9 @@ Rects can be used as a drop-in in contexts where paraxial rectangles are
 represented by 4-tuples, like e.g. Pillow's Image.crop() method. For contexts
 where such rectangles are represented as pairs of point coordinates the class
 method Rect.from_points and the Rect.points property can be used.
+
+
+See also: https://en.wiktionary.org/wiki/paraxial
 
 
 Here are some usage examples:
