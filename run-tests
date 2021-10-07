@@ -1,6 +1,6 @@
 if [ "$1" == "" ]
  then
-    python3 -m pytest --cov=pyraxial --cov-append --mccabe test/test_pyraxial.py
+    python3 -m pytest --cov=pyraxial --cov-append --mccabe tests/test_pyraxial.py
  else
     python3 -m pytest --cov=pyraxial --cov-append --mccabe "$1"
  fi
