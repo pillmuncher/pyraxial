@@ -407,6 +407,12 @@ class TestRect(unittest.TestCase):
         from itertools import permutations
         data = [
             [[
+                (1, 1, 2, 2),
+                (2, 2, 3, 3),
+            ], [
+                (1, 1, 3, 3),
+            ]],
+            [[
                 (1, 2, 3, 4),
                 (2, 3, 4, 5),
                 (3, 4, 5, 6),

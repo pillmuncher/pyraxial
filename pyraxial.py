@@ -197,6 +197,8 @@ from itertools import chain
 from operator import itemgetter
 from collections import defaultdict
 
+from intervaltree import IntervalTree
+
 
 def bounded_by(*limiters):
     """
@@ -283,9 +285,8 @@ class MetaRect(type(tuple)):
         cls.PLANE = cls((-inf, -inf, inf, inf))
 
 
-class Rect(tuple, ):
+class Rect(tuple, metaclass=MetaRect):
 
-    __metaclass__ = MetaRect
     __slots__ = ()
 
     left = property(left, doc=coor_doc('left'))
@@ -378,36 +379,22 @@ class Rect(tuple, ):
         """
         return cls(deflate(Rect.PLANE, *rects))
 
-    @classmethod
-    def closed_regions(cls, rects):
-        """
-        Generate the bounding boxes of all closed regions in rects.
 
-        In other words, find all sets of connected rectangles and generate the
-        bounding box of each set.  Two rectangles A and B are connected, if
-        they either overlap or if there exists a rectangle C such that both A
-        and B are connected to C.
+    @classmethod
+    def all_overlapping(cls, rects):
+        """
+        Generate the sets of all transitively overlapping rectangles in rects.
+
+        In other words, find all sets of connected rectangles.  Two rectangles
+        A and B are connected, if they either overlap or if there exists a
+        rectangle C such that both A and B are connected to C.
 
         Since Rect.EMPTY has no area, rects that equal Rect.EMPTY are silently
         ignored.
-
-        Time complexity is O(n log n + k) with respect to the numbers n of
-        distinct rects and k of overlaps.
         """
 
-        from banyan import SortedDict, OverlappingIntervalsUpdator
-
-        class IntervalTree(SortedDict):
-
-            def __init__(self):
-                super().__init__(updator=OverlappingIntervalsUpdator)
-
-            def __getitem__(self, key):
-                try:
-                    value = super().__getitem__(key)
-                except KeyError:
-                    value = self[key] = set()
-                return value
+        # Time complexity is O(n log n + k) with respect to the numbers n of
+        # distinct rects and k of overlaps. TODO: make this true.
 
         rects = set(rects)
         # EMPTY has no area:
@@ -418,18 +405,28 @@ class Rect(tuple, ):
         status = IntervalTree()
         events = sorted(chain.from_iterable(
             ((r.left, False, r), (r.right, True, r)) for r in rects))
-        for _, is_right, rect in events:
-            for interval in status.overlap(rect.vertical):
-                neighbors[rect].update(status[interval])
+        for _, is_right, r1 in events:
+            # Necessary hack since IntervalTree overlap tests are strict and
+            # therefor adjacent intervals are treated as non-overlapping.
+            # ATM, the only way to overcome this is by explicitly joining them
+            # each time in a non-strict way. That massively increases the time
+            # complexity of the algorithm.
+            tmp = status.copy()
+            tmp.merge_overlaps(data_reducer=set.union, strict=False)
+
+            for left, right, r2s in tmp[r1.left:r1.right]:
+                for r2 in r2s:
+                    if r1 and r2 and r1 & r2:
+                        neighbors[r1].add(r2)
             if is_right:
-                status[rect.vertical].discard(rect)
+                status.discardi(r1.left, r1.right, {r1})
             else:
-                status[rect.vertical].add(rect)
+                status.addi(r1.left, r1.right, {r1})
 
         # Implementation of the well known connected components algorithm for
         # graphs. This works because we view overlapping rectangles as
         # connected nodes in a graph. A closed region then is the bounding box
-        # of a connected component, i.e. of  a set of transitively connected
+        # of a connected component, i.e. of a set of transitively connected
         # nodes in the graph, or, IOW, transitively overlapping rectangles.
         #
         # As Alan Kay puts it: point of view is worth 80 IQ points.
@@ -448,10 +445,30 @@ class Rect(tuple, ):
                 todo |= neighbors[node] - seen
                 yield node
 
-        boundingbox = cls.enclose
         for node in neighbors:
             if node not in seen:
-                yield boundingbox(*component(node))
+                yield component(node)
+
+    @classmethod
+    def closed_regions(cls, rects):
+        """
+        Generate the bounding boxes of all closed regions in rects.
+
+        In other words, find all sets of connected rectangles and generate the
+        bounding box of each set.  Two rectangles A and B are connected, if
+        they either overlap or if there exists a rectangle C such that both A
+        and B are connected to C.
+
+        Since Rect.EMPTY has no area, rects that equal Rect.EMPTY are silently
+        ignored.
+        """
+
+        # Time complexity is O(n log n + k) with respect to the numbers n of
+        # distinct rects and k of overlaps. TODO: make this true.
+
+        for region in cls.all_overlapping(rects):
+            yield cls.enclose(*region)
+
 
     def move(self, offsets):
         return type(self)(p + d for p, d in zip(self, tuple(offsets) * 2))
