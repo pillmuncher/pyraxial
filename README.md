@@ -18,7 +18,7 @@ It defines the class Rect with the following methods and attributes:
  
  
 The `Rect` class (together with the `|` and `&` operations and the identity elements)
-forms a complete bounded lattice so that for all Rect objects `a`, `b` and `c` the
+forms a complete bounded lattice so that for all Rect objects a, b and c the
 following laws hold:
  
 #### Identity Elements:
