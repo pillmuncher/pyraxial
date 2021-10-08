@@ -1,3 +1,4 @@
+[![Build Status](https://app.travis-ci.com/pillmuncher/pyraxial.svg?branch=main)](https://app.travis-ci.com/pillmuncher/pyraxial)
 # pyraxial
 ## An algebra for paraxial (i.e. axis-aligned) rectangles.
 
