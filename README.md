@@ -18,7 +18,7 @@ It defines the class Rect with the following methods and attributes:
  
  
 The `Rect` class (together with the `|` and `&` operations and the identity elements)
-forms a complete bounded lattice so that for all Rect objects a, b and c the
+forms a ***complete bounded lattice*** so that for all Rect objects a, b and c the
 following laws hold:
  
 #### Identity Elements:
@@ -63,7 +63,7 @@ following laws hold:
  
  
  
-### Since these laws define a poset, the following laws also hold:
+### Since these laws already define a *poset*, the following laws also hold:
  
 #### Least Element:
 
@@ -130,7 +130,7 @@ resulting rectangle will equal `Rect.EMPTY`.
  
 `Rect` objects are immutable and the properties have no setters.
  
-All method results are covariant under subtyping.
+All method results are *covariant under subtyping*.
  
  
 `Rect()` and `closed_regions()` accept any type of iterable.  The operators however
