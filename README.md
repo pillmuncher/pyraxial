@@ -35,28 +35,24 @@ following laws hold:
 ```
 
 #### Idempotency:
-
 ```
     a | a  ≡  a
     a & a  ≡  a
 ```
 
 #### Commutativity:
-
 ```
     a | b  ≡  b | a
     a & b  ≡  b & a
 ```
 
 #### Associativity:
-
 ```
     (a | b) | c  ≡  a | (b | c)
     (a & b) & c  ≡  a & (b & c)
 ```
 
 #### Absorption:
-
 ```
     a | (a & b)  ≡  a
     a & (a | b)  ≡  a
@@ -67,44 +63,37 @@ following laws hold:
 ### Since these laws already define a *partially ordered set*, the following laws also hold:
 
 #### Least Element:
-
 ```
     Rect.EMPTY ≦ a
 ```
 
 #### Greatest Element:
-
 ```
     a ≦ Rect.PLANE
 ```
 
 #### Reflexivity:
-
 ```
     a ≦ a
 ```
 
 #### Transitivity:
-
 ```
     a ≦ b  and  b ≦ c   🡒   a ≦ c
 ```
 
 #### Antisymmetry:
-
 ```
     a ≦ b  and  b ≦ a   🡘   a = b
 ```
 
 #### Monotonicity:
-
 ```
     a1 ≦ a2  and  b1 ≦ b2   🡒   a1 | b1  ≦  a2 | b2
     a1 ≦ a2  and  b1 ≦ b2   🡒   a1 & b1  ≦  a2 & b2
 ```
 
 #### Semidistributivity:
-
 ```
     (a & b) | (a & c)  ≦  a & (b | c)
     a | (b & c)  ≦  (a | b) & (a | c)
@@ -114,7 +103,6 @@ Notice the absence of the laws of distribution and modularity.
 
 
 ### A rectangle is created like so:
-
 ```
     r = Rect(box)
 ```

@@ -191,7 +191,7 @@ from itertools import chain
 from operator import itemgetter
 from collections import defaultdict
 
-from intervaltree import IntervalTree
+from sortedcontainers import SortedKeyList
 
 
 def bounded_by(*limiters):
@@ -394,28 +394,19 @@ class Rect(tuple, metaclass=MetaRect):
         # EMPTY has no area:
         rects.discard(cls.EMPTY)
 
-        # Sweep Line Algorithm to set up adjacency sets:
+        # Sweep Line Algorithm to set up neighbor sets:
         neighbors = defaultdict(set)
-        status = IntervalTree()
+        status = SortedKeyList(key=itemgetter(0))
         events = sorted(chain.from_iterable(
             ((r.left, False, r), (r.right, True, r)) for r in rects))
         for _, is_right, r1 in events:
-            # Necessary hack since IntervalTree overlap tests are strict and
-            # therefor adjacent intervals are treated as non-overlapping.
-            # ATM, the only way to overcome this is by explicitly joining them
-            # each time in a non-strict way. That massively increases the time
-            # complexity of the algorithm.
-            tmp = status.copy()
-            tmp.merge_overlaps(data_reducer=set.union, strict=False)
-
-            for left, right, r2s in tmp[r1.left:r1.right]:
-                for r2 in r2s:
-                    if r1 and r2 and r1 & r2:
-                        neighbors[r1].add(r2)
+            for r2 in status.irange([r1.left], [r1.right]):
+                if r1 & r2:
+                    neighbors[r1].add(r2)
             if is_right:
-                status.discardi(r1.left, r1.right, {r1})
+                status.discard(r1)
             else:
-                status.addi(r1.left, r1.right, {r1})
+                status.add(r1)
 
         # Implementation of the well known connected components algorithm for
         # graphs. This works because we view overlapping rectangles as
