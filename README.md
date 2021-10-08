@@ -22,34 +22,44 @@ forms a complete bounded lattice so that for all Rect objects `a`, `b` and `c` t
 following laws hold:
  
 #### Identity Elements:
-
-    `a | Rect.EMPTY == a`
-    `a & Rect.PLANE == a`
+```
+    a | Rect.EMPTY == a
+    a & Rect.PLANE == a
+```
  
 #### Absorbing Elements:
-
-    `a | Rect.PLANE == Rect.PLANE`
-    `a & Rect.EMPTY == Rect.EMPTY`
+```
+    a | Rect.PLANE == Rect.PLANE
+    a & Rect.EMPTY == Rect.EMPTY
+```
  
 #### Idempotency:
 
-    `a | a == a`
-    `a & a == a`
+```
+    a | a == a
+    a & a == a
+```
  
 #### Commutativity:
 
-    `a | b == b | a`
-    `a & b == b & a`
+```
+    a | b == b | a
+    a & b == b & a
+```
  
 #### Associativity:
 
-    `(a | b) | c == a | (b | c)`
-    `(a & b) & c == a & (b & c)`
+```
+    (a | b) | c == a | (b | c)
+    (a & b) & c == a & (b & c)
+```
  
 #### Absorption:
 
-    `a | (a & b) == a`
-    `a & (a | b) == a`
+```
+    a | (a & b) == a
+    a & (a | b) == a
+```
  
  
  
@@ -57,40 +67,56 @@ following laws hold:
  
 #### Least Element:
 
-    `Rect.EMPTY <= a`
+```
+    Rect.EMPTY <= a
+```
  
 #### Greatest Element:
 
-    `a <= Rect.PLANE`
+```
+    a <= Rect.PLANE
+```
  
 #### Reflexivity:
 
-    `a <= a`
+```
+    a <= a
+```
  
 #### Transitivity:
 
-    `a <= b and b <= c  ==>  a <= c`
+```
+    a <= b and b <= c  ==>  a <= c
+```
  
 #### Antisymmetry:
 
-    `a <= b and b <= a  <==>  a == b`
+```
+    a <= b and b <= a  <==>  a == b
+```
  
 #### Monotonicity:
 
-    `a1 <= a2 and b1 <= b2  ==>  a1 | b1 <= a2 | b2`
-    `a1 <= a2 and b1 <= b2  ==>  a1 & b1 <= a2 & b2`
+```
+    a1 <= a2 and b1 <= b2  ==>  a1 | b1 <= a2 | b2
+    a1 <= a2 and b1 <= b2  ==>  a1 & b1 <= a2 & b2
+```
  
 #### Semidistributivity:
 
-    `(a & b) | (a & c) <= a & (b | c)`
-    `a | (b & c) <= (a | b) & (a | c)`
+```
+    (a & b) | (a & c) <= a & (b | c)
+    a | (b & c) <= (a | b) & (a | c)
+```
  
 Notice the absence of the laws of distribution and modularity.
  
  
 A rectangle is created like so:
  
-`r = Rect(box)`
+```
+    r = Rect(box)
+```
  
 where box is an already existing Rect object, tuple, list, iterator or other
 iterable, provided it is either empty or contains/yields four numbers that
