@@ -1,5 +1,5 @@
 # pyraxial
-## An algebra for paraxial (i.e. axis-aligned) rectangles.
+## An algebra for paraxial[^1] (i.e. axis-aligned) rectangles.
  
  
 This module aims to simplify working with bounding boxes and overlapping areas
@@ -18,7 +18,7 @@ It defines the class Rect with the following methods and attributes:
  
  
 The `Rect` class (together with the `|` and `&` operations and the identity elements)
-forms a ***complete bounded lattice*** so that for all Rect objects a, b and c the
+forms a ***complete bounded lattice***[^2] so that for all Rect objects a, b and c the
 following laws hold:
  
 #### Identity Elements:
@@ -63,7 +63,7 @@ following laws hold:
  
  
  
-### Since these laws already define a *poset*, the following laws also hold:
+### Since these laws already define a *partially ordered set*[^3], the following laws also hold:
  
 #### Least Element:
 
@@ -144,7 +144,10 @@ where such rectangles are represented as pairs of point coordinates the class
 method `Rect.from_points` and the `Rect.points` property can be used.
  
  
-See also: https://en.wiktionary.org/wiki/paraxial
+[^1]: https://en.wiktionary.org/wiki/paraxial
+[^2]: https://en.wikipedia.org/wiki/Complete_lattice
+[^3]: https://en.wikipedia.org/wiki/Partially_ordered_set
 
 
-See API documentation here: https://pillmuncher.github.io/pyraxial
+#### See API documentation here:
+https://pillmuncher.github.io/pyraxial
