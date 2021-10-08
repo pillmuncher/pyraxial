@@ -68,57 +68,57 @@ following laws hold:
 #### Least Element:
 
 ```
-    Rect.EMPTY <= a
+    Rect.EMPTY ≤ a
 ```
  
 #### Greatest Element:
 
 ```
-    a <= Rect.PLANE
+    a ≤ Rect.PLANE
 ```
  
 #### Reflexivity:
 
 ```
-    a <= a
+    a ≤ a
 ```
  
 #### Transitivity:
 
 ```
-    a <= b and b <= c  ==>  a <= c
+    a ≤ b and b ≤ c  🡒  a ≤ c
 ```
  
 #### Antisymmetry:
 
 ```
-    a <= b and b <= a  <==>  a == b
+    a ≤ b and b ≤ a  🡘  a == b
 ```
  
 #### Monotonicity:
 
 ```
-    a1 <= a2 and b1 <= b2  ==>  a1 | b1 <= a2 | b2
-    a1 <= a2 and b1 <= b2  ==>  a1 & b1 <= a2 & b2
+    a1 ≤ a2 and b1 ≤ b2  🡒  a1 | b1 ≤ a2 | b2
+    a1 ≤ a2 and b1 ≤ b2  🡒  a1 & b1 ≤ a2 & b2
 ```
  
 #### Semidistributivity:
 
 ```
-    (a & b) | (a & c) <= a & (b | c)
-    a | (b & c) <= (a | b) & (a | c)
+    (a & b) | (a & c) ≤ a & (b | c)
+    a | (b & c) ≤ (a | b) & (a | c)
 ```
  
 Notice the absence of the laws of distribution and modularity.
  
  
-A rectangle is created like so:
+### A rectangle is created like so:
  
 ```
     r = Rect(box)
 ```
  
-where box is an already existing Rect object, tuple, list, iterator or other
+where `box` is an already existing `Rect` object, tuple, list, iterator or other
 iterable, provided it is either empty or contains/yields four numbers that
 denote the `left`, `top`, `right` and `bottom` coordinates (in that order). Otherwise,
 a `ValueError` is raised.
@@ -128,7 +128,7 @@ Therefor, if `left <= right` and `top <= bottom` the resulting rectangle will be
 Rect with the specified coordinates.  If `left > right` or `top > bottom` the
 resulting rectangle will equal `Rect.EMPTY`.
  
-Rect objects are immutable and the properties have no setters.
+`Rect` objects are immutable and the properties have no setters.
  
 All method results are covariant under subtyping.
  
