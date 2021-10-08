@@ -46,7 +46,7 @@ Absorption:
     a & (a | b) == a
 
 
-Since these laws define a poset, the following laws also hold:
+Since these laws already define a poset, the following laws also hold:
 
 Least Element:
     Rect.EMPTY <= a
