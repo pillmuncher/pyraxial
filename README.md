@@ -8,7 +8,7 @@ of paraxial rectangles.
  
 It defines the class Rect with the following methods and attributes:
   - Two binary operators `|` ("join") and `&` ("meet").
-  - Two identity elements with respect to | and &, Rect.EMPTY and Rect.PLANE.
+  - Two identity elements with respect to `|` and `&`, `Rect.EMPTY` and `Rect.PLANE`.
   - Two polyadic class methods `Rect.enclose(*rects)` and `Rect.overlap(*rects)`
     as generalizations of `|` and `&` over arbitrary numbers of rectangles.
   - A set of operators that define containment relations between rectangles.
