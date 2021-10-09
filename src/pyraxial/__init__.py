@@ -1,7 +1,21 @@
 """
-An algebra for paraxial (i.e. axis-aligned) rectangles.
+An algebraic take on axis-aligned rectangles.
 
-The Rect class (together with the | and & operations and the identity elements)
+This module aims to simplify working with bounding boxes.
+
+
+It defines the class Rect with the following methods and attributes:
+  - Two binary operators | ("join") and & ("meet").
+  - Two identity elements with respect to | and &, Rect.EMPTY and Rect.PLANE.
+  - Two polyadic class methods Rect.enclose(*rects) and Rect.overlap(*rects)
+    as generalizations of | and & over arbitrary numbers of rectangles.
+  - A set of operators that define containment relations between rectangles.
+  - A class method Rect.closed_regions(rects) that computes the bounding boxes
+    for all subsets of "transitively" overlapping rectangles in a given set of
+    rectangles.
+
+
+The Rect class together with the | and & operations and the identity elements
 forms a complete bounded lattice so that for all Rect objects a, b and c the
 following laws hold:
 

@@ -1,11 +1,9 @@
 [![Build Status](https://app.travis-ci.com/pillmuncher/pyraxial.svg?branch=main)](https://app.travis-ci.com/pillmuncher/pyraxial)
 [![codecov](https://codecov.io/gh/pillmuncher/pyraxial/branch/main/graph/badge.svg?token=3Q4CRWL8SX)](https://codecov.io/gh/pillmuncher/pyraxial)
 # pyraxial
-## An algebra for paraxial (i.e. axis-aligned) rectangles.
+## An algebraic take on axis-aligned rectangles.
 
-
-This module aims to simplify working with bounding boxes and overlapping areas
-of paraxial rectangles.
+This module aims to simplify working with bounding boxes.
 
 
 It defines the class Rect with the following methods and attributes:
@@ -19,7 +17,7 @@ It defines the class Rect with the following methods and attributes:
     rectangles.
 
 
-The `Rect` class (together with the `|` and `&` operations and the identity elements)
+The `Rect` class together with the `|` and `&` operations and the identity elements
 forms a ***complete bounded lattice*** so that for all Rect objects a, b and c the
 following laws hold:
 
