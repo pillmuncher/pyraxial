@@ -6,4 +6,7 @@ python:
 install:
 - pip install -r dev_requirements.txt
 script:
-- "python -m pytest --doctest-modules --cov=pyraxial --cov"
+- python -m pytest --doctest-modules --cov=pyraxial --cov
+env:
+  global:
+    secure: I4z8N82sSicKx0ZLMPlUPFQSiVFWJzEGgUDQf4QZwpMo6x5KNBOpjjTX01FOx+xOfvmpS4WaqgVYNMR/bCao9kXh43K7UJHmLgxY/0Xm6rsK9canvL4a5ZGW8pv+8YqozM/I6AiJEUxot+URsfRmvvMFAFvFYU1ok4qRL55FtkXEZSZNHYdl5SUXjSqMn9i8bo0YDk8SXe0KxCbVVgcwZLF3gyopd+vNvkq9uoLLug/glVGfSn0eOsEFuEbpi+QEUU7fntrAjaxHsSiwQdYwb948eDWkrW+ZAfdp2HzytDJDdxLeMJHFFRhYEY6/tT36fgZI+OhlFV9vznECJBD7AI9EeHu+k0n27luRiB/cQtAgWm2A9gn4bB3Gr2kFqfUd8JQfUZHl80sGdzj84hQiQkmHOEh9romYgh7I/B6hHTa6pjF489PZuYx6DD9BkE8tYVln0l6a0oPmZHg0GEq93s9ppxcyrFAMOg1k0H0O/NhRyDqDtEMOlJsPMANeKj4Bbm1DPmmmLoRczRQZ/53e2OGyqZb2mSJxYCh7/FRu9TbsktWcnctoVWURwFOV0Hl1irHCvXDcHak8CAq6sd+W6Inv0bCWuoihnkL/EGmSwRtKEM5Yhzrfr21vHFmC1Y+iWK0M/+yPtgmJcVZYenD8x+UfrqULruH5h1t2+9Y5jgA=

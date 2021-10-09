@@ -16,3 +16,4 @@ dist
 tags
 htmlcov
 test.out/*
+.coverage
