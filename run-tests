@@ -1,6 +1,1 @@
-if [ "$1" == "" ]
- then
-    python3 -m pytest --doctest-modules src
- else
-    python3 -m pytest --doctest-modules "$1"
- fi
+pytest3 --doctest-modules --cov=pyraxial --cov-append --mccabe --ignore=__pypackages__

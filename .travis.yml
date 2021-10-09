@@ -6,4 +6,4 @@ python:
 install:
 - pip install -r dev_requirements.txt
 script:
-- "python -m pytest --doctest-modules --cov=pyraxial --cov-append --mccabe"
+- "python -m pytest --doctest-modules --cov=pyraxial --cov"

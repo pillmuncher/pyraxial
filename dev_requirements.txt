@@ -1,7 +1,3 @@
 itree
-flake8
-pytest-flake8
-mccabe
-pytest-mccabe
 coverage
 pytest-coverage
