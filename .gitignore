@@ -18,3 +18,4 @@ htmlcov
 test.out/*
 .coverage
 codecov.yml
+coverage.xml
