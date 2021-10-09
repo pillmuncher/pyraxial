@@ -19,3 +19,4 @@ test.out/*
 .coverage
 codecov.yml
 coverage.xml
+.env
