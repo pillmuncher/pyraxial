@@ -42,7 +42,8 @@ Absorption:
     a & (a | b)  ≡  a
 
 
-Since these laws already define a partially ordered set, the following laws also hold:
+Since these laws already define a partially ordered set, the following laws also
+hold:
 
 
 Least Element:
@@ -95,8 +96,8 @@ denote the left, top, right and bottom coordinates (in that order). Otherwise,
 a ValueError is raised.
 
 Coordinate values increase from left to right and from top to bottom.
-Therefor, if left &lt;= right and top &lt;= bottom the resulting rectangle will be a
-Rect with the specified coordinates.  If left &gt; right or top &gt; bottom the
+Therefor, if left ≦ right and top ≦ bottom the resulting rectangle will be a
+Rect with the specified coordinates.  If > left  right or top > bottom the
 resulting rectangle will equal Rect.EMPTY.
 
 Rect objects are immutable and the properties have no setters.
@@ -177,11 +178,6 @@ True
 ...    [Rect((1, 2, 5, 6)), Rect((7, 7, 9, 9))])
 True
 """
-
-__version__ = '0.1.0a'
-__date__ = '2015-09-26'
-__author__ = 'Mick Krippendorf <m.krippendorf@freenet.de>'
-__license__ = 'MIT'
 
 
 __all__ = ['Rect']
@@ -378,7 +374,7 @@ class Rect(tuple, metaclass=MetaRect):
     @classmethod
     def all_overlapping(cls, rects):
         """
-        Generate the sets of all transitively overlapping rectangles in rects.
+        Generate all sets of transitively overlapping rectangles in rects.
 
         In other words, find all sets of connected rectangles.  Two rectangles
         A and B are connected, if they either overlap or if there exists a

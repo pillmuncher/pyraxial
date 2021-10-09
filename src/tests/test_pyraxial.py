@@ -1,11 +1,6 @@
-__version__ = '0.1.0a'
-__date__ = '2015-09-26'
-__author__ = 'Mick Krippendorf <m.krippendorf@freenet.de>'
-__license__ = 'MIT'
-
+import unittest
 
 from pyraxial import Rect
-import unittest
 
 
 class TestRect(unittest.TestCase):
