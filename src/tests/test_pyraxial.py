@@ -379,123 +379,105 @@ class TestRect(unittest.TestCase):
     def test_closed_regions(self):
         from itertools import permutations
         data = [
-            [[ # an empty list returns an empty list:
+            [[ # an empty list returns an empty list.
 
             ], [
 
             ]],
-            [[ # a list with only Rect.EMPTY returns an empty list:
+            [[ # Rect.EMPTY overlaps nothing.
                 Rect.EMPTY,
             ], [
 
             ]],
-            [[ # a list with only several Rect.EMPTY returns an empty list:
+            [[ # Several Rect.EMPTY also overlap nothing.
                 Rect.EMPTY,
                 Rect.EMPTY,
                 Rect.EMPTY,
             ], [
 
             ]],
-            [[ # a list with only Rect.PLANE returns a list with Rect.PLANE:
+            [[ # Any non-empty Rect overlaps Rect.EMPTY.
+                Rect.EMPTY,
+                [1, 1, 2, 2],
+            ], [
+                [1, 1, 2, 2],
+            ]],
+            [[ # Rect.PLANE overlaps Rect.PLANE.
                 Rect.PLANE,
             ], [
                 Rect.PLANE,
             ]],
-            [[ # Rect.PLANE absorbs all other Rects:
-                (1, 1, 2, 2),
-                (3, 3, 4, 4),
+            [[ # Rect.PLANE overlaps all other Rects.
+                [1, 1, 2, 2],
+                [3, 3, 4, 4],
                 Rect.EMPTY,
                 Rect.PLANE,
             ], [
                 Rect.PLANE,
             ]],
-            [[
-                (1, 1, 2, 2),
-                (1, 1, 2, 2),
+            [[ # Identical Rects overlap the same area.
+                [1, 1, 2, 2],
+                [1, 1, 2, 2],
             ], [
-                (1, 1, 2, 2),
+                [1, 1, 2, 2],
             ]],
-            [[
-                (1, 1, 2, 2),
-                (3, 3, 4, 4),
+            [[ # Overlapping Rects overlap. Duh.
+                [1, 1, 3, 3],
+                [2, 2, 4, 4],
             ], [
-                (1, 1, 2, 2),
-                (3, 3, 4, 4),
+                [1, 1, 4, 4],
             ]],
-            [[
-                (1, 1, 2, 2),
-                (2, 2, 3, 3),
-            ], [
-                (1, 1, 3, 3),
-            ]],
-            [[
-                (1, 2, 3, 4),
-                (2, 3, 4, 5),
-                (3, 4, 5, 6),
-                (7, 8, 8, 9),
-                (8, 7, 9, 8),
-            ], [
-                (1, 2, 5, 6),
-                (7, 7, 9, 9),
-            ]],
-            [[
-                Rect.EMPTY,
-                [5, 6, 7, 8],
-                [5, 6, 7, 8],
-                [2, 2, 3, 3],
+            [[ # Non-overlapping Rects don't overlap. Duh.
                 [1, 1, 2, 2],
                 [3, 3, 4, 4],
             ], [
-                [1, 1, 4, 4],
-                [5, 6, 7, 8],
+                [1, 1, 2, 2],
+                [3, 3, 4, 4],
             ]],
-            [[
-                Rect.EMPTY,
+            [[ # A completely envelopped Rect gets absorbed.
+                [1, 1, 4, 4],
+                [2, 2, 3, 3],
+            ], [
+                [1, 1, 4, 4],
+            ]],
+            [[ # Adjacent Rects overlap.
+                [1, 1, 2, 2],
+                [2, 2, 3, 3],
+            ], [
+                [1, 1, 3, 3],
+            ]],
+            [[ # "Transitively" overlapping Rects get joined into the same BBox.
                 [1, 2, 3, 4],
                 [2, 3, 4, 5],
-                [6, 7, 8, 9],
-                [6, 7, 8, 9],
+                [4, 5, 6, 7],
+                [5, 6, 7, 8],
             ], [
-                [1, 2, 4, 5],
-                [6, 7, 8, 9],
+                [1, 2, 7, 8],
             ]],
-            [[
+            [[ # And so on.
                 [1, 2, 2, 3],
                 [2, 3, 3, 4],
-                [3, 4, 4, 5],
-                [4, 5, 5, 6],
                 [5, 6, 6, 7],
+                [6, 7, 7, 8],
+                [11, 12, 12, 13],
+                [12, 13, 13, 14],
+                [15, 16, 16, 17],
+                [16, 17, 17, 18],
+                [10, 20, 20, 30],
+                [20, 30, 30, 40],
+                [50, 60, 60, 70],
+                [60, 70, 70, 80],
             ], [
-                [1, 2, 6, 7],
-            ]],
-            [[
-                [1, 1, 3, 3],
                 [1, 2, 3, 4],
-                [1, 11, 3, 13],
-                [1, 12, 3, 14],
-            ], [
-                [1, 1, 3, 4],
-                [1, 11, 3, 14],
-            ]],
-            [[
-                [1, 1, 3, 3],
-                [2, 1, 4, 3],
-                [11, 1, 13, 3],
-                [12, 1, 14, 3],
-            ], [
-                [1, 1, 4, 3],
-                [11, 1, 14, 3],
-            ]],
-            [[
                 [5, 6, 7, 8],
-            ], [
-                [5, 6, 7, 8],
+                [11, 12, 13, 14],
+                [15, 16, 17, 18],
+                [10, 20, 30, 40],
+                [50, 60, 70, 80],
             ]],
         ]
         for rects, expected in data:
             rects = map(Rect, rects)
+            result = set(Rect.closed_regions(rects))
             expected = set(map(Rect, expected))
-            for each in permutations(rects):
-                result = set(Rect.closed_regions(each))
-                self.assertEqual(len(result), len(expected))
-                self.assertEqual(result, expected)
+            self.assertEqual(result, expected)

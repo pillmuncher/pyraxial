@@ -397,8 +397,8 @@ class Rect(tuple, metaclass=MetaRect):
         Since Rect.EMPTY has no area, rects that equal Rect.EMPTY are silently
         ignored.
 
-        Time complexity is O(n log n + k) with respect to the number n
-        of distinct rects and the number k of overlaps. I hope.
+        Time complexity is O(n log n + k) with respect to the number of distinct
+        rects n and the number of overlaps k. I hope.
         """
 
         # Implementation of the well known connected components algorithm for
