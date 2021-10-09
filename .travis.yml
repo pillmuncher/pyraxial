@@ -4,6 +4,6 @@ python:
 - '3.8'
 - '3.9'
 install:
-- pip install -r requirements.txt
+- pip install -r dev_requirements.txt
 script:
-- "./run-tests"
+- "python -m pytest --doctest-modules --cov=pyraxial --cov-append --mccabe"
