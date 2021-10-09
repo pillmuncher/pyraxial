@@ -6,7 +6,8 @@ authors = [
     {name = 'Mick Krippendorf', email = 'm.krippendorf@freenet.de'},
 ]
 dependencies = [
-    "sortedcontainers~=2.4"]
+    "itree~=0.0",
+]
 requires-python = '>=3.6'
 dynamic = ['classifiers']
 license = {text = 'MIT'}

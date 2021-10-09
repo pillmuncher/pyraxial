@@ -187,11 +187,12 @@ __license__ = 'MIT'
 __all__ = ['Rect']
 
 
+from collections import defaultdict, OrderedDict
+from dataclasses import dataclass
 from itertools import chain
 from operator import itemgetter
-from collections import defaultdict
 
-from sortedcontainers import SortedKeyList
+from itree import ITree
 
 
 def bounded_by(*limiters):
@@ -385,28 +386,10 @@ class Rect(tuple, metaclass=MetaRect):
 
         Since Rect.EMPTY has no area, rects that equal Rect.EMPTY are silently
         ignored.
+
+        Time complexity is O(n log n + k) with respect to the number n
+        of distinct rects and the number k of overlaps. I hope.
         """
-
-        # Time complexity is O(n log n + k) with respect to the numbers n of
-        # distinct rects and k of overlaps. TODO: make this true.
-
-        rects = set(rects)
-        # EMPTY has no area:
-        rects.discard(cls.EMPTY)
-
-        # Sweep Line Algorithm to set up neighbor sets:
-        neighbors = defaultdict(set)
-        status = SortedKeyList(key=itemgetter(0))
-        events = sorted(chain.from_iterable(
-            ((r.left, False, r), (r.right, True, r)) for r in rects))
-        for _, is_right, r1 in events:
-            for r2 in status.irange([r1.left], [r1.right]):
-                if r1 & r2:
-                    neighbors[r1].add(r2)
-            if is_right:
-                status.discard(r1)
-            else:
-                status.add(r1)
 
         # Implementation of the well known connected components algorithm for
         # graphs. This works because we view overlapping rectangles as
@@ -416,6 +399,40 @@ class Rect(tuple, metaclass=MetaRect):
         #
         # As Alan Kay puts it: point of view is worth 80 IQ points.
 
+        rects = set(rects)
+        # EMPTY has no area:
+        rects.discard(cls.EMPTY)
+
+        # Helper class for ITree. Used in the Sweep Line algorithm below.
+        @dataclass
+        class Interval:
+
+            rect: Rect
+
+            @property
+            def start(self):
+                return self.rect.left
+
+            @property
+            def end(self):
+                return self.rect.right
+
+        # Sweep Line algorithm to set up adjacency sets, AKA neighbors:
+        neighbors = defaultdict(set)
+        status = ITree()
+        events = sorted(chain.from_iterable(
+                ((r.left, False, r), (r.right, True, r)) for r in set(rects)))
+        for _, is_right, rect in events:
+            for interval in status.search(Interval(rect)):
+                if rect & interval.rect:
+                    neighbors[rect].add(interval.rect)
+                    neighbors[interval.rect].add(rect)
+            if is_right:
+                status.remove(Interval(rect))
+            else:
+                status.insert(Interval(rect))
+
+        # Collect the connected components:
         seen = set()
 
         def component(node, neighbors=neighbors, seen=seen, see=seen.add):
@@ -446,10 +463,10 @@ class Rect(tuple, metaclass=MetaRect):
 
         Since Rect.EMPTY has no area, rects that equal Rect.EMPTY are silently
         ignored.
-        """
 
-        # Time complexity is O(n log n + k) with respect to the numbers n of
-        # distinct rects and k of overlaps. TODO: make this true.
+        Time complexity is O(n log n + k) with respect to the number n
+        of distinct rects and the number k of overlaps. I hope.
+        """
 
         for region in cls.all_overlapping(rects):
             yield cls.enclose(*region)

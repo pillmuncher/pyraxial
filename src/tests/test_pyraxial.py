@@ -384,6 +384,49 @@ class TestRect(unittest.TestCase):
     def test_closed_regions(self):
         from itertools import permutations
         data = [
+            [[ # an empty list returns an empty list:
+
+            ], [
+
+            ]],
+            [[ # a list with only Rect.EMPTY returns an empty list:
+                Rect.EMPTY,
+            ], [
+
+            ]],
+            [[ # a list with only several Rect.EMPTY returns an empty list:
+                Rect.EMPTY,
+                Rect.EMPTY,
+                Rect.EMPTY,
+            ], [
+
+            ]],
+            [[ # a list with only Rect.PLANE returns a list with Rect.PLANE:
+                Rect.PLANE,
+            ], [
+                Rect.PLANE,
+            ]],
+            [[ # Rect.PLANE absorbs all other Rects:
+                (1, 1, 2, 2),
+                (3, 3, 4, 4),
+                Rect.EMPTY,
+                Rect.PLANE,
+            ], [
+                Rect.PLANE,
+            ]],
+            [[
+                (1, 1, 2, 2),
+                (1, 1, 2, 2),
+            ], [
+                (1, 1, 2, 2),
+            ]],
+            [[
+                (1, 1, 2, 2),
+                (3, 3, 4, 4),
+            ], [
+                (1, 1, 2, 2),
+                (3, 3, 4, 4),
+            ]],
             [[
                 (1, 1, 2, 2),
                 (2, 2, 3, 3),
@@ -452,11 +495,6 @@ class TestRect(unittest.TestCase):
                 [5, 6, 7, 8],
             ], [
                 [5, 6, 7, 8],
-            ]],
-            [[
-                Rect.EMPTY
-            ], [
-
             ]],
         ]
         for rects, expected in data:
