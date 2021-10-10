@@ -1,5 +1,5 @@
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/pillmuncher/pyraxial)
-[![license](https://img.shields.io/badge/license-MIT-brightgreen)](https://img.shields.io/badge/license-MIT-brightgreen)
+[![license](https://img.shields.io/badge/license-MIT-blue)](https://img.shields.io/badge/license-MIT-blue)
 [![Build Status](https://app.travis-ci.com/pillmuncher/pyraxial.svg?branch=main)](https://app.travis-ci.com/pillmuncher/pyraxial)
 [![codecov](https://codecov.io/gh/pillmuncher/pyraxial/branch/main/graph/badge.svg?token=3Q4CRWL8SX)](https://codecov.io/gh/pillmuncher/pyraxial)
 # pyraxial
