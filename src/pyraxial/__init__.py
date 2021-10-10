@@ -16,8 +16,8 @@ It defines the class Rect with the following methods and attributes:
 
 
 The Rect class together with the | and & operations and the identity elements
-forms a complete bounded lattice so that for all Rect objects a, b and c the
-following laws hold:
+forms a complete lattice so that for all Rect objects a, b and c the following
+laws hold:
 
 
 Identity Elements:
@@ -433,7 +433,7 @@ class Rect(tuple, metaclass=MetaRect):
         neighbors = defaultdict(set)
         status = ITree()
         events = sorted(chain.from_iterable(
-                ((r.left, False, r), (r.right, True, r)) for r in set(rects)))
+                ((r.left, False, r), (r.right, True, r)) for r in rects))
         for _, is_right, rect in events:
             for interval in status.search(Interval(rect)):
                 if rect & interval.rect:
@@ -570,6 +570,7 @@ class Rect(tuple, metaclass=MetaRect):
         return type(self)(value * scalar for value in self)
 
     __rmul__ = __mul__
+
     def __str__(self):
         """
         x.__str__() <==> str(x)
