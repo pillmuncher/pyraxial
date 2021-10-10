@@ -570,7 +570,6 @@ class Rect(tuple, metaclass=MetaRect):
         return type(self)(value * scalar for value in self)
 
     __rmul__ = __mul__
-
     def __str__(self):
         """
         x.__str__() <==> str(x)
