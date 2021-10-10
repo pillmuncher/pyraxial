@@ -323,7 +323,7 @@ of&nbsp;distinct&nbsp;rects&nbsp;and&nbsp;the&nbsp;number&nbsp;k&nbsp;of&nbsp;ov
 <dl><dt><a name="Rect-enclose"><strong>enclose</strong></a>(*rects)<font color="#909090"><font face="helvetica, arial"> from <a href="pyraxial.html#MetaRect">MetaRect</a></font></font></dt><dd><tt>Return&nbsp;the&nbsp;smallest&nbsp;rectangle&nbsp;that&nbsp;contains&nbsp;all&nbsp;rects,&nbsp;or&nbsp;<a href="#Rect">Rect</a>.EMPTY,<br>
 if&nbsp;rects&nbsp;is&nbsp;empty.&nbsp;&nbsp;This&nbsp;is&nbsp;also&nbsp;called&nbsp;the&nbsp;smallest&nbsp;upper&nbsp;bound&nbsp;or<br>
 supremum&nbsp;of&nbsp;rects.&nbsp;&nbsp;In&nbsp;computer&nbsp;graphics&nbsp;programming&nbsp;this&nbsp;is&nbsp;known&nbsp;as<br>
-the&nbsp;bounding&nbsp;box&nbsp;of&nbsp;rects.<br>
+the&nbsp;minimal&nbsp;bounding&nbsp;box&nbsp;of&nbsp;rects.<br>
 &nbsp;<br>
 Mathematically&nbsp;speaking,&nbsp;it&nbsp;maps&nbsp;P(RECT)&nbsp;--&gt;&nbsp;RECT,&nbsp;where&nbsp;RECT&nbsp;is&nbsp;the<br>
 set&nbsp;of&nbsp;all&nbsp;paraxial&nbsp;rectangles&nbsp;and&nbsp;P(RECT)&nbsp;is&nbsp;the&nbsp;power&nbsp;set&nbsp;of&nbsp;RECT.<br>
@@ -331,11 +331,11 @@ set&nbsp;of&nbsp;all&nbsp;paraxial&nbsp;rectangles&nbsp;and&nbsp;P(RECT)&nbsp;is
 If&nbsp;any&nbsp;of&nbsp;the&nbsp;rects&nbsp;equals&nbsp;<a href="#Rect">Rect</a>.PLANE,&nbsp;the&nbsp;result&nbsp;will&nbsp;also&nbsp;be<br>
 <a href="#Rect">Rect</a>.PLANE.</tt></dd></dl>
 
-<dl><dt><a name="Rect-from_points"><strong>from_points</strong></a>(left_top, right_bottom)<font color="#909090"><font face="helvetica, arial"> from <a href="pyraxial.html#MetaRect">MetaRect</a></font></font></dt></dl>
+<dl><dt><a name="Rect-from_points"><strong>from_points</strong></a>(left_top, right_bottom)<font color="#909090"><font face="helvetica, arial"> from <a href="pyraxial.html#MetaRect">MetaRect</a></font></font></dt><dd><tt>Takes&nbsp;two&nbsp;sequences&nbsp;(left,&nbsp;top)&nbsp;and&nbsp;(right,&nbsp;bottom)&nbsp;and&nbsp;return&nbsp;the<br>
+rectangle&nbsp;<a href="#Rect">Rect</a>((left,&nbsp;top,&nbsp;right,&nbsp;bottom)).</tt></dd></dl>
 
-<dl><dt><a name="Rect-from_rect"><strong>from_rect</strong></a>(rect)<font color="#909090"><font face="helvetica, arial"> from <a href="pyraxial.html#MetaRect">MetaRect</a></font></font></dt></dl>
-
-<dl><dt><a name="Rect-from_size"><strong>from_size</strong></a>(size)<font color="#909090"><font face="helvetica, arial"> from <a href="pyraxial.html#MetaRect">MetaRect</a></font></font></dt></dl>
+<dl><dt><a name="Rect-from_size"><strong>from_size</strong></a>(size)<font color="#909090"><font face="helvetica, arial"> from <a href="pyraxial.html#MetaRect">MetaRect</a></font></font></dt><dd><tt>Takes&nbsp;a&nbsp;sequence&nbsp;of&nbsp;two&nbsp;elements&nbsp;that&nbsp;represent&nbsp;the&nbsp;width&nbsp;and&nbsp;height<br>
+of&nbsp;a&nbsp;rectangle,&nbsp;returning&nbsp;<a href="#Rect">Rect</a>((0,&nbsp;0,&nbsp;width,&nbsp;height)).</tt></dd></dl>
 
 <dl><dt><a name="Rect-overlap"><strong>overlap</strong></a>(*rects)<font color="#909090"><font face="helvetica, arial"> from <a href="pyraxial.html#MetaRect">MetaRect</a></font></font></dt><dd><tt>Return&nbsp;the&nbsp;biggest&nbsp;rectangle&nbsp;that&nbsp;is&nbsp;contained&nbsp;in&nbsp;all&nbsp;rects,&nbsp;or<br>
 <a href="#Rect">Rect</a>.PLANE,&nbsp;if&nbsp;rects&nbsp;is&nbsp;empty.&nbsp;&nbsp;This&nbsp;is&nbsp;also&nbsp;called&nbsp;the&nbsp;greatest&nbsp;lower<br>
