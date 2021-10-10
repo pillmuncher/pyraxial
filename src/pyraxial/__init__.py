@@ -386,7 +386,7 @@ class Rect(tuple, metaclass=MetaRect):
 
 
     @classmethod
-    def all_overlapping(cls, rects):
+    def all_overlapping_areas(cls, rects):
         """
         Generate all sets of transitively overlapping rectangles in rects.
 
@@ -403,9 +403,7 @@ class Rect(tuple, metaclass=MetaRect):
 
         # Implementation of the well known connected components algorithm for
         # graphs. This works because we view overlapping rectangles as
-        # connected nodes in a graph. A closed region then is the bounding box
-        # of a connected component, i.e. of a set of transitively connected
-        # nodes in the graph, or, IOW, transitively overlapping rectangles.
+        # connected nodes in a graph.
         #
         # As Alan Kay puts it: point of view is worth 80 IQ points.
 
@@ -471,14 +469,13 @@ class Rect(tuple, metaclass=MetaRect):
         they either overlap or if there exists a rectangle C such that both A
         and B are connected to C.
 
-        Since Rect.EMPTY has no area, rects that equal Rect.EMPTY are silently
-        ignored.
+        Since Rect.EMPTY has no area, it also covers no region.
 
         Time complexity is O(n log n + k) with respect to the number n
         of distinct rects and the number k of overlaps. I hope.
         """
 
-        for region in cls.all_overlapping(rects):
+        for region in cls.all_overlapping_areas(rects):
             yield cls.enclose(*region)
 
 
