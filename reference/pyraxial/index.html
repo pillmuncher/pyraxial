@@ -593,105 +593,6 @@
                 <h1 id="module-pyraxial">Module pyraxial</h1>
 <p>An algebraic take on axis-aligned rectangles.</p>
 <p>This module aims to simplify working with bounding boxes.</p>
-<p>It defines the class Rect with the following methods and attributes:
-  - Two binary operators | ("join") and &amp; ("meet").
-  - Two identity elements with respect to | and &amp;, Rect.EMPTY and Rect.PLANE.
-  - Two polyadic class methods Rect.enclose(rects) and Rect.overlap(rects)
-    as generalizations of | and &amp; over arbitrary numbers of rectangles.
-  - A set of operators that define containment relations between rectangles.
-  - A class method Rect.closed_regions(rects) that computes the bounding boxes
-    for all subsets of "transitively" overlapping rectangles in a given set of
-    rectangles.</p>
-<p>The Rect class together with the | and &amp; operations and the identity elements
-forms a complete lattice so that for all Rect objects a, b and c the following
-laws hold:</p>
-<p>Identity Elements:</p>
-<div class="codehilite"><pre><span></span><code>a | Rect.EMPTY  ≡  a
-a &amp; Rect.PLANE  ≡  a
-</code></pre></div>
-
-<p>Absorbing Elements:</p>
-<div class="codehilite"><pre><span></span><code>a | Rect.PLANE  ≡  Rect.PLANE
-a &amp; Rect.EMPTY  ≡  Rect.EMPTY
-</code></pre></div>
-
-<p>Idempotency:</p>
-<div class="codehilite"><pre><span></span><code>a | a  ≡  a
-a &amp; a  ≡  a
-</code></pre></div>
-
-<p>Commutativity:</p>
-<div class="codehilite"><pre><span></span><code>a | b  ≡  b | a
-a &amp; b  ≡  b &amp; a
-</code></pre></div>
-
-<p>Associativity:</p>
-<div class="codehilite"><pre><span></span><code>(a | b) | c  ≡  a | (b | c)
-(a &amp; b) &amp; c  ≡  a &amp; (b &amp; c)
-</code></pre></div>
-
-<p>Absorption:</p>
-<div class="codehilite"><pre><span></span><code>a | (a &amp; b)  ≡  a
-a &amp; (a | b)  ≡  a
-</code></pre></div>
-
-<p>Since these laws already define a partially ordered set, the following laws also
-hold:</p>
-<p>Least Element:</p>
-<div class="codehilite"><pre><span></span><code>Rect.EMPTY ≦ a
-</code></pre></div>
-
-<p>Greatest Element:</p>
-<div class="codehilite"><pre><span></span><code>a ≦ Rect.PLANE
-</code></pre></div>
-
-<p>Reflexivity:</p>
-<div class="codehilite"><pre><span></span><code>a ≦ a
-</code></pre></div>
-
-<p>Transitivity:</p>
-<div class="codehilite"><pre><span></span><code>a ≦ b  and  b ≦ c   🡒   a ≦ c
-</code></pre></div>
-
-<p>Antisymmetry:</p>
-<div class="codehilite"><pre><span></span><code>a ≦ b  and  b ≦ a   🡘   a = b
-</code></pre></div>
-
-<p>Monotonicity:</p>
-<div class="codehilite"><pre><span></span><code>a1 ≦ a2  and  b1 ≦ b2   🡒   a1 | b1  ≦  a2 | b2
-a1 ≦ a2  and  b1 ≦ b2   🡒   a1 &amp; b1  ≦  a2 &amp; b2
-</code></pre></div>
-
-<p>Semidistributivity:</p>
-<div class="codehilite"><pre><span></span><code>(a &amp; b) | (a &amp; c)  ≦  a &amp; (b | c)
-a | (b &amp; c)  ≦  (a | b) &amp; (a | c)
-</code></pre></div>
-
-<p>Notice the absence of the laws of distribution and modularity.</p>
-<p>A rectangle is created like so:</p>
-<div class="codehilite"><pre><span></span><code>r = Rect(box)
-</code></pre></div>
-
-<p>where box is an already existing Rect object, tuple, list, iterator or other
-iterable, provided it is either empty or contains/yields four numbers that
-denote the left, top, right and bottom coordinates (in that order). Otherwise,
-a ValueError is raised.</p>
-<p>Coordinate values increase from left to right and from top to bottom.
-Therefor, if left ≦ right and top ≦ bottom the resulting rectangle will be a
-Rect with the specified coordinates.  If &gt; left  right or top &gt; bottom the
-resulting rectangle will equal Rect.EMPTY.</p>
-<p>Rect objects are immutable and the properties have no setters.</p>
-<p>All method results are covariant under subtyping.</p>
-<p>Rect() and closed_regions() accept any type of iterable.  The operators however
-work reliably only on sequence-like objects, but not iterators.  If you pass an
-iterator as an argument, the behavior will be undefined, probably raising an
-exception, or worse, causing inexplicably wrong results.</p>
-<p>Rects can be used as a drop-in in contexts where paraxial rectangles are
-represented by 4-tuples, like e.g. Pillow's Image.crop() method. For contexts
-where such rectangles are represented as pairs of point coordinates the class
-method Rect.from_points and the Rect.points property can be used.</p>
-<p>See API documentation here:</p>
-<p>https://pillmuncher.github.io/pyraxial</p>
 <p>Here are some usage examples:</p>
 <blockquote>
 <blockquote>
@@ -735,829 +636,687 @@ True</p>
 </blockquote>
 </blockquote>
 </blockquote>
-<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="ss">&quot;&quot;&quot;</span>
+<details class="example"><summary>View Source</summary><div class="codehilite"><pre><span></span><code><span class="sd">&quot;&quot;&quot;</span>
 
-<span class="ss">An algebraic take on axis-aligned rectangles.</span>
+<span class="sd">An algebraic take on axis-aligned rectangles.</span>
 
-<span class="ss">This module aims to simplify working with bounding boxes.</span>
+<span class="sd">This module aims to simplify working with bounding boxes.</span>
 
-<span class="ss">It defines the class Rect with the following methods and attributes:</span>
+<span class="sd">Here are some usage examples:</span>
 
-<span class="ss">  - Two binary operators | (&quot;</span><span class="k">join</span><span class="ss">&quot;) and &amp; (&quot;</span><span class="n">meet</span><span class="ss">&quot;).</span>
+<span class="sd">&gt;&gt;&gt; from pyraxial import Rect</span>
 
-<span class="ss">  - Two identity elements with respect to | and &amp;, Rect.EMPTY and Rect.PLANE.</span>
+<span class="sd">&gt;&gt;&gt; a = Rect((1, 2, 3, 4))</span>
 
-<span class="ss">  - Two polyadic class methods Rect.enclose(rects) and Rect.overlap(rects)</span>
+<span class="sd">&gt;&gt;&gt; a.left, a.top, a.right, a.bottom</span>
 
-<span class="ss">    as generalizations of | and &amp; over arbitrary numbers of rectangles.</span>
+<span class="sd">(1, 2, 3, 4)</span>
 
-<span class="ss">  - A set of operators that define containment relations between rectangles.</span>
+<span class="sd">&gt;&gt;&gt; a.points</span>
 
-<span class="ss">  - A class method Rect.closed_regions(rects) that computes the bounding boxes</span>
+<span class="sd">((1, 2), (3, 4))</span>
 
-<span class="ss">    for all subsets of &quot;</span><span class="n">transitively</span><span class="ss">&quot; overlapping rectangles in a given set of</span>
+<span class="sd">&gt;&gt;&gt; a.width, a.height</span>
 
-<span class="ss">    rectangles.</span>
+<span class="sd">(2, 2)</span>
 
-<span class="ss">The Rect class together with the | and &amp; operations and the identity elements</span>
+<span class="sd">&gt;&gt;&gt; b = Rect((2, 3, 4, 5))</span>
 
-<span class="ss">forms a complete lattice so that for all Rect objects a, b and c the following</span>
+<span class="sd">&gt;&gt;&gt; a | b</span>
 
-<span class="ss">laws hold:</span>
+<span class="sd">Rect((1, 2, 4, 5))</span>
 
-<span class="ss">Identity Elements:</span>
+<span class="sd">&gt;&gt;&gt; a &amp; b</span>
 
-<span class="ss">    a | Rect.EMPTY  ≡  a</span>
+<span class="sd">Rect((2, 3, 3, 4))</span>
 
-<span class="ss">    a &amp; Rect.PLANE  ≡  a</span>
+<span class="sd">&gt;&gt;&gt; a &amp; Rect.EMPTY == Rect.EMPTY</span>
 
-<span class="ss">Absorbing Elements:</span>
+<span class="sd">True</span>
 
-<span class="ss">    a | Rect.PLANE  ≡  Rect.PLANE</span>
+<span class="sd">&gt;&gt;&gt; a | Rect.PLANE == Rect.PLANE</span>
 
-<span class="ss">    a &amp; Rect.EMPTY  ≡  Rect.EMPTY</span>
+<span class="sd">True</span>
 
-<span class="ss">Idempotency:</span>
+<span class="sd">&gt;&gt;&gt; a | Rect.EMPTY == a &amp; Rect.PLANE == a</span>
 
-<span class="ss">    a | a  ≡  a</span>
+<span class="sd">True</span>
 
-<span class="ss">    a &amp; a  ≡  a</span>
+<span class="sd">&gt;&gt;&gt; rects = [Rect((1, 2, 3, 4)), Rect((2, 3, 4, 5)), Rect((3, 4, 5, 6))]</span>
 
-<span class="ss">Commutativity:</span>
+<span class="sd">&gt;&gt;&gt; Rect.enclose(*rects)</span>
 
-<span class="ss">    a | b  ≡  b | a</span>
+<span class="sd">Rect((1, 2, 5, 6))</span>
 
-<span class="ss">    a &amp; b  ≡  b &amp; a</span>
+<span class="sd">&gt;&gt;&gt; Rect.overlap(*rects)</span>
 
-<span class="ss">Associativity:</span>
+<span class="sd">Rect((3, 4, 3, 4))</span>
 
-<span class="ss">    (a | b) | c  ≡  a | (b | c)</span>
+<span class="sd">&gt;&gt;&gt; Rect.enclose(Rect.EMPTY, *rects) == Rect.enclose(*rects)</span>
 
-<span class="ss">    (a &amp; b) &amp; c  ≡  a &amp; (b &amp; c)</span>
+<span class="sd">True</span>
 
-<span class="ss">Absorption:</span>
+<span class="sd">&gt;&gt;&gt; Rect.enclose(Rect.PLANE, *rects) == Rect.PLANE</span>
 
-<span class="ss">    a | (a &amp; b)  ≡  a</span>
+<span class="sd">True</span>
 
-<span class="ss">    a &amp; (a | b)  ≡  a</span>
+<span class="sd">&gt;&gt;&gt; Rect.overlap(Rect.EMPTY, *rects) == Rect.EMPTY</span>
 
-<span class="ss">Since these laws already define a partially ordered set, the following laws also</span>
+<span class="sd">True</span>
 
-<span class="ss">hold:</span>
+<span class="sd">&gt;&gt;&gt; Rect.overlap(Rect.PLANE, *rects) == Rect.overlap(*rects)</span>
 
-<span class="ss">Least Element:</span>
+<span class="sd">True</span>
 
-<span class="ss">    Rect.EMPTY ≦ a</span>
+<span class="sd">&gt;&gt;&gt; rects += [Rect((7, 8, 8, 9)), Rect((8, 7, 9, 8))]</span>
 
-<span class="ss">Greatest Element:</span>
+<span class="sd">&gt;&gt;&gt; set(Rect.closed_regions(rects)) == set(</span>
 
-<span class="ss">    a ≦ Rect.PLANE</span>
+<span class="sd">...    [Rect((1, 2, 5, 6)), Rect((7, 7, 9, 9))])</span>
 
-<span class="ss">Reflexivity:</span>
+<span class="sd">True</span>
 
-<span class="ss">    a ≦ a</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
-<span class="ss">Transitivity:</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Rect&#39;</span><span class="p">]</span>
 
-<span class="ss">    a ≦ b  and  b ≦ c   🡒   a ≦ c</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span><span class="p">,</span> <span class="n">OrderedDict</span>
 
-<span class="ss">Antisymmetry:</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
 
-<span class="ss">    a ≦ b  and  b ≦ a   🡘   a = b</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">chain</span>
 
-<span class="ss">Monotonicity:</span>
+<span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">itemgetter</span>
 
-<span class="ss">    a1 ≦ a2  and  b1 ≦ b2   🡒   a1 | b1  ≦  a2 | b2</span>
+<span class="kn">from</span> <span class="nn">itree</span> <span class="kn">import</span> <span class="n">ITree</span>
 
-<span class="ss">    a1 ≦ a2  and  b1 ≦ b2   🡒   a1 &amp; b1  ≦  a2 &amp; b2</span>
+<span class="k">def</span> <span class="nf">bounded_by</span><span class="p">(</span><span class="o">*</span><span class="n">limiters</span><span class="p">):</span>
 
-<span class="ss">Semidistributivity:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="ss">    (a &amp; b) | (a &amp; c)  ≦  a &amp; (b | c)</span>
+<span class="sd">    Create a function from limiters that takes any number of rects and</span>
 
-<span class="ss">    a | (b &amp; c)  ≦  (a | b) &amp; (a | c)</span>
+<span class="sd">    applies these limiters to their corresponding coordinates.</span>
 
-<span class="ss">Notice the absence of the laws of distribution and modularity.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="ss">A rectangle is created like so:</span>
+    <span class="k">def</span> <span class="nf">bound</span><span class="p">(</span><span class="o">*</span><span class="n">rects</span><span class="p">):</span>
 
-<span class="ss">    r = Rect(box)</span>
+        <span class="s2">&quot;Return the upper or lower bound of rects, depending on limiters.&quot;</span>
 
-<span class="ss">where box is an already existing Rect object, tuple, list, iterator or other</span>
+        <span class="k">for</span> <span class="n">limit</span><span class="p">,</span> <span class="n">coordinates</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">limiters</span><span class="p">,</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">rects</span><span class="p">)):</span>
 
-<span class="ss">iterable, provided it is either empty or contains/yields four numbers that</span>
+            <span class="k">yield</span> <span class="n">limit</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
 
-<span class="ss">denote the left, top, right and bottom coordinates (in that order). Otherwise,</span>
+    <span class="k">return</span> <span class="n">bound</span>
 
-<span class="ss">a ValueError is raised.</span>
+<span class="n">inflate</span> <span class="o">=</span> <span class="n">bounded_by</span><span class="p">(</span><span class="nb">min</span><span class="p">,</span> <span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="p">,</span> <span class="nb">max</span><span class="p">)</span>
 
-<span class="ss">Coordinate values increase from left to right and from top to bottom.</span>
+<span class="n">deflate</span> <span class="o">=</span> <span class="n">bounded_by</span><span class="p">(</span><span class="nb">max</span><span class="p">,</span> <span class="nb">max</span><span class="p">,</span> <span class="nb">min</span><span class="p">,</span> <span class="nb">min</span><span class="p">)</span>
 
-<span class="ss">Therefor, if left ≦ right and top ≦ bottom the resulting rectangle will be a</span>
+<span class="n">X0</span><span class="p">,</span> <span class="n">Y0</span><span class="p">,</span> <span class="n">X1</span><span class="p">,</span> <span class="n">Y1</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
 
-<span class="ss">Rect with the specified coordinates.  If &gt; left  right or top &gt; bottom the</span>
+<span class="n">left</span> <span class="o">=</span> <span class="n">itemgetter</span><span class="p">(</span><span class="n">X0</span><span class="p">)</span>
 
-<span class="ss">resulting rectangle will equal Rect.EMPTY.</span>
+<span class="n">right</span> <span class="o">=</span> <span class="n">itemgetter</span><span class="p">(</span><span class="n">X1</span><span class="p">)</span>
 
-<span class="ss">Rect objects are immutable and the properties have no setters.</span>
+<span class="n">top</span> <span class="o">=</span> <span class="n">itemgetter</span><span class="p">(</span><span class="n">Y0</span><span class="p">)</span>
 
-<span class="ss">All method results are covariant under subtyping.</span>
+<span class="n">bottom</span> <span class="o">=</span> <span class="n">itemgetter</span><span class="p">(</span><span class="n">Y1</span><span class="p">)</span>
 
-<span class="ss">Rect() and closed_regions() accept any type of iterable.  The operators however</span>
+<span class="n">left_top</span> <span class="o">=</span> <span class="n">itemgetter</span><span class="p">(</span><span class="n">X0</span><span class="p">,</span> <span class="n">Y0</span><span class="p">)</span>
 
-<span class="ss">work reliably only on sequence-like objects, but not iterators.  If you pass an</span>
+<span class="n">right_top</span> <span class="o">=</span> <span class="n">itemgetter</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span> <span class="n">Y0</span><span class="p">)</span>
 
-<span class="ss">iterator as an argument, the behavior will be undefined, probably raising an</span>
+<span class="n">left_bottom</span> <span class="o">=</span> <span class="n">itemgetter</span><span class="p">(</span><span class="n">X0</span><span class="p">,</span> <span class="n">Y1</span><span class="p">)</span>
 
-<span class="ss">exception, or worse, causing inexplicably wrong results.</span>
+<span class="n">right_bottom</span> <span class="o">=</span> <span class="n">itemgetter</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span> <span class="n">Y1</span><span class="p">)</span>
 
-<span class="ss">Rects can be used as a drop-in in contexts where paraxial rectangles are</span>
+<span class="n">horizontal</span> <span class="o">=</span> <span class="n">itemgetter</span><span class="p">(</span><span class="n">X0</span><span class="p">,</span> <span class="n">X1</span><span class="p">)</span>
 
-<span class="ss">represented by 4-tuples, like e.g. Pillow&#39;s Image.crop() method. For contexts</span>
+<span class="n">vertical</span> <span class="o">=</span> <span class="n">itemgetter</span><span class="p">(</span><span class="n">Y0</span><span class="p">,</span> <span class="n">Y1</span><span class="p">)</span>
 
-<span class="ss">where such rectangles are represented as pairs of point coordinates the class</span>
+<span class="k">def</span> <span class="nf">points</span><span class="p">(</span><span class="n">rect</span><span class="p">):</span>
 
-<span class="ss">method Rect.from_points and the Rect.points property can be used.</span>
+    <span class="sd">&quot;&quot;&quot;Return the left top and right bottom points of rect.&quot;&quot;&quot;</span>
 
-<span class="ss">See API documentation here:</span>
+    <span class="k">return</span> <span class="n">left_top</span><span class="p">(</span><span class="n">rect</span><span class="p">),</span> <span class="n">right_bottom</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span>
 
-<span class="ss">https://pillmuncher.github.io/pyraxial</span>
+<span class="k">def</span> <span class="nf">width</span><span class="p">(</span><span class="n">rect</span><span class="p">):</span>
 
-<span class="ss">Here are some usage examples:</span>
+    <span class="sd">&quot;&quot;&quot;Return the width of rect.&quot;&quot;&quot;</span>
 
-<span class="ss">&gt;&gt;&gt; from pyraxial import Rect</span>
+    <span class="k">return</span> <span class="n">right</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span> <span class="o">-</span> <span class="n">left</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span>
 
-<span class="ss">&gt;&gt;&gt; a = Rect((1, 2, 3, 4))</span>
+<span class="k">def</span> <span class="nf">height</span><span class="p">(</span><span class="n">rect</span><span class="p">):</span>
 
-<span class="ss">&gt;&gt;&gt; a.left, a.top, a.right, a.bottom</span>
+    <span class="sd">&quot;&quot;&quot;Return the height of rect.&quot;&quot;&quot;</span>
 
-<span class="ss">(1, 2, 3, 4)</span>
+    <span class="k">return</span> <span class="n">bottom</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span> <span class="o">-</span> <span class="n">top</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span>
 
-<span class="ss">&gt;&gt;&gt; a.points</span>
+<span class="k">def</span> <span class="nf">size</span><span class="p">(</span><span class="n">rect</span><span class="p">):</span>
 
-<span class="ss">((1, 2), (3, 4))</span>
+    <span class="sd">&quot;&quot;&quot;Return the width and height of rect.&quot;&quot;&quot;</span>
 
-<span class="ss">&gt;&gt;&gt; a.width, a.height</span>
+    <span class="k">return</span> <span class="n">width</span><span class="p">(</span><span class="n">rect</span><span class="p">),</span> <span class="n">height</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span>
 
-<span class="ss">(2, 2)</span>
+<span class="k">def</span> <span class="nf">area</span><span class="p">(</span><span class="n">rect</span><span class="p">):</span>
 
-<span class="ss">&gt;&gt;&gt; b = Rect((2, 3, 4, 5))</span>
+    <span class="sd">&quot;&quot;&quot;Return the area of rect.&quot;&quot;&quot;</span>
 
-<span class="ss">&gt;&gt;&gt; a | b</span>
+    <span class="k">return</span> <span class="n">width</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span> <span class="o">*</span> <span class="n">height</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span>
 
-<span class="ss">Rect((1, 2, 4, 5))</span>
+<span class="n">prop_doc</span> <span class="o">=</span> <span class="s1">&#39;The </span><span class="si">{0}</span><span class="s1"> of the rectangle.&#39;</span><span class="o">.</span><span class="n">format</span>
 
-<span class="ss">&gt;&gt;&gt; a &amp; b</span>
+<span class="n">coor_doc</span> <span class="o">=</span> <span class="n">prop_doc</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{0}</span><span class="s1"> coordinate&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span>
 
-<span class="ss">Rect((2, 3, 3, 4))</span>
+<span class="n">invalid</span> <span class="o">=</span> <span class="ne">ValueError</span><span class="p">(</span>
 
-<span class="ss">&gt;&gt;&gt; a &amp; Rect.EMPTY == Rect.EMPTY</span>
+    <span class="s1">&#39;Argument &quot;box&quot; must be an iterable of zero or four numbers.&#39;</span><span class="p">)</span>
 
-<span class="ss">True</span>
+<span class="k">class</span> <span class="nc">MetaRect</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="nb">tuple</span><span class="p">)):</span>
 
-<span class="ss">&gt;&gt;&gt; a | Rect.PLANE == Rect.PLANE</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="ss">True</span>
+<span class="sd">    A metaclass so we can have covariant polymorphic subtypes.</span>
 
-<span class="ss">&gt;&gt;&gt; a | Rect.EMPTY == a &amp; Rect.PLANE == a</span>
+<span class="sd">    Really.</span>
 
-<span class="ss">True</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="ss">&gt;&gt;&gt; rects = [Rect((1, 2, 3, 4)), Rect((2, 3, 4, 5)), Rect((3, 4, 5, 6))]</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">cdict</span><span class="p">):</span>
 
-<span class="ss">&gt;&gt;&gt; Rect.enclose(*rects)</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="ss">Rect((1, 2, 5, 6))</span>
+<span class="sd">        Set up the two identity elements. We must do this in a metaclass so</span>
 
-<span class="ss">&gt;&gt;&gt; Rect.overlap(*rects)</span>
+<span class="sd">        users are able to properly subclass Rect. Otherwise a method that&#39;s</span>
 
-<span class="ss">Rect((3, 4, 3, 4))</span>
+<span class="sd">        invoked on e.g. a module level attribute EMPTY would always return a</span>
 
-<span class="ss">&gt;&gt;&gt; Rect.enclose(Rect.EMPTY, *rects) == Rect.enclose(*rects)</span>
+<span class="sd">        Rect instance, even if the user had subclassed Rect.  Creating these</span>
 
-<span class="ss">True</span>
+<span class="sd">        constants automatically on a per-class-level does the trick.</span>
 
-<span class="ss">&gt;&gt;&gt; Rect.enclose(Rect.PLANE, *rects) == Rect.PLANE</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="ss">True</span>
+        <span class="n">inf</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
 
-<span class="ss">&gt;&gt;&gt; Rect.overlap(Rect.EMPTY, *rects) == Rect.EMPTY</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">EMPTY</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(())</span>
 
-<span class="ss">True</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">PLANE</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">((</span><span class="o">-</span><span class="n">inf</span><span class="p">,</span> <span class="o">-</span><span class="n">inf</span><span class="p">,</span> <span class="n">inf</span><span class="p">,</span> <span class="n">inf</span><span class="p">))</span>
 
-<span class="ss">&gt;&gt;&gt; Rect.overlap(Rect.PLANE, *rects) == Rect.overlap(*rects)</span>
+<span class="k">class</span> <span class="nc">Rect</span><span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">MetaRect</span><span class="p">):</span>
 
-<span class="ss">True</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">()</span>
 
-<span class="ss">&gt;&gt;&gt; rects += [Rect((7, 8, 8, 9)), Rect((8, 7, 9, 8))]</span>
+    <span class="n">left</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">coor_doc</span><span class="p">(</span><span class="s1">&#39;left&#39;</span><span class="p">))</span>
 
-<span class="ss">&gt;&gt;&gt; set(Rect.closed_regions(rects)) == set(</span>
+    <span class="n">right</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">right</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">coor_doc</span><span class="p">(</span><span class="s1">&#39;right&#39;</span><span class="p">))</span>
 
-<span class="ss">...    [Rect((1, 2, 5, 6)), Rect((7, 7, 9, 9))])</span>
+    <span class="n">top</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">top</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">coor_doc</span><span class="p">(</span><span class="s1">&#39;top&#39;</span><span class="p">))</span>
 
-<span class="ss">True</span>
+    <span class="n">bottom</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">bottom</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">coor_doc</span><span class="p">(</span><span class="s1">&#39;bottom&#39;</span><span class="p">))</span>
 
-<span class="ss">&quot;&quot;&quot;</span><span class="w"></span>
+    <span class="n">left_top</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">left_top</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">coor_doc</span><span class="p">(</span><span class="s1">&#39;left top&#39;</span><span class="p">))</span>
 
-<span class="n">__all__</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">[</span><span class="n">&#39;Rect&#39;</span><span class="o">]</span><span class="w"></span>
+    <span class="n">right_top</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">right_top</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">coor_doc</span><span class="p">(</span><span class="s1">&#39;right top&#39;</span><span class="p">))</span>
 
-<span class="k">from</span><span class="w"> </span><span class="n">collections</span><span class="w"> </span><span class="n">import</span><span class="w"> </span><span class="n">defaultdict</span><span class="p">,</span><span class="w"> </span><span class="n">OrderedDict</span><span class="w"></span>
+    <span class="n">left_bottom</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">left_bottom</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">coor_doc</span><span class="p">(</span><span class="s1">&#39;left bottom&#39;</span><span class="p">))</span>
 
-<span class="k">from</span><span class="w"> </span><span class="n">dataclasses</span><span class="w"> </span><span class="n">import</span><span class="w"> </span><span class="n">dataclass</span><span class="w"></span>
+    <span class="n">right_bottom</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">right_bottom</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">coor_doc</span><span class="p">(</span><span class="s1">&#39;right bottom&#39;</span><span class="p">))</span>
 
-<span class="k">from</span><span class="w"> </span><span class="n">itertools</span><span class="w"> </span><span class="n">import</span><span class="w"> </span><span class="n">chain</span><span class="w"></span>
+    <span class="n">vertical</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span>
 
-<span class="k">from</span><span class="w"> </span><span class="n">operator</span><span class="w"> </span><span class="n">import</span><span class="w"> </span><span class="n">itemgetter</span><span class="w"></span>
+        <span class="n">vertical</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">prop_doc</span><span class="p">(</span><span class="s1">&#39;top and bottom coordinates&#39;</span><span class="p">))</span>
 
-<span class="k">from</span><span class="w"> </span><span class="n">itree</span><span class="w"> </span><span class="n">import</span><span class="w"> </span><span class="n">ITree</span><span class="w"></span>
+    <span class="n">horizontal</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span>
 
-<span class="n">def</span><span class="w"> </span><span class="n">bounded_by</span><span class="p">(</span><span class="o">*</span><span class="n">limiters</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+        <span class="n">horizontal</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">prop_doc</span><span class="p">(</span><span class="s1">&#39;left and right coordinates&#39;</span><span class="p">))</span>
 
-<span class="w">    </span><span class="ss">&quot;&quot;&quot;</span>
+    <span class="n">points</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span>
 
-<span class="ss">    Create a function from limiters that takes any number of rects and</span>
+        <span class="n">points</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">prop_doc</span><span class="p">(</span><span class="s1">&#39;left top and right bottom coordinates&#39;</span><span class="p">))</span>
 
-<span class="ss">    applies these limiters to their corresponding coordinates.</span>
+    <span class="n">width</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">prop_doc</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="p">))</span>
 
-<span class="ss">    &quot;&quot;&quot;</span><span class="w"></span>
+    <span class="n">height</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">prop_doc</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">))</span>
 
-<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">bound</span><span class="p">(</span><span class="o">*</span><span class="n">rects</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+    <span class="n">size</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">prop_doc</span><span class="p">(</span><span class="s1">&#39;width and height&#39;</span><span class="p">))</span>
 
-<span class="w">        </span><span class="ss">&quot;Return the upper or lower bound of rects, depending on limiters.&quot;</span><span class="w"></span>
+    <span class="n">area</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">area</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">prop_doc</span><span class="p">(</span><span class="s1">&#39;area&#39;</span><span class="p">))</span>
 
-<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="k">limit</span><span class="p">,</span><span class="w"> </span><span class="n">coordinates</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">zip</span><span class="p">(</span><span class="n">limiters</span><span class="p">,</span><span class="w"> </span><span class="n">zip</span><span class="p">(</span><span class="o">*</span><span class="n">rects</span><span class="p">))</span><span class="err">:</span><span class="w"></span>
+    <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">box</span><span class="p">):</span>
 
-<span class="w">            </span><span class="n">yield</span><span class="w"> </span><span class="k">limit</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span><span class="w"></span>
+        <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">bound</span><span class="w"></span>
+<span class="sd">        Create a new paraxial rectangle of type Rect from box.</span>
 
-<span class="n">inflate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bounded_by</span><span class="p">(</span><span class="nf">min</span><span class="p">,</span><span class="w"> </span><span class="nf">min</span><span class="p">,</span><span class="w"> </span><span class="nf">max</span><span class="p">,</span><span class="w"> </span><span class="nf">max</span><span class="p">)</span><span class="w"></span>
+<span class="sd">        box must be an iterable of zero or four numbers.  These are taken to</span>
 
-<span class="n">deflate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bounded_by</span><span class="p">(</span><span class="nf">max</span><span class="p">,</span><span class="w"> </span><span class="nf">max</span><span class="p">,</span><span class="w"> </span><span class="nf">min</span><span class="p">,</span><span class="w"> </span><span class="nf">min</span><span class="p">)</span><span class="w"></span>
+<span class="sd">        be the left, top, right and bottom coordinates (in that order) of the</span>
 
-<span class="n">X0</span><span class="p">,</span><span class="w"> </span><span class="n">Y0</span><span class="p">,</span><span class="w"> </span><span class="n">X1</span><span class="p">,</span><span class="w"> </span><span class="n">Y1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="w"></span>
+<span class="sd">        rectangle.  If box is empty or its values are such that the resulting</span>
 
-<span class="nf">left</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">itemgetter</span><span class="p">(</span><span class="n">X0</span><span class="p">)</span><span class="w"></span>
+<span class="sd">        Rect would have negative width or height the result will be Rect.EMPTY.</span>
 
-<span class="nf">right</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">itemgetter</span><span class="p">(</span><span class="n">X1</span><span class="p">)</span><span class="w"></span>
+<span class="sd">        Raises ValueError if box is not iterable or of the wrong size.</span>
 
-<span class="k">top</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">itemgetter</span><span class="p">(</span><span class="n">Y0</span><span class="p">)</span><span class="w"></span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="n">bottom</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">itemgetter</span><span class="p">(</span><span class="n">Y1</span><span class="p">)</span><span class="w"></span>
+        <span class="k">try</span><span class="p">:</span>
 
-<span class="n">left_top</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">itemgetter</span><span class="p">(</span><span class="n">X0</span><span class="p">,</span><span class="w"> </span><span class="n">Y0</span><span class="p">)</span><span class="w"></span>
+            <span class="n">box</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
 
-<span class="n">right_top</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">itemgetter</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span><span class="w"> </span><span class="n">Y0</span><span class="p">)</span><span class="w"></span>
+        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
 
-<span class="n">left_bottom</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">itemgetter</span><span class="p">(</span><span class="n">X0</span><span class="p">,</span><span class="w"> </span><span class="n">Y1</span><span class="p">)</span><span class="w"></span>
+            <span class="k">raise</span> <span class="n">invalid</span>
 
-<span class="n">right_bottom</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">itemgetter</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span><span class="w"> </span><span class="n">Y1</span><span class="p">)</span><span class="w"></span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">box</span><span class="p">:</span>
 
-<span class="n">horizontal</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">itemgetter</span><span class="p">(</span><span class="n">X0</span><span class="p">,</span><span class="w"> </span><span class="n">X1</span><span class="p">)</span><span class="w"></span>
+            <span class="k">return</span> <span class="nb">tuple</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
 
-<span class="n">vertical</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">itemgetter</span><span class="p">(</span><span class="n">Y0</span><span class="p">,</span><span class="w"> </span><span class="n">Y1</span><span class="p">)</span><span class="w"></span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">box</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">4</span><span class="p">:</span>
 
-<span class="n">def</span><span class="w"> </span><span class="n">points</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+            <span class="k">raise</span> <span class="n">invalid</span>
 
-<span class="w">    </span><span class="ss">&quot;&quot;&quot;Return the left top and right bottom points of rect.&quot;&quot;&quot;</span><span class="w"></span>
+        <span class="k">if</span> <span class="n">box</span><span class="p">[</span><span class="n">X0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">box</span><span class="p">[</span><span class="n">X1</span><span class="p">]</span> <span class="ow">or</span> <span class="n">box</span><span class="p">[</span><span class="n">Y0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">box</span><span class="p">[</span><span class="n">Y1</span><span class="p">]:</span>
 
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">left_top</span><span class="p">(</span><span class="n">rect</span><span class="p">),</span><span class="w"> </span><span class="n">right_bottom</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span><span class="w"></span>
+            <span class="k">return</span> <span class="nb">tuple</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
 
-<span class="n">def</span><span class="w"> </span><span class="n">width</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">box</span><span class="p">)</span>
 
-<span class="w">    </span><span class="ss">&quot;&quot;&quot;Return the width of rect.&quot;&quot;&quot;</span><span class="w"></span>
+    <span class="nd">@classmethod</span>
 
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nf">right</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nf">left</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span><span class="w"></span>
+    <span class="k">def</span> <span class="nf">from_size</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
 
-<span class="n">def</span><span class="w"> </span><span class="n">height</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+        <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="ss">&quot;&quot;&quot;Return the height of rect.&quot;&quot;&quot;</span><span class="w"></span>
+<span class="sd">        Takes a sequence of two elements that represent the width and height</span>
 
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">bottom</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="k">top</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span><span class="w"></span>
+<span class="sd">        of a rectangle, returning Rect((0, 0, width, height)).</span>
 
-<span class="n">def</span><span class="w"> </span><span class="k">size</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="ss">&quot;&quot;&quot;Return the width and height of rect.&quot;&quot;&quot;</span><span class="w"></span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_points</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">size</span><span class="p">)</span>
 
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">width</span><span class="p">(</span><span class="n">rect</span><span class="p">),</span><span class="w"> </span><span class="n">height</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span><span class="w"></span>
+    <span class="nd">@classmethod</span>
 
-<span class="n">def</span><span class="w"> </span><span class="n">area</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+    <span class="k">def</span> <span class="nf">from_points</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">left_top</span><span class="p">,</span> <span class="n">right_bottom</span><span class="p">):</span>
 
-<span class="w">    </span><span class="ss">&quot;&quot;&quot;Return the area of rect.&quot;&quot;&quot;</span><span class="w"></span>
+        <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">width</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">height</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span><span class="w"></span>
+<span class="sd">        Takes two sequences (left, top) and (right, bottom) and return the</span>
 
-<span class="n">prop_doc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;The {0} of the rectangle.&#39;</span><span class="p">.</span><span class="nf">format</span><span class="w"></span>
+<span class="sd">        rectangle Rect((left, top, right, bottom)).</span>
 
-<span class="n">coor_doc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">prop_doc</span><span class="p">(</span><span class="s1">&#39;{0} coordinate&#39;</span><span class="p">).</span><span class="nf">format</span><span class="w"></span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="n">invalid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ValueError</span><span class="p">(</span><span class="w"></span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">chain</span><span class="p">(</span><span class="n">left_top</span><span class="p">,</span> <span class="n">right_bottom</span><span class="p">))</span>
 
-<span class="w">    </span><span class="s1">&#39;Argument &quot;box&quot; must be an iterable of zero or four numbers.&#39;</span><span class="p">)</span><span class="w"></span>
+    <span class="nd">@classmethod</span>
 
-<span class="k">class</span><span class="w"> </span><span class="n">MetaRect</span><span class="p">(</span><span class="n">type</span><span class="p">(</span><span class="n">tuple</span><span class="p">))</span><span class="err">:</span><span class="w"></span>
+    <span class="k">def</span> <span class="nf">enclose</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">rects</span><span class="p">):</span>
 
-<span class="w">    </span><span class="ss">&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="ss">    A metaclass so we can have covariant polymorphic subtypes.</span>
+<span class="sd">        Return the smallest rectangle that contains all rects, or Rect.EMPTY,</span>
 
-<span class="ss">    Really.</span>
+<span class="sd">        if rects is empty.  This is also called the smallest upper bound or</span>
 
-<span class="ss">    &quot;&quot;&quot;</span><span class="w"></span>
+<span class="sd">        supremum of rects.  In computer graphics programming this is known as</span>
 
-<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">__init__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">bases</span><span class="p">,</span><span class="w"> </span><span class="n">cdict</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+<span class="sd">        the minimal bounding box of rects.</span>
 
-<span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
+<span class="sd">        Mathematically speaking, it maps P(RECT) --&gt; RECT, where RECT is the</span>
 
-<span class="ss">        Set up the two identity elements. We must do this in a metaclass so</span>
+<span class="sd">        set of all paraxial rectangles and P(RECT) is the power set of RECT.</span>
 
-<span class="ss">        users are able to properly subclass Rect. Otherwise a method that&#39;s</span>
+<span class="sd">        If any of the rects equals Rect.PLANE, the result will also be</span>
 
-<span class="ss">        invoked on e.g. a module level attribute EMPTY would always return a</span>
+<span class="sd">        Rect.PLANE.</span>
 
-<span class="ss">        Rect instance, even if the user had subclassed Rect.  Creating these</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="ss">        constants automatically on a per-class-level does the trick.</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">inflate</span><span class="p">(</span><span class="o">*</span><span class="nb">filter</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">rects</span><span class="p">)))</span>
 
-<span class="ss">        &quot;&quot;&quot;</span><span class="w"></span>
+    <span class="nd">@classmethod</span>
 
-<span class="w">        </span><span class="n">inf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span><span class="w"></span>
+    <span class="k">def</span> <span class="nf">overlap</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">rects</span><span class="p">):</span>
 
-<span class="w">        </span><span class="n">cls</span><span class="p">.</span><span class="n">EMPTY</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cls</span><span class="p">(())</span><span class="w"></span>
+        <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="w">        </span><span class="n">cls</span><span class="p">.</span><span class="n">PLANE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cls</span><span class="p">((</span><span class="o">-</span><span class="n">inf</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="n">inf</span><span class="p">,</span><span class="w"> </span><span class="n">inf</span><span class="p">,</span><span class="w"> </span><span class="n">inf</span><span class="p">))</span><span class="w"></span>
+<span class="sd">        Return the biggest rectangle that is contained in all rects, or</span>
 
-<span class="k">class</span><span class="w"> </span><span class="n">Rect</span><span class="p">(</span><span class="n">tuple</span><span class="p">,</span><span class="w"> </span><span class="n">metaclass</span><span class="o">=</span><span class="n">MetaRect</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+<span class="sd">        Rect.PLANE, if rects is empty.  This is also called the greatest lower</span>
 
-<span class="w">    </span><span class="n">__slots__</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">()</span><span class="w"></span>
+<span class="sd">        bound or infimum of rects.</span>
 
-<span class="w">    </span><span class="nf">left</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">property</span><span class="p">(</span><span class="nf">left</span><span class="p">,</span><span class="w"> </span><span class="n">doc</span><span class="o">=</span><span class="n">coor_doc</span><span class="p">(</span><span class="s1">&#39;left&#39;</span><span class="p">))</span><span class="w"></span>
+<span class="sd">        Mathematically speaking, it maps P(RECT) --&gt; RECT, where RECT is the</span>
 
-<span class="w">    </span><span class="nf">right</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">property</span><span class="p">(</span><span class="nf">right</span><span class="p">,</span><span class="w"> </span><span class="n">doc</span><span class="o">=</span><span class="n">coor_doc</span><span class="p">(</span><span class="s1">&#39;right&#39;</span><span class="p">))</span><span class="w"></span>
+<span class="sd">        set of all paraxial rectangles and P(RECT) is the power set of RECT.</span>
 
-<span class="w">    </span><span class="k">top</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">property</span><span class="p">(</span><span class="k">top</span><span class="p">,</span><span class="w"> </span><span class="n">doc</span><span class="o">=</span><span class="n">coor_doc</span><span class="p">(</span><span class="s1">&#39;top&#39;</span><span class="p">))</span><span class="w"></span>
+<span class="sd">        If any of the rects equals Rect.EMPTY, the result will also be</span>
 
-<span class="w">    </span><span class="n">bottom</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">property</span><span class="p">(</span><span class="n">bottom</span><span class="p">,</span><span class="w"> </span><span class="n">doc</span><span class="o">=</span><span class="n">coor_doc</span><span class="p">(</span><span class="s1">&#39;bottom&#39;</span><span class="p">))</span><span class="w"></span>
+<span class="sd">        Rect.EMPTY.</span>
 
-<span class="w">    </span><span class="n">left_top</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">property</span><span class="p">(</span><span class="n">left_top</span><span class="p">,</span><span class="w"> </span><span class="n">doc</span><span class="o">=</span><span class="n">coor_doc</span><span class="p">(</span><span class="s1">&#39;left top&#39;</span><span class="p">))</span><span class="w"></span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="n">right_top</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">property</span><span class="p">(</span><span class="n">right_top</span><span class="p">,</span><span class="w"> </span><span class="n">doc</span><span class="o">=</span><span class="n">coor_doc</span><span class="p">(</span><span class="s1">&#39;right top&#39;</span><span class="p">))</span><span class="w"></span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">deflate</span><span class="p">(</span><span class="n">Rect</span><span class="o">.</span><span class="n">PLANE</span><span class="p">,</span> <span class="o">*</span><span class="n">rects</span><span class="p">))</span>
 
-<span class="w">    </span><span class="n">left_bottom</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">property</span><span class="p">(</span><span class="n">left_bottom</span><span class="p">,</span><span class="w"> </span><span class="n">doc</span><span class="o">=</span><span class="n">coor_doc</span><span class="p">(</span><span class="s1">&#39;left bottom&#39;</span><span class="p">))</span><span class="w"></span>
+    <span class="nd">@classmethod</span>
 
-<span class="w">    </span><span class="n">right_bottom</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">property</span><span class="p">(</span><span class="n">right_bottom</span><span class="p">,</span><span class="w"> </span><span class="n">doc</span><span class="o">=</span><span class="n">coor_doc</span><span class="p">(</span><span class="s1">&#39;right bottom&#39;</span><span class="p">))</span><span class="w"></span>
+    <span class="k">def</span> <span class="nf">all_overlapping_areas</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">rects</span><span class="p">):</span>
 
-<span class="w">    </span><span class="n">vertical</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">property</span><span class="p">(</span><span class="w"></span>
+        <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="w">        </span><span class="n">vertical</span><span class="p">,</span><span class="w"> </span><span class="n">doc</span><span class="o">=</span><span class="n">prop_doc</span><span class="p">(</span><span class="s1">&#39;top and bottom coordinates&#39;</span><span class="p">))</span><span class="w"></span>
+<span class="sd">        Generate all sets of transitively overlapping rectangles in rects.</span>
 
-<span class="w">    </span><span class="n">horizontal</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">property</span><span class="p">(</span><span class="w"></span>
+<span class="sd">        In other words, find all sets of connected rectangles.  Two rectangles</span>
 
-<span class="w">        </span><span class="n">horizontal</span><span class="p">,</span><span class="w"> </span><span class="n">doc</span><span class="o">=</span><span class="n">prop_doc</span><span class="p">(</span><span class="s1">&#39;left and right coordinates&#39;</span><span class="p">))</span><span class="w"></span>
+<span class="sd">        A and B are connected, if they either overlap or if there exists a</span>
 
-<span class="w">    </span><span class="n">points</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">property</span><span class="p">(</span><span class="w"></span>
+<span class="sd">        rectangle C such that both A and B are connected to C.</span>
 
-<span class="w">        </span><span class="n">points</span><span class="p">,</span><span class="w"> </span><span class="n">doc</span><span class="o">=</span><span class="n">prop_doc</span><span class="p">(</span><span class="s1">&#39;left top and right bottom coordinates&#39;</span><span class="p">))</span><span class="w"></span>
+<span class="sd">        Since Rect.EMPTY has no area, rects that equal Rect.EMPTY are silently</span>
 
-<span class="w">    </span><span class="n">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">property</span><span class="p">(</span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">doc</span><span class="o">=</span><span class="n">prop_doc</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="p">))</span><span class="w"></span>
+<span class="sd">        ignored.</span>
 
-<span class="w">    </span><span class="n">height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">property</span><span class="p">(</span><span class="n">height</span><span class="p">,</span><span class="w"> </span><span class="n">doc</span><span class="o">=</span><span class="n">prop_doc</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">))</span><span class="w"></span>
+<span class="sd">        Time complexity is O(n log n + k) with respect to the number of distinct</span>
 
-<span class="w">    </span><span class="k">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">property</span><span class="p">(</span><span class="k">size</span><span class="p">,</span><span class="w"> </span><span class="n">doc</span><span class="o">=</span><span class="n">prop_doc</span><span class="p">(</span><span class="s1">&#39;width and height&#39;</span><span class="p">))</span><span class="w"></span>
+<span class="sd">        rects n and the number of overlaps k. I hope.</span>
 
-<span class="w">    </span><span class="n">area</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">property</span><span class="p">(</span><span class="n">area</span><span class="p">,</span><span class="w"> </span><span class="n">doc</span><span class="o">=</span><span class="n">prop_doc</span><span class="p">(</span><span class="s1">&#39;area&#39;</span><span class="p">))</span><span class="w"></span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span><span class="w"> </span><span class="n">box</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+        <span class="c1"># Implementation of the well known connected components algorithm for</span>
 
-<span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
+        <span class="c1"># graphs. This works because we view overlapping rectangles as</span>
 
-<span class="ss">        Create a new paraxial rectangle of type Rect from box.</span>
+        <span class="c1"># connected nodes in a graph.</span>
 
-<span class="ss">        box must be an iterable of zero or four numbers.  These are taken to</span>
+        <span class="c1">#</span>
 
-<span class="ss">        be the left, top, right and bottom coordinates (in that order) of the</span>
+        <span class="c1"># As Alan Kay puts it: point of view is worth 80 IQ points.</span>
 
-<span class="ss">        rectangle.  If box is empty or its values are such that the resulting</span>
+        <span class="n">rects</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">rects</span><span class="p">)</span>
 
-<span class="ss">        Rect would have negative width or height the result will be Rect.EMPTY.</span>
+        <span class="c1"># EMPTY has no area:</span>
 
-<span class="ss">        Raises ValueError if box is not iterable or of the wrong size.</span>
+        <span class="n">rects</span><span class="o">.</span><span class="n">discard</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">EMPTY</span><span class="p">)</span>
 
-<span class="ss">        &quot;&quot;&quot;</span><span class="w"></span>
+        <span class="c1"># Helper class for ITree. Used in the Sweep Line algorithm below.</span>
 
-<span class="w">        </span><span class="k">try</span><span class="err">:</span><span class="w"></span>
+        <span class="nd">@dataclass</span>
 
-<span class="w">            </span><span class="n">box</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tuple</span><span class="p">(</span><span class="n">box</span><span class="p">)</span><span class="w"></span>
+        <span class="k">class</span> <span class="nc">Interval</span><span class="p">:</span>
 
-<span class="w">        </span><span class="ow">except</span><span class="w"> </span><span class="nl">TypeError</span><span class="p">:</span><span class="w"></span>
+            <span class="n">rect</span><span class="p">:</span> <span class="n">Rect</span>
 
-<span class="w">            </span><span class="n">raise</span><span class="w"> </span><span class="n">invalid</span><span class="w"></span>
+            <span class="nd">@property</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nl">box</span><span class="p">:</span><span class="w"></span>
+            <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">tuple</span><span class="p">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">)</span><span class="w"></span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">left</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nf">len</span><span class="p">(</span><span class="n">box</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">4</span><span class="err">:</span><span class="w"></span>
+            <span class="nd">@property</span>
 
-<span class="w">            </span><span class="n">raise</span><span class="w"> </span><span class="n">invalid</span><span class="w"></span>
+            <span class="k">def</span> <span class="nf">end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">box</span><span class="o">[</span><span class="n">X0</span><span class="o">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">box</span><span class="o">[</span><span class="n">X1</span><span class="o">]</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="n">box</span><span class="o">[</span><span class="n">Y0</span><span class="o">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">box</span><span class="o">[</span><span class="n">Y1</span><span class="o">]</span><span class="err">:</span><span class="w"></span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="o">.</span><span class="n">right</span>
 
-<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">tuple</span><span class="p">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">)</span><span class="w"></span>
+        <span class="c1"># Sweep Line algorithm to set up adjacency sets, AKA neighbors:</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">tuple</span><span class="p">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span><span class="w"> </span><span class="n">box</span><span class="p">)</span><span class="w"></span>
+        <span class="n">neighbors</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">set</span><span class="p">)</span>
 
-<span class="w">    </span><span class="nv">@classmethod</span><span class="w"></span>
+        <span class="n">status</span> <span class="o">=</span> <span class="n">ITree</span><span class="p">()</span>
 
-<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">from_size</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span><span class="w"> </span><span class="k">size</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+        <span class="n">events</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">chain</span><span class="o">.</span><span class="n">from_iterable</span><span class="p">(</span>
 
-<span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
+                <span class="p">((</span><span class="n">r</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">r</span><span class="p">),</span> <span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">right</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">r</span><span class="p">))</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">rects</span><span class="p">))</span>
 
-<span class="ss">        Takes a sequence of two elements that represent the width and height</span>
+        <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">is_right</span><span class="p">,</span> <span class="n">rect</span> <span class="ow">in</span> <span class="n">events</span><span class="p">:</span>
 
-<span class="ss">        of a rectangle, returning Rect((0, 0, width, height)).</span>
+            <span class="k">for</span> <span class="n">interval</span> <span class="ow">in</span> <span class="n">status</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">Interval</span><span class="p">(</span><span class="n">rect</span><span class="p">)):</span>
 
-<span class="ss">        &quot;&quot;&quot;</span><span class="w"></span>
+                <span class="k">if</span> <span class="n">rect</span> <span class="o">&amp;</span> <span class="n">interval</span><span class="o">.</span><span class="n">rect</span><span class="p">:</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">cls</span><span class="p">.</span><span class="n">from_points</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">),</span><span class="w"> </span><span class="k">size</span><span class="p">)</span><span class="w"></span>
+                    <span class="n">neighbors</span><span class="p">[</span><span class="n">rect</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">interval</span><span class="o">.</span><span class="n">rect</span><span class="p">)</span>
 
-<span class="w">    </span><span class="nv">@classmethod</span><span class="w"></span>
+                    <span class="n">neighbors</span><span class="p">[</span><span class="n">interval</span><span class="o">.</span><span class="n">rect</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">from_points</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span><span class="w"> </span><span class="n">left_top</span><span class="p">,</span><span class="w"> </span><span class="n">right_bottom</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+            <span class="k">if</span> <span class="n">is_right</span><span class="p">:</span>
 
-<span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
+                <span class="n">status</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">Interval</span><span class="p">(</span><span class="n">rect</span><span class="p">))</span>
 
-<span class="ss">        Takes two sequences (left, top) and (right, bottom) and return the</span>
+            <span class="k">else</span><span class="p">:</span>
 
-<span class="ss">        rectangle Rect((left, top, right, bottom)).</span>
+                <span class="n">status</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">Interval</span><span class="p">(</span><span class="n">rect</span><span class="p">))</span>
 
-<span class="ss">        &quot;&quot;&quot;</span><span class="w"></span>
+        <span class="c1"># Collect the connected components:</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">cls</span><span class="p">(</span><span class="n">chain</span><span class="p">(</span><span class="n">left_top</span><span class="p">,</span><span class="w"> </span><span class="n">right_bottom</span><span class="p">))</span><span class="w"></span>
+        <span class="n">seen</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
 
-<span class="w">    </span><span class="nv">@classmethod</span><span class="w"></span>
+        <span class="k">def</span> <span class="nf">component</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">neighbors</span><span class="o">=</span><span class="n">neighbors</span><span class="p">,</span> <span class="n">seen</span><span class="o">=</span><span class="n">seen</span><span class="p">,</span> <span class="n">see</span><span class="o">=</span><span class="n">seen</span><span class="o">.</span><span class="n">add</span><span class="p">):</span>
 
-<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">enclose</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">rects</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+            <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
+<span class="sd">            Generate all nodes of the component to which node belongs.</span>
 
-<span class="ss">        Return the smallest rectangle that contains all rects, or Rect.EMPTY,</span>
+<span class="sd">            &quot;&quot;&quot;</span>
 
-<span class="ss">        if rects is empty.  This is also called the smallest upper bound or</span>
+            <span class="n">todo</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">node</span><span class="p">])</span>
 
-<span class="ss">        supremum of rects.  In computer graphics programming this is known as</span>
+            <span class="n">next_todo</span> <span class="o">=</span> <span class="n">todo</span><span class="o">.</span><span class="n">pop</span>
 
-<span class="ss">        the minimal bounding box of rects.</span>
+            <span class="k">while</span> <span class="n">todo</span><span class="p">:</span>
 
-<span class="ss">        Mathematically speaking, it maps P(RECT) --&gt; RECT, where RECT is the</span>
+                <span class="n">node</span> <span class="o">=</span> <span class="n">next_todo</span><span class="p">()</span>
 
-<span class="ss">        set of all paraxial rectangles and P(RECT) is the power set of RECT.</span>
+                <span class="n">see</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
 
-<span class="ss">        If any of the rects equals Rect.PLANE, the result will also be</span>
+                <span class="n">todo</span> <span class="o">|=</span> <span class="n">neighbors</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">-</span> <span class="n">seen</span>
 
-<span class="ss">        Rect.PLANE.</span>
+                <span class="k">yield</span> <span class="n">node</span>
 
-<span class="ss">        &quot;&quot;&quot;</span><span class="w"></span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">neighbors</span><span class="p">:</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">cls</span><span class="p">(</span><span class="n">inflate</span><span class="p">(</span><span class="o">*</span><span class="k">filter</span><span class="p">(</span><span class="k">None</span><span class="p">,</span><span class="w"> </span><span class="n">rects</span><span class="p">)))</span><span class="w"></span>
+            <span class="k">if</span> <span class="n">node</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
 
-<span class="w">    </span><span class="nv">@classmethod</span><span class="w"></span>
+                <span class="k">yield</span> <span class="n">component</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
 
-<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">overlap</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">rects</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+    <span class="nd">@classmethod</span>
 
-<span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">closed_regions</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">rects</span><span class="p">):</span>
 
-<span class="ss">        Return the biggest rectangle that is contained in all rects, or</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="ss">        Rect.PLANE, if rects is empty.  This is also called the greatest lower</span>
+<span class="sd">        Generate the bounding boxes of all closed regions in rects.</span>
 
-<span class="ss">        bound or infimum of rects.</span>
+<span class="sd">        In other words, find all sets of connected rectangles and generate the</span>
 
-<span class="ss">        Mathematically speaking, it maps P(RECT) --&gt; RECT, where RECT is the</span>
+<span class="sd">        bounding box of each set.  Two rectangles A and B are connected, if</span>
 
-<span class="ss">        set of all paraxial rectangles and P(RECT) is the power set of RECT.</span>
+<span class="sd">        they either overlap or if there exists a rectangle C such that both A</span>
 
-<span class="ss">        If any of the rects equals Rect.EMPTY, the result will also be</span>
+<span class="sd">        and B are connected to C.</span>
 
-<span class="ss">        Rect.EMPTY.</span>
+<span class="sd">        Since Rect.EMPTY has no area, it also covers no region.</span>
 
-<span class="ss">        &quot;&quot;&quot;</span><span class="w"></span>
+<span class="sd">        Time complexity is O(n log n + k) with respect to the number n</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">cls</span><span class="p">(</span><span class="n">deflate</span><span class="p">(</span><span class="n">Rect</span><span class="p">.</span><span class="n">PLANE</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">rects</span><span class="p">))</span><span class="w"></span>
+<span class="sd">        of distinct rects and the number k of overlaps. I hope.</span>
 
-<span class="w">    </span><span class="nv">@classmethod</span><span class="w"></span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">all_overlapping_areas</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span><span class="w"> </span><span class="n">rects</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+        <span class="k">for</span> <span class="n">region</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">all_overlapping_areas</span><span class="p">(</span><span class="n">rects</span><span class="p">):</span>
 
-<span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
+            <span class="k">yield</span> <span class="bp">cls</span><span class="o">.</span><span class="n">enclose</span><span class="p">(</span><span class="o">*</span><span class="n">region</span><span class="p">)</span>
 
-<span class="ss">        Generate all sets of transitively overlapping rectangles in rects.</span>
+    <span class="k">def</span> <span class="nf">move</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">offsets</span><span class="p">):</span>
 
-<span class="ss">        In other words, find all sets of connected rectangles.  Two rectangles</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="ss">        A and B are connected, if they either overlap or if there exists a</span>
+<span class="sd">        Takes a sequence of two offsets (horizontal, vertical) and return</span>
 
-<span class="ss">        rectangle C such that both A and B are connected to C.</span>
+<span class="sd">        Rect((left+horizontal, top+vertical, right+horizontal, bottom+vertical)).</span>
 
-<span class="ss">        Since Rect.EMPTY has no area, rects that equal Rect.EMPTY are silently</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="ss">        ignored.</span>
+        <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)(</span><span class="n">p</span> <span class="o">+</span> <span class="n">d</span> <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">offsets</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span><span class="p">))</span>
 
-<span class="ss">        Time complexity is O(n log n + k) with respect to the number of distinct</span>
+    <span class="k">def</span> <span class="fm">__or__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
 
-<span class="ss">        rects n and the number of overlaps k. I hope.</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="ss">        &quot;&quot;&quot;</span><span class="w"></span>
+<span class="sd">        The join operator.</span>
 
-<span class="w">        </span><span class="err">#</span><span class="w"> </span><span class="n">Implementation</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">well</span><span class="w"> </span><span class="n">known</span><span class="w"> </span><span class="n">connected</span><span class="w"> </span><span class="n">components</span><span class="w"> </span><span class="n">algorithm</span><span class="w"> </span><span class="k">for</span><span class="w"></span>
+<span class="sd">        Return the smallest rectangle that contains both self and other or</span>
 
-<span class="w">        </span><span class="err">#</span><span class="w"> </span><span class="n">graphs</span><span class="p">.</span><span class="w"> </span><span class="n">This</span><span class="w"> </span><span class="n">works</span><span class="w"> </span><span class="n">because</span><span class="w"> </span><span class="n">we</span><span class="w"> </span><span class="k">view</span><span class="w"> </span><span class="n">overlapping</span><span class="w"> </span><span class="n">rectangles</span><span class="w"> </span><span class="k">as</span><span class="w"></span>
+<span class="sd">        return Rect.EMPTY, if both are Rect.EMPTY.  This is also called the</span>
 
-<span class="w">        </span><span class="err">#</span><span class="w"> </span><span class="n">connected</span><span class="w"> </span><span class="n">nodes</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">graph</span><span class="p">.</span><span class="w"></span>
+<span class="sd">        smallest upper bound or supremum of self and other.  In computer</span>
 
-<span class="w">        </span><span class="err">#</span><span class="w"></span>
+<span class="sd">        graphics programming this is known as the bounding box of self and</span>
 
-<span class="w">        </span><span class="err">#</span><span class="w"> </span><span class="k">As</span><span class="w"> </span><span class="n">Alan</span><span class="w"> </span><span class="n">Kay</span><span class="w"> </span><span class="n">puts</span><span class="w"> </span><span class="nl">it</span><span class="p">:</span><span class="w"> </span><span class="n">point</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="k">view</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">worth</span><span class="w"> </span><span class="mi">80</span><span class="w"> </span><span class="n">IQ</span><span class="w"> </span><span class="n">points</span><span class="p">.</span><span class="w"></span>
+<span class="sd">        other.</span>
 
-<span class="w">        </span><span class="n">rects</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">set</span><span class="p">(</span><span class="n">rects</span><span class="p">)</span><span class="w"></span>
+<span class="sd">        r1 | r2 | ... | rn is equivalent to Rect.enclose(r1, r2, ..., rn).</span>
 
-<span class="w">        </span><span class="err">#</span><span class="w"> </span><span class="n">EMPTY</span><span class="w"> </span><span class="n">has</span><span class="w"> </span><span class="k">no</span><span class="w"> </span><span class="nl">area</span><span class="p">:</span><span class="w"></span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="w">        </span><span class="n">rects</span><span class="p">.</span><span class="n">discard</span><span class="p">(</span><span class="n">cls</span><span class="p">.</span><span class="n">EMPTY</span><span class="p">)</span><span class="w"></span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">enclose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
 
-<span class="w">        </span><span class="err">#</span><span class="w"> </span><span class="n">Helper</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">ITree</span><span class="p">.</span><span class="w"> </span><span class="n">Used</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">Sweep</span><span class="w"> </span><span class="n">Line</span><span class="w"> </span><span class="n">algorithm</span><span class="w"> </span><span class="n">below</span><span class="p">.</span><span class="w"></span>
+    <span class="fm">__ror__</span> <span class="o">=</span> <span class="fm">__or__</span>
 
-<span class="w">        </span><span class="nv">@dataclass</span><span class="w"></span>
+    <span class="k">def</span> <span class="fm">__and__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
 
-<span class="w">        </span><span class="k">class</span><span class="w"> </span><span class="k">Interval</span><span class="err">:</span><span class="w"></span>
+        <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="w">            </span><span class="nl">rect</span><span class="p">:</span><span class="w"> </span><span class="n">Rect</span><span class="w"></span>
+<span class="sd">        The meet operator.</span>
 
-<span class="w">            </span><span class="nv">@property</span><span class="w"></span>
+<span class="sd">        Return the biggest rectangle that is contained in both self and other</span>
 
-<span class="w">            </span><span class="n">def</span><span class="w"> </span><span class="k">start</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+<span class="sd">        or return Rect.EMPTY, if self and other don&#39;t overlap or one of them is</span>
 
-<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">rect</span><span class="p">.</span><span class="nf">left</span><span class="w"></span>
+<span class="sd">        Rect.EMPTY.  This is also called the greatest lower bound or infimum of</span>
 
-<span class="w">            </span><span class="nv">@property</span><span class="w"></span>
+<span class="sd">        self and other.</span>
 
-<span class="w">            </span><span class="n">def</span><span class="w"> </span><span class="k">end</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+<span class="sd">        r1 &amp; r2 &amp; ... &amp; rn is equivalent to Rect.overlap(r1, r2, ..., rn).</span>
 
-<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">rect</span><span class="p">.</span><span class="nf">right</span><span class="w"></span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="w">        </span><span class="err">#</span><span class="w"> </span><span class="n">Sweep</span><span class="w"> </span><span class="n">Line</span><span class="w"> </span><span class="n">algorithm</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="n">up</span><span class="w"> </span><span class="n">adjacency</span><span class="w"> </span><span class="k">sets</span><span class="p">,</span><span class="w"> </span><span class="n">AKA</span><span class="w"> </span><span class="nl">neighbors</span><span class="p">:</span><span class="w"></span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
 
-<span class="w">        </span><span class="n">neighbors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">defaultdict</span><span class="p">(</span><span class="k">set</span><span class="p">)</span><span class="w"></span>
+    <span class="fm">__rand__</span> <span class="o">=</span> <span class="fm">__and__</span>
 
-<span class="w">        </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ITree</span><span class="p">()</span><span class="w"></span>
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
 
-<span class="w">        </span><span class="n">events</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sorted</span><span class="p">(</span><span class="n">chain</span><span class="p">.</span><span class="n">from_iterable</span><span class="p">(</span><span class="w"></span>
+        <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="w">                </span><span class="p">((</span><span class="n">r</span><span class="p">.</span><span class="nf">left</span><span class="p">,</span><span class="w"> </span><span class="k">False</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="nf">right</span><span class="p">,</span><span class="w"> </span><span class="k">True</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="p">))</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">rects</span><span class="p">))</span><span class="w"></span>
+<span class="sd">        Return True if self and other are rectangles with same coordinates,</span>
 
-<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="n">_</span><span class="p">,</span><span class="w"> </span><span class="n">is_right</span><span class="p">,</span><span class="w"> </span><span class="n">rect</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="nl">events</span><span class="p">:</span><span class="w"></span>
+<span class="sd">        otherwise return False.</span>
 
-<span class="w">            </span><span class="k">for</span><span class="w"> </span><span class="k">interval</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">status</span><span class="p">.</span><span class="k">search</span><span class="p">(</span><span class="k">Interval</span><span class="p">(</span><span class="n">rect</span><span class="p">))</span><span class="err">:</span><span class="w"></span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="n">rect</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="k">interval</span><span class="p">.</span><span class="nl">rect</span><span class="p">:</span><span class="w"></span>
+        <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">==</span> <span class="n">other</span>
 
-<span class="w">                    </span><span class="n">neighbors</span><span class="o">[</span><span class="n">rect</span><span class="o">]</span><span class="p">.</span><span class="k">add</span><span class="p">(</span><span class="k">interval</span><span class="p">.</span><span class="n">rect</span><span class="p">)</span><span class="w"></span>
+    <span class="k">def</span> <span class="fm">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
 
-<span class="w">                    </span><span class="n">neighbors</span><span class="o">[</span><span class="n">interval.rect</span><span class="o">]</span><span class="p">.</span><span class="k">add</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span><span class="w"></span>
+        <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="nl">is_right</span><span class="p">:</span><span class="w"></span>
+<span class="sd">        Return True if self and other are rectangles with different</span>
 
-<span class="w">                </span><span class="n">status</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span><span class="k">Interval</span><span class="p">(</span><span class="n">rect</span><span class="p">))</span><span class="w"></span>
+<span class="sd">        coordinates, otherwise return False.</span>
 
-<span class="w">            </span><span class="k">else</span><span class="err">:</span><span class="w"></span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="w">                </span><span class="n">status</span><span class="p">.</span><span class="k">insert</span><span class="p">(</span><span class="k">Interval</span><span class="p">(</span><span class="n">rect</span><span class="p">))</span><span class="w"></span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">!=</span> <span class="n">other</span>
 
-<span class="w">        </span><span class="err">#</span><span class="w"> </span><span class="k">Collect</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">connected</span><span class="w"> </span><span class="nl">components</span><span class="p">:</span><span class="w"></span>
+    <span class="k">def</span> <span class="fm">__le__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
 
-<span class="w">        </span><span class="n">seen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">set</span><span class="p">()</span><span class="w"></span>
+        <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="w">        </span><span class="n">def</span><span class="w"> </span><span class="n">component</span><span class="p">(</span><span class="n">node</span><span class="p">,</span><span class="w"> </span><span class="n">neighbors</span><span class="o">=</span><span class="n">neighbors</span><span class="p">,</span><span class="w"> </span><span class="n">seen</span><span class="o">=</span><span class="n">seen</span><span class="p">,</span><span class="w"> </span><span class="n">see</span><span class="o">=</span><span class="n">seen</span><span class="p">.</span><span class="k">add</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+<span class="sd">        Return True if other contains self, otherwise return False.</span>
 
-<span class="w">            </span><span class="ss">&quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="ss">            Generate all nodes of the component to which node belongs.</span>
+        <span class="k">return</span> <span class="bp">self</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
 
-<span class="ss">            &quot;&quot;&quot;</span><span class="w"></span>
+    <span class="k">def</span> <span class="fm">__ge__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
 
-<span class="w">            </span><span class="n">todo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">set</span><span class="p">(</span><span class="o">[</span><span class="n">node</span><span class="o">]</span><span class="p">)</span><span class="w"></span>
+        <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="w">            </span><span class="n">next_todo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">todo</span><span class="p">.</span><span class="n">pop</span><span class="w"></span>
+<span class="sd">        Return True if self contains other, otherwise return False.</span>
 
-<span class="w">            </span><span class="k">while</span><span class="w"> </span><span class="nl">todo</span><span class="p">:</span><span class="w"></span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="w">                </span><span class="n">node</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">next_todo</span><span class="p">()</span><span class="w"></span>
+        <span class="k">return</span> <span class="bp">self</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">enclose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
 
-<span class="w">                </span><span class="n">see</span><span class="p">(</span><span class="n">node</span><span class="p">)</span><span class="w"></span>
+    <span class="k">def</span> <span class="fm">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
 
-<span class="w">                </span><span class="n">todo</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="n">neighbors</span><span class="o">[</span><span class="n">node</span><span class="o">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">seen</span><span class="w"></span>
+        <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="w">                </span><span class="n">yield</span><span class="w"> </span><span class="n">node</span><span class="w"></span>
+<span class="sd">        Return True if other contains, but is not equal to self, otherwise</span>
 
-<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="nl">neighbors</span><span class="p">:</span><span class="w"></span>
+<span class="sd">        return False.</span>
 
-<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="n">node</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="nl">seen</span><span class="p">:</span><span class="w"></span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="w">                </span><span class="n">yield</span><span class="w"> </span><span class="n">component</span><span class="p">(</span><span class="n">node</span><span class="p">)</span><span class="w"></span>
+        <span class="k">return</span> <span class="n">other</span> <span class="o">!=</span> <span class="bp">self</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
 
-<span class="w">    </span><span class="nv">@classmethod</span><span class="w"></span>
+    <span class="k">def</span> <span class="fm">__gt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
 
-<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">closed_regions</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span><span class="w"> </span><span class="n">rects</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+        <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
+<span class="sd">        Return True if self contains, but is not equal to other, otherwise</span>
 
-<span class="ss">        Generate the bounding boxes of all closed regions in rects.</span>
+<span class="sd">        return False.</span>
 
-<span class="ss">        In other words, find all sets of connected rectangles and generate the</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="ss">        bounding box of each set.  Two rectangles A and B are connected, if</span>
+        <span class="k">return</span> <span class="n">other</span> <span class="o">!=</span> <span class="bp">self</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">enclose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
 
-<span class="ss">        they either overlap or if there exists a rectangle C such that both A</span>
+    <span class="k">def</span> <span class="fm">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scalar</span><span class="p">):</span>
 
-<span class="ss">        and B are connected to C.</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="ss">        Since Rect.EMPTY has no area, it also covers no region.</span>
+<span class="sd">        Return a new paraxial rectangle with the coordinates scaled by scalar.</span>
 
-<span class="ss">        Time complexity is O(n log n + k) with respect to the number n</span>
+<span class="sd">        scalar must be a number.</span>
 
-<span class="ss">        of distinct rects and the number k of overlaps. I hope.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="ss">        &quot;&quot;&quot;</span><span class="w"></span>
+        <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)(</span><span class="n">value</span> <span class="o">*</span> <span class="n">scalar</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">)</span>
 
-<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="n">region</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">cls</span><span class="p">.</span><span class="n">all_overlapping_areas</span><span class="p">(</span><span class="n">rects</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+    <span class="fm">__rmul__</span> <span class="o">=</span> <span class="fm">__mul__</span>
 
-<span class="w">            </span><span class="n">yield</span><span class="w"> </span><span class="n">cls</span><span class="p">.</span><span class="n">enclose</span><span class="p">(</span><span class="o">*</span><span class="n">region</span><span class="p">)</span><span class="w"></span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">move</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="k">offsets</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+        <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
+<span class="sd">        x.__str__() &lt;==&gt; str(x)</span>
 
-<span class="ss">        Takes a sequence of two offsets (horizontal, vertical) and return</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="ss">        Rect((left+horizontal, top+vertical, right+horizontal, bottom+vertical)).</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
 
-<span class="ss">        &quot;&quot;&quot;</span><span class="w"></span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">type</span><span class="p">(</span><span class="n">self</span><span class="p">)(</span><span class="n">p</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">p</span><span class="p">,</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">zip</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">tuple</span><span class="p">(</span><span class="k">offsets</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">2</span><span class="p">))</span><span class="w"></span>
+        <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">__or__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">other</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+<span class="sd">        x.__repr__() &lt;==&gt; repr(x)</span>
 
-<span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-<span class="ss">        The join operator.</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{0}</span><span class="s1">(</span><span class="si">{1}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
 
-<span class="ss">        Return the smallest rectangle that contains both self and other or</span>
+    <span class="fm">__hash__</span> <span class="o">=</span> <span class="nb">tuple</span><span class="o">.</span><span class="fm">__hash__</span>  <span class="c1"># classes that derive from a hashable class but</span>
 
-<span class="ss">        return Rect.EMPTY, if both are Rect.EMPTY.  This is also called the</span>
+                               <span class="c1"># override __eq__ must also define __hash__ to</span>
 
-<span class="ss">        smallest upper bound or supremum of self and other.  In computer</span>
-
-<span class="ss">        graphics programming this is known as the bounding box of self and</span>
-
-<span class="ss">        other.</span>
-
-<span class="ss">        r1 | r2 | ... | rn is equivalent to Rect.enclose(r1, r2, ..., rn).</span>
-
-<span class="ss">        &quot;&quot;&quot;</span><span class="w"></span>
-
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">enclose</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">other</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">__ror__</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">__or__</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">__and__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">other</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
-
-<span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
-
-<span class="ss">        The meet operator.</span>
-
-<span class="ss">        Return the biggest rectangle that is contained in both self and other</span>
-
-<span class="ss">        or return Rect.EMPTY, if self and other don&#39;t overlap or one of them is</span>
-
-<span class="ss">        Rect.EMPTY.  This is also called the greatest lower bound or infimum of</span>
-
-<span class="ss">        self and other.</span>
-
-<span class="ss">        r1 &amp; r2 &amp; ... &amp; rn is equivalent to Rect.overlap(r1, r2, ..., rn).</span>
-
-<span class="ss">        &quot;&quot;&quot;</span><span class="w"></span>
-
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">overlap</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">other</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">__rand__</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">__and__</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">__eq__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">other</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
-
-<span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
-
-<span class="ss">        Return True if self and other are rectangles with same coordinates,</span>
-
-<span class="ss">        otherwise return False.</span>
-
-<span class="ss">        &quot;&quot;&quot;</span><span class="w"></span>
-
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span><span class="w"> </span><span class="n">tuple</span><span class="p">)</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">tuple</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">other</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">__ne__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">other</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
-
-<span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
-
-<span class="ss">        Return True if self and other are rectangles with different</span>
-
-<span class="ss">        coordinates, otherwise return False.</span>
-
-<span class="ss">        &quot;&quot;&quot;</span><span class="w"></span>
-
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span><span class="w"> </span><span class="n">tuple</span><span class="p">)</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="n">tuple</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">other</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">__le__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">other</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
-
-<span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
-
-<span class="ss">        Return True if other contains self, otherwise return False.</span>
-
-<span class="ss">        &quot;&quot;&quot;</span><span class="w"></span>
-
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">self</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">overlap</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">other</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">__ge__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">other</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
-
-<span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
-
-<span class="ss">        Return True if self contains other, otherwise return False.</span>
-
-<span class="ss">        &quot;&quot;&quot;</span><span class="w"></span>
-
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">self</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">enclose</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">other</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">__lt__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">other</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
-
-<span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
-
-<span class="ss">        Return True if other contains, but is not equal to self, otherwise</span>
-
-<span class="ss">        return False.</span>
-
-<span class="ss">        &quot;&quot;&quot;</span><span class="w"></span>
-
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">other</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">self</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">overlap</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">other</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">__gt__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">other</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
-
-<span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
-
-<span class="ss">        Return True if self contains, but is not equal to other, otherwise</span>
-
-<span class="ss">        return False.</span>
-
-<span class="ss">        &quot;&quot;&quot;</span><span class="w"></span>
-
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">other</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">self</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">self</span><span class="p">.</span><span class="n">enclose</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">other</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">__mul__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">scalar</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
-
-<span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
-
-<span class="ss">        Return a new paraxial rectangle with the coordinates scaled by scalar.</span>
-
-<span class="ss">        scalar must be a number.</span>
-
-<span class="ss">        &quot;&quot;&quot;</span><span class="w"></span>
-
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">type</span><span class="p">(</span><span class="n">self</span><span class="p">)(</span><span class="k">value</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">scalar</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="k">value</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">self</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">__rmul__</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">__mul__</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">__str__</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
-
-<span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
-
-<span class="ss">        x.__str__() &lt;==&gt; str(x)</span>
-
-<span class="ss">        &quot;&quot;&quot;</span><span class="w"></span>
-
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nf">str</span><span class="p">(</span><span class="n">tuple</span><span class="p">(</span><span class="n">self</span><span class="p">))</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">__repr__</span><span class="p">(</span><span class="n">self</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
-
-<span class="w">        </span><span class="ss">&quot;&quot;&quot;</span>
-
-<span class="ss">        x.__repr__() &lt;==&gt; repr(x)</span>
-
-<span class="ss">        &quot;&quot;&quot;</span><span class="w"></span>
-
-<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="s1">&#39;{0}({1})&#39;</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="n">type</span><span class="p">(</span><span class="n">self</span><span class="p">).</span><span class="n">__name__</span><span class="p">,</span><span class="w"> </span><span class="n">self</span><span class="p">)</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">__hash__</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tuple</span><span class="p">.</span><span class="n">__hash__</span><span class="w">  </span><span class="err">#</span><span class="w"> </span><span class="n">classes</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">derive</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">hashable</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="n">but</span><span class="w"></span>
-
-<span class="w">                               </span><span class="err">#</span><span class="w"> </span><span class="n">override</span><span class="w"> </span><span class="n">__eq__</span><span class="w"> </span><span class="n">must</span><span class="w"> </span><span class="n">also</span><span class="w"> </span><span class="n">define</span><span class="w"> </span><span class="n">__hash__</span><span class="w"> </span><span class="k">to</span><span class="w"></span>
-
-<span class="w">                               </span><span class="err">#</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">hashable</span><span class="p">.</span><span class="w"></span>
+                               <span class="c1"># be hashable.</span>
 </code></pre></div>
 
 </details>
