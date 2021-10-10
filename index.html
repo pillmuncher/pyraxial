@@ -293,6 +293,14 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#since-these-laws-already-define-a-partially-ordered-set-the-following-laws-also-hold" class="md-nav__link">
+    Since these laws already define a partially ordered set, the following laws also hold:
+  </a>
+  
+    <nav class="md-nav" aria-label="Since these laws already define a partially ordered set, the following laws also hold:">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#least-element" class="md-nav__link">
     Least Element:
   </a>
@@ -341,10 +349,28 @@
   
 </li>
         
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-rectangle-is-created-like-so" class="md-nav__link">
+    A rectangle is created like so:
+  </a>
+  
+    <nav class="md-nav" aria-label="A rectangle is created like so:">
+      <ul class="md-nav__list">
+        
           <li class="md-nav__item">
   <a href="#see-api-documentation-here" class="md-nav__link">
     See API documentation here:
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -485,6 +511,14 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#since-these-laws-already-define-a-partially-ordered-set-the-following-laws-also-hold" class="md-nav__link">
+    Since these laws already define a partially ordered set, the following laws also hold:
+  </a>
+  
+    <nav class="md-nav" aria-label="Since these laws already define a partially ordered set, the following laws also hold:">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#least-element" class="md-nav__link">
     Least Element:
   </a>
@@ -533,10 +567,28 @@
   
 </li>
         
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-rectangle-is-created-like-so" class="md-nav__link">
+    A rectangle is created like so:
+  </a>
+  
+    <nav class="md-nav" aria-label="A rectangle is created like so:">
+      <ul class="md-nav__list">
+        
           <li class="md-nav__item">
   <a href="#see-api-documentation-here" class="md-nav__link">
     See API documentation here:
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -581,69 +633,69 @@
 <p>The <code>Rect</code> class together with the <code>|</code> and <code>&amp;</code> operations and the identity elements
 forms a <strong><em>complete lattice</em></strong> so that for all Rect objects a, b and c the
 following laws hold:</p>
-<h3 id="identity-elements">Identity Elements:</h3>
+<h4 id="identity-elements">Identity Elements:</h4>
 <div class="codehilite"><pre><span></span><code>    a | Rect.EMPTY  ≡  a
     a &amp; Rect.PLANE  ≡  a
 </code></pre></div>
 
-<h3 id="absorbing-elements">Absorbing Elements:</h3>
+<h4 id="absorbing-elements">Absorbing Elements:</h4>
 <div class="codehilite"><pre><span></span><code>    a | Rect.PLANE  ≡  Rect.PLANE
     a &amp; Rect.EMPTY  ≡  Rect.EMPTY
 </code></pre></div>
 
-<h3 id="idempotency">Idempotency:</h3>
+<h4 id="idempotency">Idempotency:</h4>
 <div class="codehilite"><pre><span></span><code>    a | a  ≡  a
     a &amp; a  ≡  a
 </code></pre></div>
 
-<h3 id="commutativity">Commutativity:</h3>
+<h4 id="commutativity">Commutativity:</h4>
 <div class="codehilite"><pre><span></span><code>    a | b  ≡  b | a
     a &amp; b  ≡  b &amp; a
 </code></pre></div>
 
-<h3 id="associativity">Associativity:</h3>
+<h4 id="associativity">Associativity:</h4>
 <div class="codehilite"><pre><span></span><code>    (a | b) | c  ≡  a | (b | c)
     (a &amp; b) &amp; c  ≡  a &amp; (b &amp; c)
 </code></pre></div>
 
-<h3 id="absorption">Absorption:</h3>
+<h4 id="absorption">Absorption:</h4>
 <div class="codehilite"><pre><span></span><code>    a | (a &amp; b)  ≡  a
     a &amp; (a | b)  ≡  a
 </code></pre></div>
 
-<p>Since these laws already define a <em>partially ordered set</em>, the following laws also hold:</p>
-<h3 id="least-element">Least Element:</h3>
+<h3 id="since-these-laws-already-define-a-partially-ordered-set-the-following-laws-also-hold">Since these laws already define a <em>partially ordered set</em>, the following laws also hold:</h3>
+<h4 id="least-element">Least Element:</h4>
 <div class="codehilite"><pre><span></span><code>    Rect.EMPTY ≦ a
 </code></pre></div>
 
-<h3 id="greatest-element">Greatest Element:</h3>
+<h4 id="greatest-element">Greatest Element:</h4>
 <div class="codehilite"><pre><span></span><code>    a ≦ Rect.PLANE
 </code></pre></div>
 
-<h3 id="reflexivity">Reflexivity:</h3>
+<h4 id="reflexivity">Reflexivity:</h4>
 <div class="codehilite"><pre><span></span><code>    a ≦ a
 </code></pre></div>
 
-<h3 id="transitivity">Transitivity:</h3>
+<h4 id="transitivity">Transitivity:</h4>
 <div class="codehilite"><pre><span></span><code>    a ≦ b  and  b ≦ c   🡒   a ≦ c
 </code></pre></div>
 
-<h3 id="antisymmetry">Antisymmetry:</h3>
+<h4 id="antisymmetry">Antisymmetry:</h4>
 <div class="codehilite"><pre><span></span><code>    a ≦ b  and  b ≦ a   🡘   a = b
 </code></pre></div>
 
-<h3 id="monotonicity">Monotonicity:</h3>
+<h4 id="monotonicity">Monotonicity:</h4>
 <div class="codehilite"><pre><span></span><code>    a1 ≦ a2  and  b1 ≦ b2   🡒   a1 | b1  ≦  a2 | b2
     a1 ≦ a2  and  b1 ≦ b2   🡒   a1 &amp; b1  ≦  a2 &amp; b2
 </code></pre></div>
 
-<h3 id="semidistributivity">Semidistributivity:</h3>
+<h4 id="semidistributivity">Semidistributivity:</h4>
 <div class="codehilite"><pre><span></span><code>    (a &amp; b) | (a &amp; c)  ≦  a &amp; (b | c)
     a | (b &amp; c)  ≦  (a | b) &amp; (a | c)
 </code></pre></div>
 
 <p>Notice the absence of the laws of distribution and modularity.</p>
-<p>A rectangle is created like so:</p>
+<h3 id="a-rectangle-is-created-like-so">A rectangle is created like so:</h3>
 <div class="codehilite"><pre><span></span><code>    r = Rect(box)
 </code></pre></div>
 
@@ -665,8 +717,8 @@ exception, or worse, causing inexplicably wrong results.</p>
 represented by 4-tuples, like e.g. Pillow's <code>Image.crop()</code> method. For contexts
 where such rectangles are represented as pairs of point coordinates the class
 method <code>Rect.from_points</code> and the <code>Rect.points</code> property can be used.</p>
-<h3 id="see-api-documentation-here">See API documentation here:</h3>
-<p><a href="https://pillmuncher.github.io/pyraxial">https://pillmuncher.github.io/pyraxial</a></p>
+<h4 id="see-api-documentation-here">See API documentation here:</h4>
+<p>https://pillmuncher.github.io/pyraxial</p>
                 
               
               

@@ -23,37 +23,37 @@ The `Rect` class together with the `|` and `&` operations and the identity eleme
 forms a ***complete lattice*** so that for all Rect objects a, b and c the
 following laws hold:
 
-#### Identity Elements:
+### Identity Elements:
 ```
     a | Rect.EMPTY  ≡  a
     a & Rect.PLANE  ≡  a
 ```
 
-#### Absorbing Elements:
+### Absorbing Elements:
 ```
     a | Rect.PLANE  ≡  Rect.PLANE
     a & Rect.EMPTY  ≡  Rect.EMPTY
 ```
 
-#### Idempotency:
+### Idempotency:
 ```
     a | a  ≡  a
     a & a  ≡  a
 ```
 
-#### Commutativity:
+### Commutativity:
 ```
     a | b  ≡  b | a
     a & b  ≡  b & a
 ```
 
-#### Associativity:
+### Associativity:
 ```
     (a | b) | c  ≡  a | (b | c)
     (a & b) & c  ≡  a & (b & c)
 ```
 
-#### Absorption:
+### Absorption:
 ```
     a | (a & b)  ≡  a
     a & (a | b)  ≡  a
@@ -61,40 +61,40 @@ following laws hold:
 
 
 
-### Since these laws already define a *partially ordered set*, the following laws also hold:
+Since these laws already define a *partially ordered set*, the following laws also hold:
 
-#### Least Element:
+### Least Element:
 ```
     Rect.EMPTY ≦ a
 ```
 
-#### Greatest Element:
+### Greatest Element:
 ```
     a ≦ Rect.PLANE
 ```
 
-#### Reflexivity:
+### Reflexivity:
 ```
     a ≦ a
 ```
 
-#### Transitivity:
+### Transitivity:
 ```
     a ≦ b  and  b ≦ c   🡒   a ≦ c
 ```
 
-#### Antisymmetry:
+### Antisymmetry:
 ```
     a ≦ b  and  b ≦ a   🡘   a = b
 ```
 
-#### Monotonicity:
+### Monotonicity:
 ```
     a1 ≦ a2  and  b1 ≦ b2   🡒   a1 | b1  ≦  a2 | b2
     a1 ≦ a2  and  b1 ≦ b2   🡒   a1 & b1  ≦  a2 & b2
 ```
 
-#### Semidistributivity:
+### Semidistributivity:
 ```
     (a & b) | (a & c)  ≦  a & (b | c)
     a | (b & c)  ≦  (a | b) & (a | c)
@@ -103,7 +103,7 @@ following laws hold:
 Notice the absence of the laws of distribution and modularity.
 
 
-### A rectangle is created like so:
+A rectangle is created like so:
 ```
     r = Rect(box)
 ```
@@ -134,5 +134,5 @@ where such rectangles are represented as pairs of point coordinates the class
 method `Rect.from_points` and the `Rect.points` property can be used.
 
 
-#### See API documentation here:
-https://pillmuncher.github.io/pyraxial
+### See API documentation here:
+[https://pillmuncher.github.io/pyraxial](https://pillmuncher.github.io/pyraxial)
