@@ -22,38 +22,38 @@ laws hold:
 
 Identity Elements:
 
-    a | Rect.EMPTY  ≡  a
-    a & Rect.PLANE  ≡  a
+    a | Rect.EMPTY  ==  a
+    a & Rect.PLANE  ==  a
 
 
 Absorbing Elements:
 
-    a | Rect.PLANE  ≡  Rect.PLANE
-    a & Rect.EMPTY  ≡  Rect.EMPTY
+    a | Rect.PLANE  ==  Rect.PLANE
+    a & Rect.EMPTY  ==  Rect.EMPTY
 
 
 Idempotency:
 
-    a | a  ≡  a
-    a & a  ≡  a
+    a | a  ==  a
+    a & a  ==  a
 
 
 Commutativity:
 
-    a | b  ≡  b | a
-    a & b  ≡  b & a
+    a | b  ==  b | a
+    a & b  ==  b & a
 
 
 Associativity:
 
-    (a | b) | c  ≡  a | (b | c)
-    (a & b) & c  ≡  a & (b & c)
+    (a | b) | c  ==  a | (b | c)
+    (a & b) & c  ==  a & (b & c)
 
 
 Absorption:
 
-    a | (a & b)  ≡  a
-    a & (a | b)  ≡  a
+    a | (a & b)  ==  a
+    a & (a | b)  ==  a
 
 
 Since these laws already define a partially ordered set, the following laws also

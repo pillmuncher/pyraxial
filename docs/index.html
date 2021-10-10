@@ -32,38 +32,38 @@ laws&nbsp;hold:<br>
 &nbsp;<br>
 Identity&nbsp;Elements:<br>
 &nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;|&nbsp;<a href="#Rect">Rect</a>.EMPTY&nbsp;&nbsp;≡&nbsp;&nbsp;a<br>
-&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;&amp;&nbsp;<a href="#Rect">Rect</a>.PLANE&nbsp;&nbsp;≡&nbsp;&nbsp;a<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;|&nbsp;<a href="#Rect">Rect</a>.EMPTY&nbsp;&nbsp;==&nbsp;&nbsp;a<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;&amp;&nbsp;<a href="#Rect">Rect</a>.PLANE&nbsp;&nbsp;==&nbsp;&nbsp;a<br>
 &nbsp;<br>
 &nbsp;<br>
 Absorbing&nbsp;Elements:<br>
 &nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;|&nbsp;<a href="#Rect">Rect</a>.PLANE&nbsp;&nbsp;≡&nbsp;&nbsp;<a href="#Rect">Rect</a>.PLANE<br>
-&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;&amp;&nbsp;<a href="#Rect">Rect</a>.EMPTY&nbsp;&nbsp;≡&nbsp;&nbsp;<a href="#Rect">Rect</a>.EMPTY<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;|&nbsp;<a href="#Rect">Rect</a>.PLANE&nbsp;&nbsp;==&nbsp;&nbsp;<a href="#Rect">Rect</a>.PLANE<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;&amp;&nbsp;<a href="#Rect">Rect</a>.EMPTY&nbsp;&nbsp;==&nbsp;&nbsp;<a href="#Rect">Rect</a>.EMPTY<br>
 &nbsp;<br>
 &nbsp;<br>
 Idempotency:<br>
 &nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;|&nbsp;a&nbsp;&nbsp;≡&nbsp;&nbsp;a<br>
-&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;&amp;&nbsp;a&nbsp;&nbsp;≡&nbsp;&nbsp;a<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;|&nbsp;a&nbsp;&nbsp;==&nbsp;&nbsp;a<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;&amp;&nbsp;a&nbsp;&nbsp;==&nbsp;&nbsp;a<br>
 &nbsp;<br>
 &nbsp;<br>
 Commutativity:<br>
 &nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;|&nbsp;b&nbsp;&nbsp;≡&nbsp;&nbsp;b&nbsp;|&nbsp;a<br>
-&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;&amp;&nbsp;b&nbsp;&nbsp;≡&nbsp;&nbsp;b&nbsp;&amp;&nbsp;a<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;|&nbsp;b&nbsp;&nbsp;==&nbsp;&nbsp;b&nbsp;|&nbsp;a<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;&amp;&nbsp;b&nbsp;&nbsp;==&nbsp;&nbsp;b&nbsp;&amp;&nbsp;a<br>
 &nbsp;<br>
 &nbsp;<br>
 Associativity:<br>
 &nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;(a&nbsp;|&nbsp;b)&nbsp;|&nbsp;c&nbsp;&nbsp;≡&nbsp;&nbsp;a&nbsp;|&nbsp;(b&nbsp;|&nbsp;c)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;(a&nbsp;&amp;&nbsp;b)&nbsp;&amp;&nbsp;c&nbsp;&nbsp;≡&nbsp;&nbsp;a&nbsp;&amp;&nbsp;(b&nbsp;&amp;&nbsp;c)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(a&nbsp;|&nbsp;b)&nbsp;|&nbsp;c&nbsp;&nbsp;==&nbsp;&nbsp;a&nbsp;|&nbsp;(b&nbsp;|&nbsp;c)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(a&nbsp;&amp;&nbsp;b)&nbsp;&amp;&nbsp;c&nbsp;&nbsp;==&nbsp;&nbsp;a&nbsp;&amp;&nbsp;(b&nbsp;&amp;&nbsp;c)<br>
 &nbsp;<br>
 &nbsp;<br>
 Absorption:<br>
 &nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;|&nbsp;(a&nbsp;&amp;&nbsp;b)&nbsp;&nbsp;≡&nbsp;&nbsp;a<br>
-&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;&amp;&nbsp;(a&nbsp;|&nbsp;b)&nbsp;&nbsp;≡&nbsp;&nbsp;a<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;|&nbsp;(a&nbsp;&amp;&nbsp;b)&nbsp;&nbsp;==&nbsp;&nbsp;a<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;&amp;&nbsp;(a&nbsp;|&nbsp;b)&nbsp;&nbsp;==&nbsp;&nbsp;a<br>
 &nbsp;<br>
 &nbsp;<br>
 Since&nbsp;these&nbsp;laws&nbsp;already&nbsp;define&nbsp;a&nbsp;partially&nbsp;ordered&nbsp;set,&nbsp;the&nbsp;following&nbsp;laws&nbsp;also<br>
