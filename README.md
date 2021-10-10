@@ -1,6 +1,6 @@
 [![Build Status](https://app.travis-ci.com/pillmuncher/pyraxial.svg?branch=main)](https://app.travis-ci.com/pillmuncher/pyraxial)
 [![codecov](https://codecov.io/gh/pillmuncher/pyraxial/branch/main/graph/badge.svg?token=3Q4CRWL8SX)](https://codecov.io/gh/pillmuncher/pyraxial)
-[![license](https://img.shields.io/badge/License-MIT-brightgreen)](https://img.shields.io/badge/License-MIT-brightgreen)
+[![license](https://img.shields.io/badge/license-MIT-brightgreen)](https://img.shields.io/badge/license-MIT-brightgreen)
 # pyraxial
 ## An algebraic take on axis-aligned rectangles.
 
