@@ -13,6 +13,137 @@
 &nbsp;<br>
 This&nbsp;module&nbsp;aims&nbsp;to&nbsp;simplify&nbsp;working&nbsp;with&nbsp;bounding&nbsp;boxes.<br>
 &nbsp;<br>
+&nbsp;<br>
+It&nbsp;defines&nbsp;the&nbsp;class&nbsp;<a href="#Rect">Rect</a>&nbsp;with&nbsp;the&nbsp;following&nbsp;methods&nbsp;and&nbsp;attributes:<br>
+&nbsp;&nbsp;-&nbsp;Two&nbsp;binary&nbsp;operators&nbsp;|&nbsp;("join")&nbsp;and&nbsp;&amp;&nbsp;("meet").<br>
+&nbsp;&nbsp;-&nbsp;Two&nbsp;identity&nbsp;elements&nbsp;with&nbsp;respect&nbsp;to&nbsp;|&nbsp;and&nbsp;&amp;,&nbsp;<a href="#Rect">Rect</a>.EMPTY&nbsp;and&nbsp;<a href="#Rect">Rect</a>.PLANE.<br>
+&nbsp;&nbsp;-&nbsp;Two&nbsp;polyadic&nbsp;class&nbsp;methods&nbsp;<a href="#Rect">Rect</a>.enclose(rects)&nbsp;and&nbsp;<a href="#Rect">Rect</a>.overlap(rects)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;as&nbsp;generalizations&nbsp;of&nbsp;|&nbsp;and&nbsp;&amp;&nbsp;over&nbsp;arbitrary&nbsp;numbers&nbsp;of&nbsp;rectangles.<br>
+&nbsp;&nbsp;-&nbsp;A&nbsp;set&nbsp;of&nbsp;operators&nbsp;that&nbsp;define&nbsp;containment&nbsp;relations&nbsp;between&nbsp;rectangles.<br>
+&nbsp;&nbsp;-&nbsp;A&nbsp;class&nbsp;method&nbsp;<a href="#Rect">Rect</a>.closed_regions(rects)&nbsp;that&nbsp;computes&nbsp;the&nbsp;bounding&nbsp;boxes<br>
+&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;all&nbsp;subsets&nbsp;of&nbsp;"transitively"&nbsp;overlapping&nbsp;rectangles&nbsp;in&nbsp;a&nbsp;given&nbsp;set&nbsp;of<br>
+&nbsp;&nbsp;&nbsp;&nbsp;rectangles.<br>
+&nbsp;<br>
+&nbsp;<br>
+The&nbsp;<a href="#Rect">Rect</a>&nbsp;class&nbsp;together&nbsp;with&nbsp;the&nbsp;|&nbsp;and&nbsp;&amp;&nbsp;operations&nbsp;and&nbsp;the&nbsp;identity&nbsp;elements<br>
+forms&nbsp;a&nbsp;complete&nbsp;lattice&nbsp;so&nbsp;that&nbsp;for&nbsp;all&nbsp;<a href="#Rect">Rect</a>&nbsp;objects&nbsp;a,&nbsp;b&nbsp;and&nbsp;c&nbsp;the&nbsp;following<br>
+laws&nbsp;hold:<br>
+&nbsp;<br>
+&nbsp;<br>
+Identity&nbsp;Elements:<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;|&nbsp;<a href="#Rect">Rect</a>.EMPTY&nbsp;&nbsp;≡&nbsp;&nbsp;a<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;&amp;&nbsp;<a href="#Rect">Rect</a>.PLANE&nbsp;&nbsp;≡&nbsp;&nbsp;a<br>
+&nbsp;<br>
+&nbsp;<br>
+Absorbing&nbsp;Elements:<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;|&nbsp;<a href="#Rect">Rect</a>.PLANE&nbsp;&nbsp;≡&nbsp;&nbsp;<a href="#Rect">Rect</a>.PLANE<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;&amp;&nbsp;<a href="#Rect">Rect</a>.EMPTY&nbsp;&nbsp;≡&nbsp;&nbsp;<a href="#Rect">Rect</a>.EMPTY<br>
+&nbsp;<br>
+&nbsp;<br>
+Idempotency:<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;|&nbsp;a&nbsp;&nbsp;≡&nbsp;&nbsp;a<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;&amp;&nbsp;a&nbsp;&nbsp;≡&nbsp;&nbsp;a<br>
+&nbsp;<br>
+&nbsp;<br>
+Commutativity:<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;|&nbsp;b&nbsp;&nbsp;≡&nbsp;&nbsp;b&nbsp;|&nbsp;a<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;&amp;&nbsp;b&nbsp;&nbsp;≡&nbsp;&nbsp;b&nbsp;&amp;&nbsp;a<br>
+&nbsp;<br>
+&nbsp;<br>
+Associativity:<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(a&nbsp;|&nbsp;b)&nbsp;|&nbsp;c&nbsp;&nbsp;≡&nbsp;&nbsp;a&nbsp;|&nbsp;(b&nbsp;|&nbsp;c)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(a&nbsp;&amp;&nbsp;b)&nbsp;&amp;&nbsp;c&nbsp;&nbsp;≡&nbsp;&nbsp;a&nbsp;&amp;&nbsp;(b&nbsp;&amp;&nbsp;c)<br>
+&nbsp;<br>
+&nbsp;<br>
+Absorption:<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;|&nbsp;(a&nbsp;&amp;&nbsp;b)&nbsp;&nbsp;≡&nbsp;&nbsp;a<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;&amp;&nbsp;(a&nbsp;|&nbsp;b)&nbsp;&nbsp;≡&nbsp;&nbsp;a<br>
+&nbsp;<br>
+&nbsp;<br>
+Since&nbsp;these&nbsp;laws&nbsp;already&nbsp;define&nbsp;a&nbsp;partially&nbsp;ordered&nbsp;set,&nbsp;the&nbsp;following&nbsp;laws&nbsp;also<br>
+hold:<br>
+&nbsp;<br>
+&nbsp;<br>
+Least&nbsp;Element:<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#Rect">Rect</a>.EMPTY&nbsp;≦&nbsp;a<br>
+&nbsp;<br>
+&nbsp;<br>
+Greatest&nbsp;Element:<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;≦&nbsp;<a href="#Rect">Rect</a>.PLANE<br>
+&nbsp;<br>
+&nbsp;<br>
+Reflexivity:<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;≦&nbsp;a<br>
+&nbsp;<br>
+&nbsp;<br>
+Transitivity:<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;≦&nbsp;b&nbsp;&nbsp;and&nbsp;&nbsp;b&nbsp;≦&nbsp;c&nbsp;&nbsp;&nbsp;🡒&nbsp;&nbsp;&nbsp;a&nbsp;≦&nbsp;c<br>
+&nbsp;<br>
+&nbsp;<br>
+Antisymmetry:<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;≦&nbsp;b&nbsp;&nbsp;and&nbsp;&nbsp;b&nbsp;≦&nbsp;a&nbsp;&nbsp;&nbsp;🡘&nbsp;&nbsp;&nbsp;a&nbsp;=&nbsp;b<br>
+&nbsp;<br>
+&nbsp;<br>
+Monotonicity:<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a1&nbsp;≦&nbsp;a2&nbsp;&nbsp;and&nbsp;&nbsp;b1&nbsp;≦&nbsp;b2&nbsp;&nbsp;&nbsp;🡒&nbsp;&nbsp;&nbsp;a1&nbsp;|&nbsp;b1&nbsp;&nbsp;≦&nbsp;&nbsp;a2&nbsp;|&nbsp;b2<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a1&nbsp;≦&nbsp;a2&nbsp;&nbsp;and&nbsp;&nbsp;b1&nbsp;≦&nbsp;b2&nbsp;&nbsp;&nbsp;🡒&nbsp;&nbsp;&nbsp;a1&nbsp;&amp;&nbsp;b1&nbsp;&nbsp;≦&nbsp;&nbsp;a2&nbsp;&amp;&nbsp;b2<br>
+&nbsp;<br>
+&nbsp;<br>
+Semidistributivity:<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(a&nbsp;&amp;&nbsp;b)&nbsp;|&nbsp;(a&nbsp;&amp;&nbsp;c)&nbsp;&nbsp;≦&nbsp;&nbsp;a&nbsp;&amp;&nbsp;(b&nbsp;|&nbsp;c)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;|&nbsp;(b&nbsp;&amp;&nbsp;c)&nbsp;&nbsp;≦&nbsp;&nbsp;(a&nbsp;|&nbsp;b)&nbsp;&amp;&nbsp;(a&nbsp;|&nbsp;c)<br>
+&nbsp;<br>
+&nbsp;<br>
+Notice&nbsp;the&nbsp;absence&nbsp;of&nbsp;the&nbsp;laws&nbsp;of&nbsp;distribution&nbsp;and&nbsp;modularity.<br>
+&nbsp;<br>
+&nbsp;<br>
+A&nbsp;rectangle&nbsp;is&nbsp;created&nbsp;like&nbsp;so:<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;r&nbsp;=&nbsp;<a href="#Rect">Rect</a>(box)<br>
+&nbsp;<br>
+where&nbsp;box&nbsp;is&nbsp;an&nbsp;already&nbsp;existing&nbsp;<a href="#Rect">Rect</a>&nbsp;object,&nbsp;<a href="builtins.html#tuple">tuple</a>,&nbsp;list,&nbsp;iterator&nbsp;or&nbsp;other<br>
+iterable,&nbsp;provided&nbsp;it&nbsp;is&nbsp;either&nbsp;empty&nbsp;or&nbsp;contains/yields&nbsp;four&nbsp;numbers&nbsp;that<br>
+denote&nbsp;the&nbsp;left,&nbsp;top,&nbsp;right&nbsp;and&nbsp;bottom&nbsp;coordinates&nbsp;(in&nbsp;that&nbsp;order).&nbsp;Otherwise,<br>
+a&nbsp;ValueError&nbsp;is&nbsp;raised.<br>
+&nbsp;<br>
+Coordinate&nbsp;values&nbsp;increase&nbsp;from&nbsp;left&nbsp;to&nbsp;right&nbsp;and&nbsp;from&nbsp;top&nbsp;to&nbsp;bottom.<br>
+Therefor,&nbsp;if&nbsp;left&nbsp;≦&nbsp;right&nbsp;and&nbsp;top&nbsp;≦&nbsp;bottom&nbsp;the&nbsp;resulting&nbsp;rectangle&nbsp;will&nbsp;be&nbsp;a<br>
+<a href="#Rect">Rect</a>&nbsp;with&nbsp;the&nbsp;specified&nbsp;coordinates.&nbsp;&nbsp;If&nbsp;&gt;&nbsp;left&nbsp;&nbsp;right&nbsp;or&nbsp;top&nbsp;&gt;&nbsp;bottom&nbsp;the<br>
+resulting&nbsp;rectangle&nbsp;will&nbsp;equal&nbsp;<a href="#Rect">Rect</a>.EMPTY.<br>
+&nbsp;<br>
+<a href="#Rect">Rect</a>&nbsp;objects&nbsp;are&nbsp;immutable&nbsp;and&nbsp;the&nbsp;properties&nbsp;have&nbsp;no&nbsp;setters.<br>
+&nbsp;<br>
+All&nbsp;method&nbsp;results&nbsp;are&nbsp;covariant&nbsp;under&nbsp;subtyping.<br>
+&nbsp;<br>
+<a href="#Rect">Rect</a>()&nbsp;and&nbsp;closed_regions()&nbsp;accept&nbsp;any&nbsp;type&nbsp;of&nbsp;iterable.&nbsp;&nbsp;The&nbsp;operators&nbsp;however<br>
+work&nbsp;reliably&nbsp;only&nbsp;on&nbsp;sequence-like&nbsp;objects,&nbsp;but&nbsp;not&nbsp;iterators.&nbsp;&nbsp;If&nbsp;you&nbsp;pass&nbsp;an<br>
+iterator&nbsp;as&nbsp;an&nbsp;argument,&nbsp;the&nbsp;behavior&nbsp;will&nbsp;be&nbsp;undefined,&nbsp;probably&nbsp;raising&nbsp;an<br>
+exception,&nbsp;or&nbsp;worse,&nbsp;causing&nbsp;inexplicably&nbsp;wrong&nbsp;results.<br>
+&nbsp;<br>
+Rects&nbsp;can&nbsp;be&nbsp;used&nbsp;as&nbsp;a&nbsp;drop-in&nbsp;in&nbsp;contexts&nbsp;where&nbsp;paraxial&nbsp;rectangles&nbsp;are<br>
+represented&nbsp;by&nbsp;4-tuples,&nbsp;like&nbsp;e.g.&nbsp;Pillow's&nbsp;Image.crop()&nbsp;method.&nbsp;For&nbsp;contexts<br>
+where&nbsp;such&nbsp;rectangles&nbsp;are&nbsp;represented&nbsp;as&nbsp;pairs&nbsp;of&nbsp;point&nbsp;coordinates&nbsp;the&nbsp;class<br>
+method&nbsp;<a href="#Rect">Rect</a>.from_points&nbsp;and&nbsp;the&nbsp;<a href="#Rect">Rect</a>.points&nbsp;property&nbsp;can&nbsp;be&nbsp;used.<br>
+&nbsp;<br>
+&nbsp;<br>
+See&nbsp;API&nbsp;documentation&nbsp;here:<br>
+&nbsp;<br>
+<a href="https://pillmuncher.github.io/pyraxial">https://pillmuncher.github.io/pyraxial</a><br>
+&nbsp;<br>
+&nbsp;<br>
 Here&nbsp;are&nbsp;some&nbsp;usage&nbsp;examples:<br>
 &nbsp;<br>
 &gt;&gt;&gt;&nbsp;from&nbsp;pyraxial&nbsp;import&nbsp;<a href="#Rect">Rect</a><br>
