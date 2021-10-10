@@ -484,6 +484,10 @@ class Rect(tuple, metaclass=MetaRect):
 
 
     def move(self, offsets):
+        """
+        Takes a sequence of two offsets (horizontal, vertical) and return
+        Rect((left+horizontal, top+vertical, right+horizontal, bottom+vertical)).
+        """
         return type(self)(p + d for p, d in zip(self, tuple(offsets) * 2))
 
     def __or__(self, other):
