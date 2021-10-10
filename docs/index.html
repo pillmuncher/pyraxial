@@ -6,14 +6,12 @@
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
 <tr bgcolor="#7799ee">
 <td valign=bottom>&nbsp;<br>
-<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>pyraxial</strong></big></big> (version 0.1.0a, 2015-09-26)</font></td
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>pyraxial</strong></big></big></font></td
 ><td align=right valign=bottom
 ><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/pub/src/pyraxial/src/pyraxial/__init__.py">/pub/src/pyraxial/src/pyraxial/__init__.py</a></font></td></tr></table>
-    <p><tt>An&nbsp;algebra&nbsp;for&nbsp;paraxial&nbsp;(i.e.&nbsp;axis-aligned)&nbsp;rectangles.<br>
+    <p><tt>An&nbsp;algebraic&nbsp;take&nbsp;on&nbsp;axis-aligned&nbsp;rectangles.<br>
 &nbsp;<br>
-&nbsp;<br>
-This&nbsp;module&nbsp;aims&nbsp;to&nbsp;simplify&nbsp;working&nbsp;with&nbsp;bounding&nbsp;boxes&nbsp;and&nbsp;overlapping&nbsp;areas<br>
-of&nbsp;paraxial&nbsp;rectangles.<br>
+This&nbsp;module&nbsp;aims&nbsp;to&nbsp;simplify&nbsp;working&nbsp;with&nbsp;bounding&nbsp;boxes.<br>
 &nbsp;<br>
 &nbsp;<br>
 It&nbsp;defines&nbsp;the&nbsp;class&nbsp;<a href="#Rect">Rect</a>&nbsp;with&nbsp;the&nbsp;following&nbsp;methods&nbsp;and&nbsp;attributes:<br>
@@ -27,66 +25,94 @@ It&nbsp;defines&nbsp;the&nbsp;class&nbsp;<a href="#Rect">Rect</a>&nbsp;with&nbsp
 &nbsp;&nbsp;&nbsp;&nbsp;rectangles.<br>
 &nbsp;<br>
 &nbsp;<br>
-The&nbsp;<a href="#Rect">Rect</a>&nbsp;class&nbsp;(together&nbsp;with&nbsp;the&nbsp;|&nbsp;and&nbsp;&amp;&nbsp;operations&nbsp;and&nbsp;the&nbsp;identity&nbsp;elements)<br>
+The&nbsp;<a href="#Rect">Rect</a>&nbsp;class&nbsp;together&nbsp;with&nbsp;the&nbsp;|&nbsp;and&nbsp;&amp;&nbsp;operations&nbsp;and&nbsp;the&nbsp;identity&nbsp;elements<br>
 forms&nbsp;a&nbsp;complete&nbsp;bounded&nbsp;lattice&nbsp;so&nbsp;that&nbsp;for&nbsp;all&nbsp;<a href="#Rect">Rect</a>&nbsp;objects&nbsp;a,&nbsp;b&nbsp;and&nbsp;c&nbsp;the<br>
 following&nbsp;laws&nbsp;hold:<br>
 &nbsp;<br>
+&nbsp;<br>
 Identity&nbsp;Elements:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;|&nbsp;<a href="#Rect">Rect</a>.EMPTY&nbsp;==&nbsp;a<br>
-&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;&amp;&nbsp;<a href="#Rect">Rect</a>.PLANE&nbsp;==&nbsp;a<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;|&nbsp;<a href="#Rect">Rect</a>.EMPTY&nbsp;&nbsp;≡&nbsp;&nbsp;a<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;&amp;&nbsp;<a href="#Rect">Rect</a>.PLANE&nbsp;&nbsp;≡&nbsp;&nbsp;a<br>
+&nbsp;<br>
 &nbsp;<br>
 Absorbing&nbsp;Elements:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;|&nbsp;<a href="#Rect">Rect</a>.PLANE&nbsp;==&nbsp;<a href="#Rect">Rect</a>.PLANE<br>
-&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;&amp;&nbsp;<a href="#Rect">Rect</a>.EMPTY&nbsp;==&nbsp;<a href="#Rect">Rect</a>.EMPTY<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;|&nbsp;<a href="#Rect">Rect</a>.PLANE&nbsp;&nbsp;≡&nbsp;&nbsp;<a href="#Rect">Rect</a>.PLANE<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;&amp;&nbsp;<a href="#Rect">Rect</a>.EMPTY&nbsp;&nbsp;≡&nbsp;&nbsp;<a href="#Rect">Rect</a>.EMPTY<br>
+&nbsp;<br>
 &nbsp;<br>
 Idempotency:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;|&nbsp;a&nbsp;==&nbsp;a<br>
-&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;&amp;&nbsp;a&nbsp;==&nbsp;a<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;|&nbsp;a&nbsp;&nbsp;≡&nbsp;&nbsp;a<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;&amp;&nbsp;a&nbsp;&nbsp;≡&nbsp;&nbsp;a<br>
+&nbsp;<br>
 &nbsp;<br>
 Commutativity:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;|&nbsp;b&nbsp;==&nbsp;b&nbsp;|&nbsp;a<br>
-&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;&amp;&nbsp;b&nbsp;==&nbsp;b&nbsp;&amp;&nbsp;a<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;|&nbsp;b&nbsp;&nbsp;≡&nbsp;&nbsp;b&nbsp;|&nbsp;a<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;&amp;&nbsp;b&nbsp;&nbsp;≡&nbsp;&nbsp;b&nbsp;&amp;&nbsp;a<br>
+&nbsp;<br>
 &nbsp;<br>
 Associativity:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;(a&nbsp;|&nbsp;b)&nbsp;|&nbsp;c&nbsp;==&nbsp;a&nbsp;|&nbsp;(b&nbsp;|&nbsp;c)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;(a&nbsp;&amp;&nbsp;b)&nbsp;&amp;&nbsp;c&nbsp;==&nbsp;a&nbsp;&amp;&nbsp;(b&nbsp;&amp;&nbsp;c)<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(a&nbsp;|&nbsp;b)&nbsp;|&nbsp;c&nbsp;&nbsp;≡&nbsp;&nbsp;a&nbsp;|&nbsp;(b&nbsp;|&nbsp;c)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(a&nbsp;&amp;&nbsp;b)&nbsp;&amp;&nbsp;c&nbsp;&nbsp;≡&nbsp;&nbsp;a&nbsp;&amp;&nbsp;(b&nbsp;&amp;&nbsp;c)<br>
+&nbsp;<br>
 &nbsp;<br>
 Absorption:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;|&nbsp;(a&nbsp;&amp;&nbsp;b)&nbsp;==&nbsp;a<br>
-&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;&amp;&nbsp;(a&nbsp;|&nbsp;b)&nbsp;==&nbsp;a<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;|&nbsp;(a&nbsp;&amp;&nbsp;b)&nbsp;&nbsp;≡&nbsp;&nbsp;a<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;&amp;&nbsp;(a&nbsp;|&nbsp;b)&nbsp;&nbsp;≡&nbsp;&nbsp;a<br>
 &nbsp;<br>
 &nbsp;<br>
-Since&nbsp;these&nbsp;laws&nbsp;define&nbsp;a&nbsp;poset,&nbsp;the&nbsp;following&nbsp;laws&nbsp;also&nbsp;hold:<br>
+Since&nbsp;these&nbsp;laws&nbsp;already&nbsp;define&nbsp;a&nbsp;partially&nbsp;ordered&nbsp;set,&nbsp;the&nbsp;following&nbsp;laws&nbsp;also<br>
+hold:<br>
+&nbsp;<br>
 &nbsp;<br>
 Least&nbsp;Element:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#Rect">Rect</a>.EMPTY&nbsp;&lt;=&nbsp;a<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#Rect">Rect</a>.EMPTY&nbsp;≦&nbsp;a<br>
+&nbsp;<br>
 &nbsp;<br>
 Greatest&nbsp;Element:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;&lt;=&nbsp;<a href="#Rect">Rect</a>.PLANE<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;≦&nbsp;<a href="#Rect">Rect</a>.PLANE<br>
+&nbsp;<br>
 &nbsp;<br>
 Reflexivity:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;&lt;=&nbsp;a<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;≦&nbsp;a<br>
+&nbsp;<br>
 &nbsp;<br>
 Transitivity:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;&lt;=&nbsp;b&nbsp;and&nbsp;b&nbsp;&lt;=&nbsp;c&nbsp;&nbsp;==&gt;&nbsp;&nbsp;a&nbsp;&lt;=&nbsp;c<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;≦&nbsp;b&nbsp;&nbsp;and&nbsp;&nbsp;b&nbsp;≦&nbsp;c&nbsp;&nbsp;&nbsp;🡒&nbsp;&nbsp;&nbsp;a&nbsp;≦&nbsp;c<br>
+&nbsp;<br>
 &nbsp;<br>
 Antisymmetry:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;&lt;=&nbsp;b&nbsp;and&nbsp;b&nbsp;&lt;=&nbsp;a&nbsp;&nbsp;&lt;==&gt;&nbsp;&nbsp;a&nbsp;==&nbsp;b<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;≦&nbsp;b&nbsp;&nbsp;and&nbsp;&nbsp;b&nbsp;≦&nbsp;a&nbsp;&nbsp;&nbsp;🡘&nbsp;&nbsp;&nbsp;a&nbsp;=&nbsp;b<br>
+&nbsp;<br>
 &nbsp;<br>
 Monotonicity:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;a1&nbsp;&lt;=&nbsp;a2&nbsp;and&nbsp;b1&nbsp;&lt;=&nbsp;b2&nbsp;&nbsp;==&gt;&nbsp;&nbsp;a1&nbsp;|&nbsp;b1&nbsp;&lt;=&nbsp;a2&nbsp;|&nbsp;b2<br>
-&nbsp;&nbsp;&nbsp;&nbsp;a1&nbsp;&lt;=&nbsp;a2&nbsp;and&nbsp;b1&nbsp;&lt;=&nbsp;b2&nbsp;&nbsp;==&gt;&nbsp;&nbsp;a1&nbsp;&amp;&nbsp;b1&nbsp;&lt;=&nbsp;a2&nbsp;&amp;&nbsp;b2<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a1&nbsp;≦&nbsp;a2&nbsp;&nbsp;and&nbsp;&nbsp;b1&nbsp;≦&nbsp;b2&nbsp;&nbsp;&nbsp;🡒&nbsp;&nbsp;&nbsp;a1&nbsp;|&nbsp;b1&nbsp;&nbsp;≦&nbsp;&nbsp;a2&nbsp;|&nbsp;b2<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a1&nbsp;≦&nbsp;a2&nbsp;&nbsp;and&nbsp;&nbsp;b1&nbsp;≦&nbsp;b2&nbsp;&nbsp;&nbsp;🡒&nbsp;&nbsp;&nbsp;a1&nbsp;&amp;&nbsp;b1&nbsp;&nbsp;≦&nbsp;&nbsp;a2&nbsp;&amp;&nbsp;b2<br>
+&nbsp;<br>
 &nbsp;<br>
 Semidistributivity:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;(a&nbsp;&amp;&nbsp;b)&nbsp;|&nbsp;(a&nbsp;&amp;&nbsp;c)&nbsp;&lt;=&nbsp;a&nbsp;&amp;&nbsp;(b&nbsp;|&nbsp;c)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;|&nbsp;(b&nbsp;&amp;&nbsp;c)&nbsp;&lt;=&nbsp;(a&nbsp;|&nbsp;b)&nbsp;&amp;&nbsp;(a&nbsp;|&nbsp;c)<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(a&nbsp;&amp;&nbsp;b)&nbsp;|&nbsp;(a&nbsp;&amp;&nbsp;c)&nbsp;&nbsp;≦&nbsp;&nbsp;a&nbsp;&amp;&nbsp;(b&nbsp;|&nbsp;c)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;|&nbsp;(b&nbsp;&amp;&nbsp;c)&nbsp;&nbsp;≦&nbsp;&nbsp;(a&nbsp;|&nbsp;b)&nbsp;&amp;&nbsp;(a&nbsp;|&nbsp;c)<br>
+&nbsp;<br>
 &nbsp;<br>
 Notice&nbsp;the&nbsp;absence&nbsp;of&nbsp;the&nbsp;laws&nbsp;of&nbsp;distribution&nbsp;and&nbsp;modularity.<br>
 &nbsp;<br>
 &nbsp;<br>
 A&nbsp;rectangle&nbsp;is&nbsp;created&nbsp;like&nbsp;so:<br>
 &nbsp;<br>
-r&nbsp;=&nbsp;<a href="#Rect">Rect</a>(box)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;r&nbsp;=&nbsp;<a href="#Rect">Rect</a>(box)<br>
 &nbsp;<br>
 where&nbsp;box&nbsp;is&nbsp;an&nbsp;already&nbsp;existing&nbsp;<a href="#Rect">Rect</a>&nbsp;object,&nbsp;<a href="builtins.html#tuple">tuple</a>,&nbsp;list,&nbsp;iterator&nbsp;or&nbsp;other<br>
 iterable,&nbsp;provided&nbsp;it&nbsp;is&nbsp;either&nbsp;empty&nbsp;or&nbsp;contains/yields&nbsp;four&nbsp;numbers&nbsp;that<br>
@@ -94,14 +120,13 @@ denote&nbsp;the&nbsp;left,&nbsp;top,&nbsp;right&nbsp;and&nbsp;bottom&nbsp;coordi
 a&nbsp;ValueError&nbsp;is&nbsp;raised.<br>
 &nbsp;<br>
 Coordinate&nbsp;values&nbsp;increase&nbsp;from&nbsp;left&nbsp;to&nbsp;right&nbsp;and&nbsp;from&nbsp;top&nbsp;to&nbsp;bottom.<br>
-Therefor,&nbsp;if&nbsp;left&nbsp;&lt;=&nbsp;right&nbsp;and&nbsp;top&nbsp;&lt;=&nbsp;bottom&nbsp;the&nbsp;resulting&nbsp;rectangle&nbsp;will&nbsp;be&nbsp;a<br>
-<a href="#Rect">Rect</a>&nbsp;with&nbsp;the&nbsp;specified&nbsp;coordinates.&nbsp;&nbsp;If&nbsp;left&nbsp;&gt;&nbsp;right&nbsp;or&nbsp;top&nbsp;&gt;&nbsp;bottom&nbsp;the<br>
+Therefor,&nbsp;if&nbsp;left&nbsp;≦&nbsp;right&nbsp;and&nbsp;top&nbsp;≦&nbsp;bottom&nbsp;the&nbsp;resulting&nbsp;rectangle&nbsp;will&nbsp;be&nbsp;a<br>
+<a href="#Rect">Rect</a>&nbsp;with&nbsp;the&nbsp;specified&nbsp;coordinates.&nbsp;&nbsp;If&nbsp;&gt;&nbsp;left&nbsp;&nbsp;right&nbsp;or&nbsp;top&nbsp;&gt;&nbsp;bottom&nbsp;the<br>
 resulting&nbsp;rectangle&nbsp;will&nbsp;equal&nbsp;<a href="#Rect">Rect</a>.EMPTY.<br>
 &nbsp;<br>
 <a href="#Rect">Rect</a>&nbsp;objects&nbsp;are&nbsp;immutable&nbsp;and&nbsp;the&nbsp;properties&nbsp;have&nbsp;no&nbsp;setters.<br>
 &nbsp;<br>
 All&nbsp;method&nbsp;results&nbsp;are&nbsp;covariant&nbsp;under&nbsp;subtyping.<br>
-&nbsp;<br>
 &nbsp;<br>
 <a href="#Rect">Rect</a>()&nbsp;and&nbsp;closed_regions()&nbsp;accept&nbsp;any&nbsp;type&nbsp;of&nbsp;iterable.&nbsp;&nbsp;The&nbsp;operators&nbsp;however<br>
 work&nbsp;reliably&nbsp;only&nbsp;on&nbsp;sequence-like&nbsp;objects,&nbsp;but&nbsp;not&nbsp;iterators.&nbsp;&nbsp;If&nbsp;you&nbsp;pass&nbsp;an<br>
@@ -114,7 +139,9 @@ where&nbsp;such&nbsp;rectangles&nbsp;are&nbsp;represented&nbsp;as&nbsp;pairs&nbs
 method&nbsp;<a href="#Rect">Rect</a>.from_points&nbsp;and&nbsp;the&nbsp;<a href="#Rect">Rect</a>.points&nbsp;property&nbsp;can&nbsp;be&nbsp;used.<br>
 &nbsp;<br>
 &nbsp;<br>
-See&nbsp;also:&nbsp;<a href="https://en.wiktionary.org/wiki/paraxial">https://en.wiktionary.org/wiki/paraxial</a><br>
+See&nbsp;API&nbsp;documentation&nbsp;here:<br>
+&nbsp;<br>
+<a href="https://pillmuncher.github.io/pyraxial">https://pillmuncher.github.io/pyraxial</a><br>
 &nbsp;<br>
 &nbsp;<br>
 Here&nbsp;are&nbsp;some&nbsp;usage&nbsp;examples:<br>
@@ -269,14 +296,17 @@ r1&nbsp;|&nbsp;r2&nbsp;|&nbsp;...&nbsp;|&nbsp;rn&nbsp;is&nbsp;equivalent&nbsp;to
 
 <hr>
 Class methods defined here:<br>
-<dl><dt><a name="Rect-all_overlapping"><strong>all_overlapping</strong></a>(rects)<font color="#909090"><font face="helvetica, arial"> from <a href="pyraxial.html#MetaRect">MetaRect</a></font></font></dt><dd><tt>Generate&nbsp;the&nbsp;sets&nbsp;of&nbsp;all&nbsp;transitively&nbsp;overlapping&nbsp;rectangles&nbsp;in&nbsp;rects.<br>
+<dl><dt><a name="Rect-all_overlapping_areas"><strong>all_overlapping_areas</strong></a>(rects)<font color="#909090"><font face="helvetica, arial"> from <a href="pyraxial.html#MetaRect">MetaRect</a></font></font></dt><dd><tt>Generate&nbsp;all&nbsp;sets&nbsp;of&nbsp;transitively&nbsp;overlapping&nbsp;rectangles&nbsp;in&nbsp;rects.<br>
 &nbsp;<br>
 In&nbsp;other&nbsp;words,&nbsp;find&nbsp;all&nbsp;sets&nbsp;of&nbsp;connected&nbsp;rectangles.&nbsp;&nbsp;Two&nbsp;rectangles<br>
 A&nbsp;and&nbsp;B&nbsp;are&nbsp;connected,&nbsp;if&nbsp;they&nbsp;either&nbsp;overlap&nbsp;or&nbsp;if&nbsp;there&nbsp;exists&nbsp;a<br>
 rectangle&nbsp;C&nbsp;such&nbsp;that&nbsp;both&nbsp;A&nbsp;and&nbsp;B&nbsp;are&nbsp;connected&nbsp;to&nbsp;C.<br>
 &nbsp;<br>
 Since&nbsp;<a href="#Rect">Rect</a>.EMPTY&nbsp;has&nbsp;no&nbsp;area,&nbsp;rects&nbsp;that&nbsp;equal&nbsp;<a href="#Rect">Rect</a>.EMPTY&nbsp;are&nbsp;silently<br>
-ignored.</tt></dd></dl>
+ignored.<br>
+&nbsp;<br>
+Time&nbsp;complexity&nbsp;is&nbsp;O(n&nbsp;log&nbsp;n&nbsp;+&nbsp;k)&nbsp;with&nbsp;respect&nbsp;to&nbsp;the&nbsp;number&nbsp;of&nbsp;distinct<br>
+rects&nbsp;n&nbsp;and&nbsp;the&nbsp;number&nbsp;of&nbsp;overlaps&nbsp;k.&nbsp;I&nbsp;hope.</tt></dd></dl>
 
 <dl><dt><a name="Rect-closed_regions"><strong>closed_regions</strong></a>(rects)<font color="#909090"><font face="helvetica, arial"> from <a href="pyraxial.html#MetaRect">MetaRect</a></font></font></dt><dd><tt>Generate&nbsp;the&nbsp;bounding&nbsp;boxes&nbsp;of&nbsp;all&nbsp;closed&nbsp;regions&nbsp;in&nbsp;rects.<br>
 &nbsp;<br>
@@ -285,8 +315,10 @@ bounding&nbsp;box&nbsp;of&nbsp;each&nbsp;set.&nbsp;&nbsp;Two&nbsp;rectangles&nbs
 they&nbsp;either&nbsp;overlap&nbsp;or&nbsp;if&nbsp;there&nbsp;exists&nbsp;a&nbsp;rectangle&nbsp;C&nbsp;such&nbsp;that&nbsp;both&nbsp;A<br>
 and&nbsp;B&nbsp;are&nbsp;connected&nbsp;to&nbsp;C.<br>
 &nbsp;<br>
-Since&nbsp;<a href="#Rect">Rect</a>.EMPTY&nbsp;has&nbsp;no&nbsp;area,&nbsp;rects&nbsp;that&nbsp;equal&nbsp;<a href="#Rect">Rect</a>.EMPTY&nbsp;are&nbsp;silently<br>
-ignored.</tt></dd></dl>
+Since&nbsp;<a href="#Rect">Rect</a>.EMPTY&nbsp;has&nbsp;no&nbsp;area,&nbsp;it&nbsp;also&nbsp;covers&nbsp;no&nbsp;region.<br>
+&nbsp;<br>
+Time&nbsp;complexity&nbsp;is&nbsp;O(n&nbsp;log&nbsp;n&nbsp;+&nbsp;k)&nbsp;with&nbsp;respect&nbsp;to&nbsp;the&nbsp;number&nbsp;n<br>
+of&nbsp;distinct&nbsp;rects&nbsp;and&nbsp;the&nbsp;number&nbsp;k&nbsp;of&nbsp;overlaps.&nbsp;I&nbsp;hope.</tt></dd></dl>
 
 <dl><dt><a name="Rect-enclose"><strong>enclose</strong></a>(*rects)<font color="#909090"><font face="helvetica, arial"> from <a href="pyraxial.html#MetaRect">MetaRect</a></font></font></dt><dd><tt>Return&nbsp;the&nbsp;smallest&nbsp;rectangle&nbsp;that&nbsp;contains&nbsp;all&nbsp;rects,&nbsp;or&nbsp;<a href="#Rect">Rect</a>.EMPTY,<br>
 if&nbsp;rects&nbsp;is&nbsp;empty.&nbsp;&nbsp;This&nbsp;is&nbsp;also&nbsp;called&nbsp;the&nbsp;smallest&nbsp;upper&nbsp;bound&nbsp;or<br>
@@ -412,13 +444,5 @@ Class methods inherited from <a href="builtins.html#tuple">builtins.tuple</a>:<b
 <font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
     
 <tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><strong>__all__</strong> = ['Rect']<br>
-<strong>__license__</strong> = 'MIT'</td></tr></table><p>
-<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
-<tr bgcolor="#7799ee">
-<td colspan=3 valign=bottom>&nbsp;<br>
-<font color="#ffffff" face="helvetica, arial"><big><strong>Author</strong></big></font></td></tr>
-    
-<tr><td bgcolor="#7799ee"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%">Mick&nbsp;Krippendorf&nbsp;&lt;m.krippendorf@freenet.de&gt;</td></tr></table>
+<td width="100%"><strong>__all__</strong> = ['Rect']</td></tr></table>
 </body></html>
