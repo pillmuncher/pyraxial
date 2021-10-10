@@ -342,15 +342,19 @@ class Rect(tuple, metaclass=MetaRect):
         return tuple.__new__(cls, box)
 
     @classmethod
-    def from_rect(cls, rect):
-        return tuple.__new__(cls, rect)
-
-    @classmethod
     def from_size(cls, size):
+        """
+        Takes a sequence of two elements that represent the width and height
+        of a rectangle, returning Rect((0, 0, width, height)).
+        """
         return cls.from_points((0, 0), size)
 
     @classmethod
     def from_points(cls, left_top, right_bottom):
+        """
+        Takes two sequences (left, top) and (right, bottom) and return the
+        rectangle Rect((left, top, right, bottom)).
+        """
         return cls(chain(left_top, right_bottom))
 
     @classmethod
@@ -359,7 +363,7 @@ class Rect(tuple, metaclass=MetaRect):
         Return the smallest rectangle that contains all rects, or Rect.EMPTY,
         if rects is empty.  This is also called the smallest upper bound or
         supremum of rects.  In computer graphics programming this is known as
-        the bounding box of rects.
+        the minimal bounding box of rects.
 
         Mathematically speaking, it maps P(RECT) --> RECT, where RECT is the
         set of all paraxial rectangles and P(RECT) is the power set of RECT.

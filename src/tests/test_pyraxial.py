@@ -30,15 +30,6 @@ class TestRect(unittest.TestCase):
         self.assertRaises(ValueError, lambda: Rect((1, 2, 3, 4, 5)))
         self.assertRaises(ValueError, lambda: Rect(iter((1, 2, 3, 4, 5))))
 
-    def test_from_rect(self):
-        types = (iter, tuple, list, Rect)
-        a = ()
-        for t in types:
-            self.assertEqual(Rect.EMPTY, Rect.from_rect(t(a)))
-        a = 1, 2, 3, 4
-        for t in types:
-            self.assertEqual((Rect((1, 2, 3, 4))), Rect.from_rect(t(a)))
-
     def test_from_size(self):
         self.assertEqual(Rect.from_size((1, 2)), Rect((0, 0, 1, 2)))
 
