@@ -418,10 +418,10 @@ class Rect(tuple, metaclass=MetaRect):
                 self.start, self.end = orientation(rect)
 
         rects = set(rects)
-        # EMPTY has no area and overlaps nothing:
+        # EMPTY overlaps nothing and is overlapped by any other rect:
         rects.discard(Rect.EMPTY)
 
-        # Collect overlapping rects using Interval Trees into adjacency sets:
+        # Collect overlapping rects into adjacency sets using Interval Trees:
         htree = ITree(Interval(rect, horizontal) for rect in rects)
         vtree = ITree(Interval(rect, vertical) for rect in rects)
         neighbors = {}

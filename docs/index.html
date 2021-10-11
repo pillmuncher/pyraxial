@@ -119,10 +119,10 @@ iterable,&nbsp;provided&nbsp;it&nbsp;is&nbsp;either&nbsp;empty&nbsp;or&nbsp;cont
 denote&nbsp;the&nbsp;left,&nbsp;top,&nbsp;right&nbsp;and&nbsp;bottom&nbsp;coordinates&nbsp;(in&nbsp;that&nbsp;order).&nbsp;Otherwise,<br>
 a&nbsp;ValueError&nbsp;is&nbsp;raised.<br>
 &nbsp;<br>
-Coordinate&nbsp;values&nbsp;increase&nbsp;from&nbsp;left&nbsp;to&nbsp;right&nbsp;and&nbsp;from&nbsp;top&nbsp;to&nbsp;bottom.<br>
-Therefor,&nbsp;if&nbsp;left&nbsp;≦&nbsp;right&nbsp;and&nbsp;top&nbsp;≦&nbsp;bottom&nbsp;the&nbsp;resulting&nbsp;rectangle&nbsp;will&nbsp;be&nbsp;a<br>
-<a href="#Rect">Rect</a>&nbsp;with&nbsp;the&nbsp;specified&nbsp;coordinates.&nbsp;&nbsp;If&nbsp;&gt;&nbsp;left&nbsp;&nbsp;right&nbsp;or&nbsp;top&nbsp;&gt;&nbsp;bottom&nbsp;the<br>
-resulting&nbsp;rectangle&nbsp;will&nbsp;equal&nbsp;<a href="#Rect">Rect</a>.EMPTY.<br>
+Coordinate&nbsp;values&nbsp;increase&nbsp;from&nbsp;left&nbsp;to&nbsp;right&nbsp;and&nbsp;from&nbsp;top&nbsp;to&nbsp;bottom.&nbsp;&nbsp;Therefor,<br>
+if&nbsp;left&nbsp;≦&nbsp;right&nbsp;and&nbsp;top&nbsp;≦&nbsp;bottom&nbsp;the&nbsp;resulting&nbsp;rectangle&nbsp;will&nbsp;be&nbsp;a&nbsp;<a href="#Rect">Rect</a>&nbsp;with&nbsp;the<br>
+specified&nbsp;coordinates.&nbsp;&nbsp;If&nbsp;left&nbsp;&gt;&nbsp;right&nbsp;or&nbsp;top&nbsp;&gt;&nbsp;bottom&nbsp;the&nbsp;resulting&nbsp;rectangle<br>
+will&nbsp;equal&nbsp;<a href="#Rect">Rect</a>.EMPTY.<br>
 &nbsp;<br>
 <a href="#Rect">Rect</a>&nbsp;objects&nbsp;are&nbsp;immutable&nbsp;and&nbsp;the&nbsp;properties&nbsp;have&nbsp;no&nbsp;setters.<br>
 &nbsp;<br>
@@ -133,7 +133,7 @@ work&nbsp;reliably&nbsp;only&nbsp;on&nbsp;sequence-like&nbsp;objects,&nbsp;but&n
 iterator&nbsp;as&nbsp;an&nbsp;argument,&nbsp;the&nbsp;behavior&nbsp;will&nbsp;be&nbsp;undefined,&nbsp;probably&nbsp;raising&nbsp;an<br>
 exception,&nbsp;or&nbsp;worse,&nbsp;causing&nbsp;inexplicably&nbsp;wrong&nbsp;results.<br>
 &nbsp;<br>
-Rects&nbsp;can&nbsp;be&nbsp;used&nbsp;as&nbsp;a&nbsp;drop-in&nbsp;in&nbsp;contexts&nbsp;where&nbsp;paraxial&nbsp;rectangles&nbsp;are<br>
+Rects&nbsp;can&nbsp;be&nbsp;used&nbsp;as&nbsp;a&nbsp;drop-in&nbsp;in&nbsp;contexts&nbsp;where&nbsp;axis-aligned&nbsp;rectangles&nbsp;are<br>
 represented&nbsp;by&nbsp;4-tuples,&nbsp;like&nbsp;e.g.&nbsp;Pillow's&nbsp;Image.crop()&nbsp;method.&nbsp;For&nbsp;contexts<br>
 where&nbsp;such&nbsp;rectangles&nbsp;are&nbsp;represented&nbsp;as&nbsp;pairs&nbsp;of&nbsp;point&nbsp;coordinates&nbsp;the&nbsp;class<br>
 method&nbsp;<a href="#Rect">Rect</a>.from_points&nbsp;and&nbsp;the&nbsp;<a href="#Rect">Rect</a>.points&nbsp;property&nbsp;can&nbsp;be&nbsp;used.<br>

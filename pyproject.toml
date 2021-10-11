@@ -1,7 +1,7 @@
 [project]
 name = 'pyraxial'
-version = '0.2.1-beta'
-description = 'An algebra for paraxial (i.e. axis-aligned) rectangles.'
+version = '0.2.3-beta'
+description = 'An algebraic take on axis-aligned rectangles.'
 authors = [
     {name = 'Mick Krippendorf', email = 'm.krippendorf@freenet.de'},
 ]
