@@ -194,15 +194,15 @@ True
 """
 
 
-__all__ = ['Rect']
-
-
 from collections import defaultdict, OrderedDict
 from dataclasses import dataclass
 from itertools import chain
 from operator import itemgetter
 
 from itree import ITree
+
+
+__all__ = ['Rect']
 
 
 def bounded_by(*limiters):
