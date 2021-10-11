@@ -128,7 +128,7 @@ work reliably only on sequence-like objects, but not iterators.  If you pass an
 iterator as an argument, the behavior will be undefined, probably raising an
 exception, or worse, causing inexplicably wrong results.
 
-Rects can be used as a drop-in in contexts where paraxial rectangles are
+Rects can be used as a drop-in in contexts where axis-aligned rectangles are
 represented by 4-tuples, like e.g. Pillow's `Image.crop()` method. For contexts
 where such rectangles are represented as pairs of point coordinates the class
 method `Rect.from_points` and the `Rect.points` property can be used.
