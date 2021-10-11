@@ -194,7 +194,6 @@ True
 """
 
 
-from collections import defaultdict, OrderedDict
 from dataclasses import dataclass
 from itertools import chain
 from operator import itemgetter
@@ -411,57 +410,42 @@ class Rect(tuple, metaclass=MetaRect):
         #
         # As Alan Kay puts it: point of view is worth 80 IQ points.
 
-        rects = set(rects)
-        # EMPTY has no area:
-        rects.discard(cls.EMPTY)
-
-        # Helper class for ITree. Used in the Sweep Line algorithm below.
-        @dataclass
+        # Helper class for ITree:
         class Interval:
+            __slots__ = 'rect', 'start', 'end'
+            def __init__(self, rect, orientation):
+                self.rect = rect
+                self.start, self.end = orientation(rect)
 
-            rect: Rect
+        rects = set(rects)
+        # EMPTY has no area and overlaps nothing:
+        rects.discard(Rect.EMPTY)
 
-            @property
-            def start(self):
-                return self.rect.left
+        # Collect overlapping rects using Interval Trees into adjacency sets:
+        htree = ITree(Interval(rect, horizontal) for rect in rects)
+        vtree = ITree(Interval(rect, vertical) for rect in rects)
+        neighbors = {}
+        for rect in rects:
+            neighbors[rect] = (
+                frozenset(found.rect for found in
+                    htree.search(Interval(rect, horizontal)))
+                & frozenset(found.rect for found in
+                    vtree.search(Interval(rect, vertical))))
 
-            @property
-            def end(self):
-                return self.rect.right
-
-        # Sweep Line algorithm to set up adjacency sets, AKA neighbors:
-        neighbors = defaultdict(set)
-        status = ITree()
-        events = sorted(chain.from_iterable(
-                ((r.left, False, r), (r.right, True, r)) for r in rects))
-        for _, is_right, rect in events:
-            for interval in status.search(Interval(rect)):
-                if rect & interval.rect:
-                    neighbors[rect].add(interval.rect)
-                    neighbors[interval.rect].add(rect)
-            if is_right:
-                status.remove(Interval(rect))
-            else:
-                status.insert(Interval(rect))
-
-        # Collect the connected components:
-        seen = set()
-
-        def component(node, neighbors=neighbors, seen=seen, see=seen.add):
-            """
-            Generate all nodes of the component to which node belongs.
-            """
+        # Join adjacency sets into connected components:
+        def component(node):
             todo = set([node])
-            next_todo = todo.pop
             while todo:
-                node = next_todo()
-                see(node)
+                node = todo.pop()
+                seen.add(node)
                 todo |= neighbors[node] - seen
                 yield node
 
+        seen = set()
         for node in neighbors:
             if node not in seen:
                 yield component(node)
+
 
     @classmethod
     def closed_regions(cls, rects):
