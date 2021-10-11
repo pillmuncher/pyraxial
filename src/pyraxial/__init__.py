@@ -126,7 +126,7 @@ exception, or worse, causing inexplicably wrong results.
 Rects can be used as a drop-in in contexts where axis-aligned rectangles are
 represented by 4-tuples, like e.g. Pillow's Image.crop() method. For contexts
 where such rectangles are represented as pairs of point coordinates the class
-method Rect.from_points and the Rect.points property can be used.
+method Rect.from_points() and the Rect.points property can be used.
 
 
 See API documentation here:
@@ -194,7 +194,6 @@ True
 """
 
 
-from dataclasses import dataclass
 from itertools import chain
 from operator import itemgetter
 
@@ -319,10 +318,10 @@ class Rect(tuple, metaclass=MetaRect):
 
     def __new__(cls, box):
         """
-        Create a new paraxial rectangle of type Rect from box.
+        Create a new axis-aligned rectangle of type Rect from box.
 
-        box must be an iterable of zero or four numbers.  These are taken to
-        be the left, top, right and bottom coordinates (in that order) of the
+        box must be an iterable of either zero or four numbers.  These are taken
+        to be the left, top, right and bottom coordinates (in that order) of the
         rectangle.  If box is empty or its values are such that the resulting
         Rect would have negative width or height the result will be Rect.EMPTY.
 
@@ -343,16 +342,16 @@ class Rect(tuple, metaclass=MetaRect):
     @classmethod
     def from_size(cls, size):
         """
-        Takes a sequence of two elements that represent the width and height
-        of a rectangle, returning Rect((0, 0, width, height)).
+        Takes a pair of numbers that represent the width and height of
+        a rectangle and returns the rectangle Rect((0, 0, width, height)).
         """
         return cls.from_points((0, 0), size)
 
     @classmethod
     def from_points(cls, left_top, right_bottom):
         """
-        Takes two sequences (left, top) and (right, bottom) and return the
-        rectangle Rect((left, top, right, bottom)).
+        Takes two pairs pf numbers (left, top) and (right, bottom) and returns
+        the rectangle Rect((left, top, right, bottom)).
         """
         return cls(chain(left_top, right_bottom))
 
@@ -364,9 +363,6 @@ class Rect(tuple, metaclass=MetaRect):
         supremum of rects.  In computer graphics programming this is known as
         the minimal bounding box of rects.
 
-        Mathematically speaking, it maps P(RECT) --> RECT, where RECT is the
-        set of all paraxial rectangles and P(RECT) is the power set of RECT.
-
         If any of the rects equals Rect.PLANE, the result will also be
         Rect.PLANE.
         """
@@ -375,101 +371,55 @@ class Rect(tuple, metaclass=MetaRect):
     @classmethod
     def overlap(cls, *rects):
         """
-        Return the biggest rectangle that is contained in all rects, or
+        Return the greatest rectangle that is contained in all rects, or
         Rect.PLANE, if rects is empty.  This is also called the greatest lower
         bound or infimum of rects.
-
-        Mathematically speaking, it maps P(RECT) --> RECT, where RECT is the
-        set of all paraxial rectangles and P(RECT) is the power set of RECT.
 
         If any of the rects equals Rect.EMPTY, the result will also be
         Rect.EMPTY.
         """
-        return cls(deflate(Rect.PLANE, *rects))
-
+        return cls(deflate(cls.PLANE, *rects))
 
     @classmethod
-    def all_overlapping_areas(cls, rects):
+    def partitions(cls, rects):
         """
-        Generate all sets of transitively overlapping rectangles in rects.
+        Partition rects into distinct sets of transitively overlapping
+        rectangles.
 
-        In other words, find all sets of connected rectangles.  Two rectangles
-        A and B are connected, if they either overlap or if there exists a
-        rectangle C such that both A and B are connected to C.
+        In other words, find all distinct sets of connected rectangles.
+        Two rectangles A and B are connected, if they either overlap or if there
+        exists a rectangle C such that both A and B are connected to C.
 
-        Since Rect.EMPTY has no area, rects that equal Rect.EMPTY are silently
-        ignored.
+        Since Rect.EMPTY overlaps nothing and is overlapped by any other rect,
+        it is always discarded.
 
         Time complexity is O(n log n + k) with respect to the number of distinct
         rects n and the number of overlaps k. I hope.
         """
-
-        # Implementation of the well known connected components algorithm for
-        # graphs. This works because we view overlapping rectangles as
-        # connected nodes in a graph.
-        #
-        # As Alan Kay puts it: point of view is worth 80 IQ points.
-
-        # Helper class for ITree:
-        class Interval:
-            __slots__ = 'rect', 'start', 'end'
-            def __init__(self, rect, orientation):
-                self.rect = rect
-                self.start, self.end = orientation(rect)
-
-        rects = set(rects)
-        # EMPTY overlaps nothing and is overlapped by any other rect:
-        rects.discard(Rect.EMPTY)
-
-        # Collect overlapping rects into adjacency sets using Interval Trees:
-        htree = ITree(Interval(rect, horizontal) for rect in rects)
-        vtree = ITree(Interval(rect, vertical) for rect in rects)
-        neighbors = {}
-        for rect in rects:
-            neighbors[rect] = (
-                frozenset(found.rect for found in
-                    htree.search(Interval(rect, horizontal)))
-                & frozenset(found.rect for found in
-                    vtree.search(Interval(rect, vertical))))
-
-        # Join adjacency sets into connected components:
-        def component(node):
-            todo = set([node])
-            while todo:
-                node = todo.pop()
-                seen.add(node)
-                todo |= neighbors[node] - seen
-                yield node
-
-        seen = set()
-        for node in neighbors:
-            if node not in seen:
-                yield component(node)
-
+        return _connected_components(rects)
 
     @classmethod
-    def closed_regions(cls, rects):
+    def enclosures(cls, rects):
         """
-        Generate the bounding boxes of all closed regions in rects.
+        Enclose each distinct set of transitively overlapping rectangles in
+        rects by a bounding box.
 
-        In other words, find all sets of connected rectangles and generate the
-        bounding box of each set.  Two rectangles A and B are connected, if
-        they either overlap or if there exists a rectangle C such that both A
-        and B are connected to C.
+        In other words, enclose each distinct set of connected rectangles.
+        Two rectangles A and B are connected, if they either overlap or if there
+        exists a rectangle C such that both A and B are connected to C.
 
-        Since Rect.EMPTY has no area, it also covers no region.
+        Since Rect.EMPTY overlaps nothing and is overlapped by any other rect,
+        it is always discarded.
 
         Time complexity is O(n log n + k) with respect to the number n
         of distinct rects and the number k of overlaps. I hope.
         """
-
-        for region in cls.all_overlapping_areas(rects):
+        for region in _connected_components(rects):
             yield cls.enclose(*region)
-
 
     def move(self, offsets):
         """
-        Takes a sequence of two offsets (horizontal, vertical) and return
+        Takes a pair of offsets (horizontal, vertical) and returns
         Rect((left+horizontal, top+vertical, right+horizontal, bottom+vertical)).
         """
         return type(self)(p + d for p, d in zip(self, tuple(offsets) * 2))
@@ -481,8 +431,8 @@ class Rect(tuple, metaclass=MetaRect):
         Return the smallest rectangle that contains both self and other or
         return Rect.EMPTY, if both are Rect.EMPTY.  This is also called the
         smallest upper bound or supremum of self and other.  In computer
-        graphics programming this is known as the bounding box of self and
-        other.
+        graphics programming this is known as the minimal bounding box of self
+        and other.
 
         r1 | r2 | ... | rn is equivalent to Rect.enclose(r1, r2, ..., rn).
         """
@@ -494,7 +444,7 @@ class Rect(tuple, metaclass=MetaRect):
         """
         The meet operator.
 
-        Return the biggest rectangle that is contained in both self and other
+        Return the greatest rectangle that is contained in both self and other
         or return Rect.EMPTY, if self and other don't overlap or one of them is
         Rect.EMPTY.  This is also called the greatest lower bound or infimum of
         self and other.
@@ -547,7 +497,7 @@ class Rect(tuple, metaclass=MetaRect):
 
     def __mul__(self, scalar):
         """
-        Return a new paraxial rectangle with the coordinates scaled by scalar.
+        Return a new rectangle with the coordinates multiplied by scalar.
 
         scalar must be a number.
         """
@@ -570,3 +520,47 @@ class Rect(tuple, metaclass=MetaRect):
     __hash__ = tuple.__hash__  # classes that derive from a hashable class but
                                # override __eq__ must also define __hash__ to
                                # be hashable.
+
+
+def _connected_components(rects):
+    # Implementation of the well known connected components algorithm.
+    # This works because we view overlapping rectangles as connected nodes
+    # in a graph.
+    #
+    # As Alan Kay puts it: point of view is worth 80 IQ points.
+
+    # EMPTY overlaps nothing and is overlapped by any other rect:
+    rects = set(filter(None, rects))
+
+    # Helper class for ITree:
+    class Interval:
+        __slots__ = 'rect', 'start', 'end'
+        def __init__(self, rect, orientation):
+            self.rect = rect
+            self.start, self.end = orientation(rect)
+
+    # Collect overlapping rects into adjacency sets by intersecting search
+    # results from a horizontal and a vertical Interval Tree:
+    htree = ITree(Interval(rect, horizontal) for rect in rects)
+    vtree = ITree(Interval(rect, vertical) for rect in rects)
+    neighbors = {}
+    for rect in rects:
+        neighbors[rect] = (
+            frozenset(found.rect for found in
+                htree.search(Interval(rect, horizontal)))
+            & frozenset(found.rect for found in
+                vtree.search(Interval(rect, vertical))))
+
+    # Join adjacency sets into connected components:
+    def component(node):
+        todo = set([node])
+        while todo:
+            node = todo.pop()
+            seen.add(node)
+            todo |= neighbors[node] - seen
+            yield node
+
+    seen = set()
+    for node in neighbors:
+        if node not in seen:
+            yield set(component(node))

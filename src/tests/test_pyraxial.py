@@ -473,6 +473,6 @@ def test_closed_regions():
     ]
     for rects, expected in data:
         rects = map(Rect, rects)
-        result = set(Rect.closed_regions(rects))
+        result = set(Rect.enclosures(rects))
         expected = set(map(Rect, expected))
         assert result == expected
