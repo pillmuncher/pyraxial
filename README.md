@@ -14,7 +14,7 @@ It defines the class Rect with the following methods and attributes:
   - Two polyadic class methods `Rect.enclose(rects)` and `Rect.overlap(rects)`
     as generalizations of `|` and `&` over arbitrary numbers of rectangles.
   - A set of operators that define containment relations between rectangles.
-  - A class method `Rect.closed_regions(rects)` that computes the bounding boxes
+  - A class method `Rect.enclosures(rects)` that computes the bounding boxes
     for all subsets of "transitively" overlapping rectangles in a given set of
     rectangles.
 
@@ -123,7 +123,7 @@ will equal `Rect.EMPTY`.
 All method results are *covariant under subtyping*.
 
 
-`Rect()` and `closed_regions()` accept any type of iterable.  The operators however
+`Rect()` and `enclosures()` accept any type of iterable.  The operators however
 work reliably only on sequence-like objects, but not iterators.  If you pass an
 iterator as an argument, the behavior will be undefined, probably raising an
 exception, or worse, causing inexplicably wrong results.

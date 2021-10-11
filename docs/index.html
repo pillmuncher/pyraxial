@@ -20,7 +20,7 @@ It&nbsp;defines&nbsp;the&nbsp;class&nbsp;<a href="#Rect">Rect</a>&nbsp;with&nbsp
 &nbsp;&nbsp;-&nbsp;Two&nbsp;polyadic&nbsp;class&nbsp;methods&nbsp;<a href="#Rect">Rect</a>.enclose(rects)&nbsp;and&nbsp;<a href="#Rect">Rect</a>.overlap(rects)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;as&nbsp;generalizations&nbsp;of&nbsp;|&nbsp;and&nbsp;&amp;&nbsp;over&nbsp;arbitrary&nbsp;numbers&nbsp;of&nbsp;rectangles.<br>
 &nbsp;&nbsp;-&nbsp;A&nbsp;set&nbsp;of&nbsp;operators&nbsp;that&nbsp;define&nbsp;containment&nbsp;relations&nbsp;between&nbsp;rectangles.<br>
-&nbsp;&nbsp;-&nbsp;A&nbsp;class&nbsp;method&nbsp;<a href="#Rect">Rect</a>.closed_regions(rects)&nbsp;that&nbsp;computes&nbsp;the&nbsp;bounding&nbsp;boxes<br>
+&nbsp;&nbsp;-&nbsp;A&nbsp;class&nbsp;method&nbsp;<a href="#Rect">Rect</a>.enclosures(rects)&nbsp;that&nbsp;computes&nbsp;the&nbsp;bounding&nbsp;boxes<br>
 &nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;all&nbsp;subsets&nbsp;of&nbsp;"transitively"&nbsp;overlapping&nbsp;rectangles&nbsp;in&nbsp;a&nbsp;given&nbsp;set&nbsp;of<br>
 &nbsp;&nbsp;&nbsp;&nbsp;rectangles.<br>
 &nbsp;<br>
@@ -128,7 +128,7 @@ will&nbsp;equal&nbsp;<a href="#Rect">Rect</a>.EMPTY.<br>
 &nbsp;<br>
 All&nbsp;method&nbsp;results&nbsp;are&nbsp;covariant&nbsp;under&nbsp;subtyping.<br>
 &nbsp;<br>
-<a href="#Rect">Rect</a>()&nbsp;and&nbsp;closed_regions()&nbsp;accept&nbsp;any&nbsp;type&nbsp;of&nbsp;iterable.&nbsp;&nbsp;The&nbsp;operators&nbsp;however<br>
+<a href="#Rect">Rect</a>()&nbsp;and&nbsp;enclosures()&nbsp;accept&nbsp;any&nbsp;type&nbsp;of&nbsp;iterable.&nbsp;&nbsp;The&nbsp;operators&nbsp;however<br>
 work&nbsp;reliably&nbsp;only&nbsp;on&nbsp;sequence-like&nbsp;objects,&nbsp;but&nbsp;not&nbsp;iterators.&nbsp;&nbsp;If&nbsp;you&nbsp;pass&nbsp;an<br>
 iterator&nbsp;as&nbsp;an&nbsp;argument,&nbsp;the&nbsp;behavior&nbsp;will&nbsp;be&nbsp;undefined,&nbsp;probably&nbsp;raising&nbsp;an<br>
 exception,&nbsp;or&nbsp;worse,&nbsp;causing&nbsp;inexplicably&nbsp;wrong&nbsp;results.<br>
@@ -198,7 +198,7 @@ True<br>
 &nbsp;<br>
 &gt;&gt;&gt;&nbsp;rects&nbsp;+=&nbsp;[<a href="#Rect">Rect</a>((7,&nbsp;8,&nbsp;8,&nbsp;9)),&nbsp;<a href="#Rect">Rect</a>((8,&nbsp;7,&nbsp;9,&nbsp;8))]<br>
 &nbsp;<br>
-&gt;&gt;&gt;&nbsp;set(<a href="#Rect">Rect</a>.closed_regions(rects))&nbsp;==&nbsp;set(<br>
+&gt;&gt;&gt;&nbsp;set(<a href="#Rect">Rect</a>.enclosures(rects))&nbsp;==&nbsp;set(<br>
 ...&nbsp;&nbsp;&nbsp;&nbsp;[<a href="#Rect">Rect</a>((1,&nbsp;2,&nbsp;5,&nbsp;6)),&nbsp;<a href="#Rect">Rect</a>((7,&nbsp;7,&nbsp;9,&nbsp;9))])<br>
 True</tt></p>
 <p>

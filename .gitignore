@@ -20,3 +20,4 @@ test.out/*
 codecov.yml
 coverage.xml
 .env
+make_release
