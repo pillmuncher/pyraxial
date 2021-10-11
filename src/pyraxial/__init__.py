@@ -109,10 +109,10 @@ iterable, provided it is either empty or contains/yields four numbers that
 denote the left, top, right and bottom coordinates (in that order). Otherwise,
 a ValueError is raised.
 
-Coordinate values increase from left to right and from top to bottom.
-Therefor, if left ≦ right and top ≦ bottom the resulting rectangle will be a
-Rect with the specified coordinates.  If > left  right or top > bottom the
-resulting rectangle will equal Rect.EMPTY.
+Coordinate values increase from left to right and from top to bottom.  Therefor,
+if left ≦ right and top ≦ bottom the resulting rectangle will be a Rect with the
+specified coordinates.  If left > right or top > bottom the resulting rectangle
+will equal Rect.EMPTY.
 
 Rect objects are immutable and the properties have no setters.
 
