@@ -133,6 +133,9 @@ represented by 4-tuples, like e.g. Pillow's `Image.crop()` method. For contexts
 where such rectangles are represented as pairs of point coordinates the class
 method `Rect.from_points` and the `Rect.points` property can be used.
 
+See a visualization here:
+
+![alt text](docs/rects.png "example")
 
 ### See API documentation here:
 [https://pillmuncher.github.io/pyraxial](https://pillmuncher.github.io/pyraxial)
