@@ -85,7 +85,7 @@ Since these laws already define a *partially ordered set*, the following laws al
 
 ### Antisymmetry:
 ```
-    a ≦ b  and  b ≦ a   🡘   a = b
+    a ≦ b  and  b ≦ a   🡘   a == b
 ```
 
 ### Monotonicity:
@@ -110,8 +110,10 @@ A rectangle is created like so:
 
 where `box` is an already existing `Rect` object, tuple, list, iterator or other
 iterable, provided it is either empty or contains/yields four numbers that
-denote the `left`, `top`, `right` and `bottom` coordinates (in that order). Otherwise,
-a `ValueError` is raised.
+denote the `left`, `top`, `right` and `bottom` coordinates (in that order).  If
+box is empty or its values are such that the resulting Rect would have negative
+width or height the result will be Rect.EMPTY. Otherwise, a ValueError is
+raised.
 
 Coordinate values increase from left to right and from top to bottom.  Therefor,
 if `left ≦ right` and `top ≦ bottom` the resulting rectangle will be a Rect with the
@@ -131,7 +133,7 @@ exception, or worse, causing inexplicably wrong results.
 Rects can be used as a drop-in in contexts where axis-aligned rectangles are
 represented by 4-tuples, like e.g. Pillow's `Image.crop()` method. For contexts
 where such rectangles are represented as pairs of point coordinates the class
-method `Rect.from_points` and the `Rect.points` property can be used.
+method `Rect.from_points()` and the `Rect.points` property can be used.
 
 See a visualization here:
 

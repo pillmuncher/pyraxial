@@ -371,7 +371,7 @@ def test_semidistributivity():
         assert (a & (b | c)) >= ((a & b) | (a & c))
         assert (a | (b & c)) <= ((a | b) & (a | c))
 
-def test_closed_regions():
+def test_enclosures():
     from itertools import permutations
     data = [
         [[ # an empty list returns an empty list.
