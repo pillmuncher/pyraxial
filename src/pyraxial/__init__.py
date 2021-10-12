@@ -16,7 +16,7 @@ It defines the class Rect with the following methods and attributes:
 
 
 The Rect class together with the | and & operations and the identity elements
-forms a complete lattice so that for all Rect objects a, b and c the following
+form a complete lattice so that for all Rect objects a, b and c the following
 laws hold:
 
 

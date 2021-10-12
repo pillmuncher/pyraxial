@@ -20,7 +20,7 @@ It defines the class Rect with the following methods and attributes:
 
 
 The `Rect` class together with the `|` and `&` operations and the identity elements
-forms a ***complete lattice*** so that for all Rect objects a, b and c the
+form a ***complete lattice*** so that for all Rect objects a, b and c the
 following laws hold:
 
 ### Identity Elements:
@@ -61,7 +61,7 @@ following laws hold:
 
 
 
-Since these laws already define a *partially ordered set*, the following laws also hold:
+Since these laws already define a ***partially ordered set***, the following laws also hold:
 
 ### Least Element:
 ```
