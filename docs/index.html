@@ -26,7 +26,7 @@ It&nbsp;defines&nbsp;the&nbsp;class&nbsp;<a href="#Rect">Rect</a>&nbsp;with&nbsp
 &nbsp;<br>
 &nbsp;<br>
 The&nbsp;<a href="#Rect">Rect</a>&nbsp;class&nbsp;together&nbsp;with&nbsp;the&nbsp;|&nbsp;and&nbsp;&amp;&nbsp;operations&nbsp;and&nbsp;the&nbsp;identity&nbsp;elements<br>
-forms&nbsp;a&nbsp;complete&nbsp;lattice&nbsp;so&nbsp;that&nbsp;for&nbsp;all&nbsp;<a href="#Rect">Rect</a>&nbsp;objects&nbsp;a,&nbsp;b&nbsp;and&nbsp;c&nbsp;the&nbsp;following<br>
+form&nbsp;a&nbsp;complete&nbsp;lattice&nbsp;so&nbsp;that&nbsp;for&nbsp;all&nbsp;<a href="#Rect">Rect</a>&nbsp;objects&nbsp;a,&nbsp;b&nbsp;and&nbsp;c&nbsp;the&nbsp;following<br>
 laws&nbsp;hold:<br>
 &nbsp;<br>
 &nbsp;<br>
@@ -92,7 +92,7 @@ Transitivity:<br>
 &nbsp;<br>
 Antisymmetry:<br>
 &nbsp;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;≦&nbsp;b&nbsp;&nbsp;and&nbsp;&nbsp;b&nbsp;≦&nbsp;a&nbsp;&nbsp;&nbsp;🡘&nbsp;&nbsp;&nbsp;a&nbsp;=&nbsp;b<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;≦&nbsp;b&nbsp;&nbsp;and&nbsp;&nbsp;b&nbsp;≦&nbsp;a&nbsp;&nbsp;&nbsp;🡘&nbsp;&nbsp;&nbsp;a&nbsp;==&nbsp;b<br>
 &nbsp;<br>
 &nbsp;<br>
 Monotonicity:<br>
@@ -116,8 +116,9 @@ A&nbsp;rectangle&nbsp;is&nbsp;created&nbsp;like&nbsp;so:<br>
 &nbsp;<br>
 where&nbsp;box&nbsp;is&nbsp;an&nbsp;already&nbsp;existing&nbsp;<a href="#Rect">Rect</a>&nbsp;object,&nbsp;<a href="builtins.html#tuple">tuple</a>,&nbsp;list,&nbsp;iterator&nbsp;or&nbsp;other<br>
 iterable,&nbsp;provided&nbsp;it&nbsp;is&nbsp;either&nbsp;empty&nbsp;or&nbsp;contains/yields&nbsp;four&nbsp;numbers&nbsp;that<br>
-denote&nbsp;the&nbsp;left,&nbsp;top,&nbsp;right&nbsp;and&nbsp;bottom&nbsp;coordinates&nbsp;(in&nbsp;that&nbsp;order).&nbsp;Otherwise,<br>
-a&nbsp;ValueError&nbsp;is&nbsp;raised.<br>
+denote&nbsp;the&nbsp;left,&nbsp;top,&nbsp;right&nbsp;and&nbsp;bottom&nbsp;coordinates&nbsp;(in&nbsp;that&nbsp;order).&nbsp;&nbsp;If&nbsp;box&nbsp;is<br>
+empty&nbsp;or&nbsp;its&nbsp;values&nbsp;are&nbsp;such&nbsp;that&nbsp;the&nbsp;resulting&nbsp;<a href="#Rect">Rect</a>&nbsp;would&nbsp;have&nbsp;negative&nbsp;width<br>
+or&nbsp;height&nbsp;the&nbsp;result&nbsp;will&nbsp;be&nbsp;<a href="#Rect">Rect</a>.EMPTY.&nbsp;Otherwise,&nbsp;a&nbsp;ValueError&nbsp;is&nbsp;raised.<br>
 &nbsp;<br>
 Coordinate&nbsp;values&nbsp;increase&nbsp;from&nbsp;left&nbsp;to&nbsp;right&nbsp;and&nbsp;from&nbsp;top&nbsp;to&nbsp;bottom.&nbsp;&nbsp;Therefor,<br>
 if&nbsp;left&nbsp;≦&nbsp;right&nbsp;and&nbsp;top&nbsp;≦&nbsp;bottom&nbsp;the&nbsp;resulting&nbsp;rectangle&nbsp;will&nbsp;be&nbsp;a&nbsp;<a href="#Rect">Rect</a>&nbsp;with&nbsp;the<br>
