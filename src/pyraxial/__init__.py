@@ -7,7 +7,7 @@ This module aims to simplify working with bounding boxes.
 It defines the class Rect with the following methods and attributes:
   - Two binary operators | ("join") and & ("meet").
   - Two identity elements with respect to | and &, Rect.EMPTY and Rect.PLANE.
-  - Two polyadic class methods Rect.enclose(rects) and Rect.overlap(rects)
+  - Two variadic class methods Rect.enclose(rects) and Rect.overlap(rects)
     as generalizations of | and & over arbitrary numbers of rectangles.
   - A set of operators that define containment relations between rectangles.
   - A class method Rect.enclosures(rects) that computes the bounding boxes
@@ -266,8 +266,7 @@ prop_doc = 'The {0} of the rectangle.'.format
 coor_doc = prop_doc('{0} coordinate').format
 
 
-invalid = ValueError(
-    'Argument "box" must be an iterable of zero or four numbers.')
+invalid = ValueError('Argument "box" must be an iterable of zero or four numbers.')
 
 
 class MetaRect(type(tuple)):
@@ -278,12 +277,13 @@ class MetaRect(type(tuple)):
     """
     def __init__(cls, name, bases, cdict):
         """
-        Set up the two identity elements. We must do this in a metaclass so
-        users are able to properly subclass Rect. Otherwise a method that's
-        invoked on e.g. a module level attribute EMPTY would always return a
-        Rect instance, even if the user had subclassed Rect.  Creating these
-        constants automatically on a per-class-level does the trick.
+        Set up the two identity elements.
         """
+        # We must do this in a metaclass so users are able to properly subclass
+        # Rect. Otherwise a method that's invoked on e.g. a module level
+        # attribute EMPTY would always return a Rect instance, even if the user 
+        # had subclassed Rect.  Creating these constants automatically on a 
+        # per-class-level does the trick.
         inf = float('inf')
         cls.EMPTY = cls(())
         cls.PLANE = cls((-inf, -inf, inf, inf))
@@ -303,13 +303,10 @@ class Rect(tuple, metaclass=MetaRect):
     left_bottom = property(left_bottom, doc=coor_doc('left bottom'))
     right_bottom = property(right_bottom, doc=coor_doc('right bottom'))
 
-    vertical = property(
-        vertical, doc=prop_doc('top and bottom coordinates'))
-    horizontal = property(
-        horizontal, doc=prop_doc('left and right coordinates'))
+    vertical = property(vertical, doc=prop_doc('top and bottom coordinates'))
+    horizontal = property(horizontal, doc=prop_doc('left and right coordinates'))
 
-    points = property(
-        points, doc=prop_doc('left top and right bottom coordinates'))
+    points = property(points, doc=prop_doc('left top and right bottom coordinates'))
 
     width = property(width, doc=prop_doc('width'))
     height = property(height, doc=prop_doc('height'))
@@ -332,13 +329,15 @@ class Rect(tuple, metaclass=MetaRect):
             box = tuple(box)
         except TypeError:
             raise invalid
-        if not box:
-            return tuple.__new__(cls)
-        if len(box) != 4:
-            raise invalid
-        if box[X0] > box[X1] or box[Y0] > box[Y1]:
-            return tuple.__new__(cls)
-        return tuple.__new__(cls, box)
+        match box: 
+            case ():
+                return tuple.__new__(cls)
+            case (x0, y0, x1, y1) if x0 > x1 or y0 > y1:
+                return tuple.__new__(cls)
+            case (x0, y0, x1, y1):
+                return tuple.__new__(cls, box)
+            case _:
+                raise invalid
 
     @classmethod
     def from_size(cls, size):
@@ -524,13 +523,14 @@ class Rect(tuple, metaclass=MetaRect):
 
 
 def _connected_components(rects):
-    # Implementation of the well known connected components algorithm.
-    # This works because we view overlapping rectangles as connected nodes
+    # This is the well known connected components algorithm.
+    # It works here because we view overlapping rectangles as connected nodes
     # in a graph.
     #
     # As Alan Kay puts it: point of view is worth 80 IQ points.
 
-    # EMPTY overlaps nothing and is overlapped by any other rect:
+    # EMPTY overlaps nothing and is overlapped by any other rect.
+    # Equal rects overlap each other already.
     rects = set(filter(None, rects))
 
     # Helper class for ITree:
@@ -547,10 +547,8 @@ def _connected_components(rects):
     neighbors = {}
     for rect in rects:
         neighbors[rect] = (
-            frozenset(found.rect for found in
-                htree.search(Interval(rect, horizontal)))
-            & frozenset(found.rect for found in
-                vtree.search(Interval(rect, vertical))))
+            frozenset(found.rect for found in htree.search(Interval(rect, horizontal)))
+            & frozenset(found.rect for found in vtree.search(Interval(rect, vertical))))
 
     # Join adjacency sets into connected components:
     def component(node):
