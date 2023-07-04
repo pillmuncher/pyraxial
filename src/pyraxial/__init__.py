@@ -330,12 +330,12 @@ class Rect(tuple, metaclass=MetaRect):
         except TypeError:
             raise invalid
         match box: 
+            case (x0, y0, x1, y1) if x0 <= x1 and y0 <= y1:
+                return tuple.__new__(cls, box)
+            case (x0, y0, x1, y1):
+                return tuple.__new__(cls)
             case ():
                 return tuple.__new__(cls)
-            case (x0, y0, x1, y1) if x0 > x1 or y0 > y1:
-                return tuple.__new__(cls)
-            case (x0, y0, x1, y1):
-                return tuple.__new__(cls, box)
             case _:
                 raise invalid
 
@@ -524,8 +524,8 @@ class Rect(tuple, metaclass=MetaRect):
 
 def _connected_components(rects):
     # This is the well known connected components algorithm.
-    # It works here because we view overlapping rectangles as connected nodes
-    # in a graph.
+    # It works here because we view overlapping rectangles as 
+    # connected nodes in a graph.
     #
     # As Alan Kay puts it: point of view is worth 80 IQ points.
 
@@ -540,8 +540,8 @@ def _connected_components(rects):
             self.rect = rect
             self.start, self.end = orientation(rect)
 
-    # Collect overlapping rects into adjacency sets by intersecting search
-    # results from a horizontal and a vertical Interval Tree:
+    # Collect overlapping rects into adjacency sets by intersecting
+    # search results from a horizontal and a vertical Interval Tree:
     htree = ITree(Interval(rect, horizontal) for rect in rects)
     vtree = ITree(Interval(rect, vertical) for rect in rects)
     neighbors = {}
