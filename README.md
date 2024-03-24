@@ -127,7 +127,7 @@ A rectangle is created like so:
 where `box` is an already existing `Rect` object, tuple, list, iterator or other
 iterable, provided it is either empty or contains/yields four numbers that
 denote the `left`, `top`, `right` and `bottom` coordinates (in that order).  If
-`box` is empty or its values are such that the resulting Rect would have negative
+`box` is empty or its values are such that the resulting `Rect` would have negative
 `width` or `height`, the result will be `Rect.EMPTY`. Otherwise, a `ValueError` is
 raised.
 
