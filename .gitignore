@@ -13,12 +13,15 @@ dist
 *.old
 *.vim
 *.lock
+*.json
 tags
 htmlcov
 test.out/*
 .coverage
 codecov.yml
 coverage.xml
+.bin
 .env
 .envrc
 make_release
+node_modules

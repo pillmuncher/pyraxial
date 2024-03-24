@@ -1,1 +1,1 @@
-pytest3 --doctest-modules --cov=pyraxial --cov-report=xml --mccabe --ignore=__pypackages__
+pytest --doctest-modules --cov=pyraxial --cov-report=xml --ignore=__pypackages__
