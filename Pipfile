@@ -5,10 +5,10 @@ name = "pypi"
 
 [packages]
 itree = "*"
-pytest-cov = "*"
 
 [dev-packages]
 pytest = "*"
+pytest-cov = "*"
 neovim = "*"
 build = "*"
 twine = "*"
