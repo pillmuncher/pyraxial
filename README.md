@@ -11,17 +11,17 @@ This module aims to simplify working with bounding boxes.
 
 It defines the class Rect with the following methods and attributes:
 
-* Two binary operators `|` ("join") and `&` ("meet").
-* Two identity elements with respect to `|` and `&`, `Rect.EMPTY` and `Rect.PLANE`.
-* Two polyadic class methods `Rect.enclose(rects)` and `Rect.overlap(rects)`
-  as generalizations of `|` and `&` over arbitrary numbers of rectangles.
-* A set of operators that define containment relations between rectangles.
-* A class method `Rect.enclosures(rects)` that computes the bounding boxes
-  for all subsets of "transitively" overlapping rectangles in a given set of
-  rectangles.
+  * Two binary operators | ("join") and & ("meet").
+  * Two identity elements with respect to | and &, Rect.EMPTY and Rect.PLANE.
+  * Two variadic class methods Rect.bounding_box(\*rects) and
+    Rect.intersection(rects) as generalizations of | and & over arbitrary
+    numbers of rectangles.
+  * A set of operators that define containment relations between rectangles.
+  * A class method Rect.bounding_boxes(rects) that computes the bounding boxes
+    for all subsets of "transitively" intersecting rectangles in a given set of
+    rectangles.
 
-To get a first intuition about what that could probably all mean, here's
-a picture:
+To get a first intuition about what that could possibly mean, here's a picture:
 ![alt text](docs/rects.png "example")
 
 The `Rect` class together with the `|` and `&` operations and the identity elements
@@ -140,10 +140,10 @@ will equal `Rect.EMPTY`.
 
 All method results are *covariant under subtyping*.
 
-`Rect()` and `enclosures()` accept any type of iterable.  The operators however
-work reliably only on sequence-like objects, but not iterators.  If you pass an
-iterator as an argument, the behavior will be undefined, probably raising an
-exception, or worse, causing inexplicably wrong results.
+`Rect()` and `bounding_boxes()` accept any type of iterable.  The operators
+however work reliably only on sequence-like objects, but not iterators.  If you
+pass an iterator as an argument, the behavior will be undefined, probably
+raising an exception, or worse, causing inexplicably wrong results.
 
 Rects can be used as a drop-in in contexts where axis-aligned rectangles are
 represented by 4-tuples, like e.g. Pillow's `Image.crop()` method. For contexts

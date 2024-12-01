@@ -5,13 +5,13 @@ This module aims to simplify working with bounding boxes.
 
 
 It defines the class Rect with the following methods and attributes:
-  - Two binary operators | ("join") and & ("meet").
-  - Two identity elements with respect to | and &, Rect.EMPTY and Rect.PLANE.
-  - Two variadic class methods Rect.bounding_box(rects) and
+  * Two binary operators | ("join") and & ("meet").
+  * Two identity elements with respect to | and &, Rect.EMPTY and Rect.PLANE.
+  * Two variadic class methods Rect.bounding_box(*rects) and
     Rect.intersection(rects) as generalizations of | and & over arbitrary
     numbers of rectangles.
-  - A set of operators that define containment relations between rectangles.
-  - A class method Rect.bounding_boxes(rects) that computes the bounding boxes
+  * A set of operators that define containment relations between rectangles.
+  * A class method Rect.bounding_boxes(rects) that computes the bounding boxes
     for all subsets of "transitively" intersecting rectangles in a given set of
     rectangles.
 
@@ -407,12 +407,12 @@ class Rect(tuple, metaclass=MetaRect):
         Join each distinct set of transitively intersecting rectangles in
         rects into a bounding box.
 
-        In other words, bounding_box is the distinct set of connected
+        In other words, the bounding box is the distinct set of connected
         rectangles.  Two rectangles A and B are connected, if they either
         intersect or if there exists a rectangle C such that both A and B are
         connected to C.
 
-        Since Rect.EMPTY ntersects with nothing and is intersected by any other
+        Since Rect.EMPTY intersects with nothing and is intersected by any other
         rect, it is always discarded.
 
         Time complexity is O(n log n + k) with respect to the number n
