@@ -10,6 +10,7 @@
 .env
 .envrc
 .pdm.toml
+.pdm-python
 .python-version
 __pycache__
 __pypackages__

@@ -7,11 +7,12 @@ This module aims to simplify working with bounding boxes.
 It defines the class Rect with the following methods and attributes:
   - Two binary operators | ("join") and & ("meet").
   - Two identity elements with respect to | and &, Rect.EMPTY and Rect.PLANE.
-  - Two variadic class methods Rect.enclose(rects) and Rect.overlap(rects)
-    as generalizations of | and & over arbitrary numbers of rectangles.
+  - Two variadic class methods Rect.bounding_box(rects) and
+    Rect.intersection(rects) as generalizations of | and & over arbitrary
+    numbers of rectangles.
   - A set of operators that define containment relations between rectangles.
-  - A class method Rect.enclosures(rects) that computes the bounding boxes
-    for all subsets of "transitively" overlapping rectangles in a given set of
+  - A class method Rect.bounding_boxes(rects) that computes the bounding boxes
+    for all subsets of "transitively" intersecting rectangles in a given set of
     rectangles.
 
 
@@ -119,7 +120,7 @@ Rect objects are immutable and the properties have no setters.
 
 All method results are covariant under subtyping.
 
-Rect() and enclosures() accept any type of iterable.  The operators however
+Rect() and bounding_boxes() accept any type of iterable.  The operators however
 work reliably only on sequence-like objects, but not iterators.  If you pass an
 iterator as an argument, the behavior will be undefined, probably raising an
 exception, or worse, causing inexplicably wrong results.
@@ -169,39 +170,40 @@ True
 
 >>> rects = [Rect((1, 2, 3, 4)), Rect((2, 3, 4, 5)), Rect((3, 4, 5, 6))]
 
->>> Rect.enclose(*rects)
+>>> Rect.bounding_box(*rects)
 Rect((1, 2, 5, 6))
 
->>> Rect.overlap(*rects)
+>>> Rect.intersection(*rects)
 Rect((3, 4, 3, 4))
 
->>> Rect.enclose(Rect.EMPTY, *rects) == Rect.enclose(*rects)
+>>> Rect.bounding_box(Rect.EMPTY, *rects) == Rect.bounding_box(*rects)
 True
 
->>> Rect.enclose(Rect.PLANE, *rects) == Rect.PLANE
+>>> Rect.bounding_box(Rect.PLANE, *rects) == Rect.PLANE
 True
 
->>> Rect.overlap(Rect.EMPTY, *rects) == Rect.EMPTY
+>>> Rect.intersection(Rect.EMPTY, *rects) == Rect.EMPTY
 True
 
->>> Rect.overlap(Rect.PLANE, *rects) == Rect.overlap(*rects)
+>>> Rect.intersection(Rect.PLANE, *rects) == Rect.intersection(*rects)
 True
 
 >>> rects += [Rect((7, 8, 8, 9)), Rect((8, 7, 9, 8))]
 
->>> set(Rect.enclosures(rects)) == set(
+>>> set(Rect.bounding_boxes(rects)) == set(
 ...    [Rect((1, 2, 5, 6)), Rect((7, 7, 9, 9))])
 True
 """
 
-
+from dataclasses import dataclass
 from itertools import chain
+from numbers import Real
 from operator import itemgetter
 
 from itree import ITree
 
 
-__all__ = ['Rect']
+__all__ = ["Rect"]
 
 
 def bounded_by(*limiters):
@@ -209,6 +211,7 @@ def bounded_by(*limiters):
     Create a function from limiters that takes any number of rects and
     applies these limiters to their corresponding coordinates.
     """
+
     def bound(*rects):
         "Return the upper or lower bound of rects, depending on limiters."
         for limit, coordinates in zip(limiters, zip(*rects)):
@@ -262,8 +265,8 @@ def area(rect):
     return width(rect) * height(rect)
 
 
-prop_doc = 'The {0} of the rectangle.'.format
-coor_doc = prop_doc('{0} coordinate').format
+prop_doc = "The {0} of the rectangle.".format
+coor_doc = prop_doc("{0} coordinate").format
 
 
 invalid = ValueError('Argument "box" must be an iterable of zero or four numbers.')
@@ -275,44 +278,44 @@ class MetaRect(type(tuple)):
 
     Really.
     """
+
     def __init__(cls, name, bases, cdict):
         """
         Set up the two identity elements.
         """
         # We must do this in a metaclass so users are able to properly subclass
         # Rect. Otherwise a method that's invoked on e.g. a module level
-        # attribute EMPTY would always return a Rect instance, even if the user 
-        # had subclassed Rect.  Creating these constants automatically on a 
+        # attribute EMPTY would always return a Rect instance, even if the user
+        # had subclassed Rect.  Creating these constants automatically on a
         # per-class-level does the trick.
-        inf = float('inf')
+        inf = float("inf")
         cls.EMPTY = cls(())
         cls.PLANE = cls((-inf, -inf, inf, inf))
 
 
 class Rect(tuple, metaclass=MetaRect):
-
     __slots__ = ()
 
-    left = property(left, doc=coor_doc('left'))
-    right = property(right, doc=coor_doc('right'))
-    top = property(top, doc=coor_doc('top'))
-    bottom = property(bottom, doc=coor_doc('bottom'))
+    left = property(left, doc=coor_doc("left"))
+    right = property(right, doc=coor_doc("right"))
+    top = property(top, doc=coor_doc("top"))
+    bottom = property(bottom, doc=coor_doc("bottom"))
 
-    left_top = property(left_top, doc=coor_doc('left top'))
-    right_top = property(right_top, doc=coor_doc('right top'))
-    left_bottom = property(left_bottom, doc=coor_doc('left bottom'))
-    right_bottom = property(right_bottom, doc=coor_doc('right bottom'))
+    left_top = property(left_top, doc=coor_doc("left top"))
+    right_top = property(right_top, doc=coor_doc("right top"))
+    left_bottom = property(left_bottom, doc=coor_doc("left bottom"))
+    right_bottom = property(right_bottom, doc=coor_doc("right bottom"))
 
-    vertical = property(vertical, doc=prop_doc('top and bottom coordinates'))
-    horizontal = property(horizontal, doc=prop_doc('left and right coordinates'))
+    vertical = property(vertical, doc=prop_doc("top and bottom coordinates"))
+    horizontal = property(horizontal, doc=prop_doc("left and right coordinates"))
 
-    points = property(points, doc=prop_doc('left top and right bottom coordinates'))
+    points = property(points, doc=prop_doc("left top and right bottom coordinates"))
 
-    width = property(width, doc=prop_doc('width'))
-    height = property(height, doc=prop_doc('height'))
+    width = property(width, doc=prop_doc("width"))
+    height = property(height, doc=prop_doc("height"))
 
-    size = property(size, doc=prop_doc('width and height'))
-    area = property(area, doc=prop_doc('area'))
+    size = property(size, doc=prop_doc("width and height"))
+    area = property(area, doc=prop_doc("area"))
 
     def __new__(cls, box):
         """
@@ -329,7 +332,7 @@ class Rect(tuple, metaclass=MetaRect):
             box = tuple(box)
         except TypeError:
             raise invalid
-        match box: 
+        match box:
             case (x0, y0, x1, y1) if x0 <= x1 and y0 <= y1:
                 return tuple.__new__(cls, box)
             case (x0, y0, x1, y1):
@@ -356,7 +359,7 @@ class Rect(tuple, metaclass=MetaRect):
         return cls(chain(left_top, right_bottom))
 
     @classmethod
-    def enclose(cls, *rects):
+    def bounding_box(cls, *rects):
         """
         Return the smallest rectangle that contains all rects, or Rect.EMPTY,
         if rects is empty.  This is also called the smallest upper bound or
@@ -369,7 +372,7 @@ class Rect(tuple, metaclass=MetaRect):
         return cls(inflate(*filter(None, rects)))
 
     @classmethod
-    def overlap(cls, *rects):
+    def intersection(cls, *rects):
         """
         Return the greatest rectangle that is contained in all rects, or
         Rect.PLANE, if rects is empty.  This is also called the greatest lower
@@ -383,39 +386,40 @@ class Rect(tuple, metaclass=MetaRect):
     @classmethod
     def partitions(cls, rects):
         """
-        Partition rects into distinct sets of transitively overlapping
+        Partition rects into distinct sets of transitively intersecting
         rectangles.
 
-        In other words, find all distinct sets of connected rectangles.
-        Two rectangles A and B are connected, if they either overlap or if there
+        In other words, find all distinct sets of connected rectangles.  Two
+        rectangles A and B are connected, if they either intersect or if there
         exists a rectangle C such that both A and B are connected to C.
 
-        Since Rect.EMPTY overlaps nothing and is overlapped by any other rect,
+        Since Rect.EMPTY trivially intersects with any other rect,
         it is always discarded.
 
         Time complexity is O(n log n + k) with respect to the number of distinct
-        rects n and the number of overlaps k. I hope.
+        rects n and the number of intersections k. I hope.
         """
         return _connected_components(rects)
 
     @classmethod
-    def enclosures(cls, rects):
+    def bounding_boxes(cls, rects):
         """
-        Enclose each distinct set of transitively overlapping rectangles in
-        rects by a bounding box.
+        Join each distinct set of transitively intersecting rectangles in
+        rects into a bounding box.
 
-        In other words, enclose each distinct set of connected rectangles.
-        Two rectangles A and B are connected, if they either overlap or if there
-        exists a rectangle C such that both A and B are connected to C.
+        In other words, bounding_box is the distinct set of connected
+        rectangles.  Two rectangles A and B are connected, if they either
+        intersect or if there exists a rectangle C such that both A and B are
+        connected to C.
 
-        Since Rect.EMPTY overlaps nothing and is overlapped by any other rect,
-        it is always discarded.
+        Since Rect.EMPTY ntersects with nothing and is intersected by any other
+        rect, it is always discarded.
 
         Time complexity is O(n log n + k) with respect to the number n
-        of distinct rects and the number k of overlaps. I hope.
+        of distinct rects and the number k of intersection. I hope.
         """
-        for region in _connected_components(rects):
-            yield cls.enclose(*region)
+        for region in cls.partitions(rects):
+            yield cls.bounding_box(*region)
 
     def move(self, offsets):
         """
@@ -434,9 +438,9 @@ class Rect(tuple, metaclass=MetaRect):
         graphics programming this is known as the minimal bounding box of self
         and other.
 
-        r1 | r2 | ... | rn is equivalent to Rect.enclose(r1, r2, ..., rn).
+        r1 | r2 | ... | rn is equivalent to Rect.bounding_box(r1, r2, ..., rn).
         """
-        return self.enclose(self, other)
+        return self.bounding_box(self, other)
 
     __ror__ = __or__
 
@@ -445,13 +449,13 @@ class Rect(tuple, metaclass=MetaRect):
         The meet operator.
 
         Return the greatest rectangle that is contained in both self and other
-        or return Rect.EMPTY, if self and other don't overlap or one of them is
-        Rect.EMPTY.  This is also called the greatest lower bound or infimum of
-        self and other.
+        or return Rect.EMPTY, if self and other don't intersect or one of them
+        is Rect.EMPTY.  This is also called the greatest lower bound or infimum
+        of self and other.
 
-        r1 & r2 & ... & rn is equivalent to Rect.overlap(r1, r2, ..., rn).
+        r1 & r2 & ... & rn is equivalent to Rect.ntersection(r1, r2, ..., rn).
         """
-        return self.overlap(self, other)
+        return self.intersection(self, other)
 
     __rand__ = __and__
 
@@ -473,27 +477,27 @@ class Rect(tuple, metaclass=MetaRect):
         """
         Return True if other contains self, otherwise return False.
         """
-        return self == self.overlap(self, other)
+        return self == self.intersection(self, other)
 
     def __ge__(self, other):
         """
         Return True if self contains other, otherwise return False.
         """
-        return self == self.enclose(self, other)
+        return self == self.bounding_box(self, other)
 
     def __lt__(self, other):
         """
         Return True if other contains, but is not equal to self, otherwise
         return False.
         """
-        return other != self == self.overlap(self, other)
+        return other != self == self.intersection(self, other)
 
     def __gt__(self, other):
         """
         Return True if self contains, but is not equal to other, otherwise
         return False.
         """
-        return other != self == self.enclose(self, other)
+        return other != self == self.bounding_box(self, other)
 
     def __mul__(self, scalar):
         """
@@ -515,40 +519,41 @@ class Rect(tuple, metaclass=MetaRect):
         """
         x.__repr__() <==> repr(x)
         """
-        return '{0}({1})'.format(type(self).__name__, self)
+        return "{0}({1})".format(type(self).__name__, self)
 
     __hash__ = tuple.__hash__  # classes that derive from a hashable class but
-                               # override __eq__ must also define __hash__ to
-                               # be hashable.
+    # override __eq__ must also define __hash__ to
+    # be hashable.
 
 
 def _connected_components(rects):
     # This is the well known connected components algorithm.
-    # It works here because we view overlapping rectangles as 
+    # It works here because we view intersecting rectangles as
     # connected nodes in a graph.
     #
     # As Alan Kay puts it: point of view is worth 80 IQ points.
 
-    # EMPTY overlaps nothing and is overlapped by any other rect.
-    # Equal rects overlap each other already.
-    rects = set(filter(None, rects))
+    # EMPTY intersects with any other rect.
+    # Equal rects intersect each other trivially.
+    rects = frozenset(filter(None, rects))
 
     # Helper class for ITree:
+    @dataclass(eq=True, frozen=True, slots=True)
     class Interval:
-        __slots__ = 'rect', 'start', 'end'
-        def __init__(self, rect, orientation):
-            self.rect = rect
-            self.start, self.end = orientation(rect)
+        rect: Rect
+        start: Real
+        end: Real
 
-    # Collect overlapping rects into adjacency sets by intersecting
+    # Collect intersecting rects into adjacency sets by intersecting
     # search results from a horizontal and a vertical Interval Tree:
-    htree = ITree(Interval(rect, horizontal) for rect in rects)
-    vtree = ITree(Interval(rect, vertical) for rect in rects)
+    htree = ITree(Interval(rect, *horizontal(rect)) for rect in rects)
+    vtree = ITree(Interval(rect, *vertical(rect)) for rect in rects)
     neighbors = {}
     for rect in rects:
-        neighbors[rect] = (
-            frozenset(found.rect for found in htree.search(Interval(rect, horizontal)))
-            & frozenset(found.rect for found in vtree.search(Interval(rect, vertical))))
+        neighbors[rect] = frozenset(
+            {i.rect for i in htree.search(Interval(rect, *horizontal(rect)))}
+            & {i.rect for i in vtree.search(Interval(rect, *vertical(rect)))}
+        )
 
     # Join adjacency sets into connected components:
     def component(node):
