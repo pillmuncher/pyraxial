@@ -11,22 +11,23 @@ This module aims to simplify working with bounding boxes.
 
 It defines the class Rect with the following methods and attributes:
 
-  * Two binary operators | ("join") and & ("meet").
-  * Two identity elements with respect to | and &, Rect.EMPTY and Rect.PLANE.
-  * Two variadic class methods Rect.bounding_box(\*rects) and
-    Rect.intersection(rects) as generalizations of | and & over arbitrary
-    numbers of rectangles.
+  * Two binary operators `|` ("join") and `&` ("meet").
+  * Two identity elements with respect to `|` and `&`, `Rect.EMPTY` and
+    `Rect.PLANE`.
+  * Two variadic class methods `Rect.bounding_box(\*rects)` and
+    `Rect.intersection(\*rects)` as generalizations of `|` and `&` over
+    arbitrary numbers of rectangles.
   * A set of operators that define containment relations between rectangles.
-  * A class method Rect.bounding_boxes(rects) that computes the bounding boxes
+  * A class method `Rect.bounding_boxes(rects)` that computes the bounding boxes
     for all subsets of "transitively" intersecting rectangles in a given set of
     rectangles.
 
 To get a first intuition about what that could possibly mean, here's a picture:
 ![alt text](docs/rects.png "example")
 
-The `Rect` class together with the `|` and `&` operations and the identity elements
-form a ***complete lattice*** so that for all Rect objects a, b and c the
-following laws hold:
+The `Rect` class together with the `|` and `&` operations and the identity
+elements form a ***complete lattice*** so that for all Rect objects a, b and
+c the following laws hold:
 
 ### Identity Elements:
 
