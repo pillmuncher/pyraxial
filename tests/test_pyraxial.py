@@ -273,8 +273,7 @@ def test_bounding_box():
     assert Rect.bounding_box(a, a) == a
     assert Rect.bounding_box(a, Rect.EMPTY) == a
     assert Rect.bounding_box(Rect.EMPTY, a) == a
-    rects = (Rect.EMPTY, Rect((1, 2, 3, 4)),
-             Rect((2, 3, 4, 5)), Rect((6, 7, 8, 9)))
+    rects = (Rect.EMPTY, Rect((1, 2, 3, 4)), Rect((2, 3, 4, 5)), Rect((6, 7, 8, 9)))
     expected = Rect((1, 2, 8, 9))
     for a, b, c, d in permutations(rects):
         assert Rect.bounding_box(a, b, c, d) == expected
