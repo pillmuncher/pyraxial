@@ -5,7 +5,6 @@ description = 'An algebraic take on axis-aligned rectangles.'
 authors = [{ name = 'Mick Krippendorf', email = 'm.krippendorf@freenet.de' }]
 dependencies = ["itree~=0.0"]
 requires-python = '>=3.13'
-dynamic = ['classifiers']
 license = { text = 'MIT' }
 readme = 'README.md'
 keywords = ['bounding-box']
@@ -35,15 +34,24 @@ test = []
 test = "pytest"
 
 [tool.pytest.ini_options]
-addopts = "--cov=pyraxial --cov-report=term-missing"
+addopts = "--cov=src/pyraxial --cov-report=term-missing --doctest-modules"
 testpaths = ["tests"]
 
 [dependency-groups]
 dev = [
+    "pytest[doctest]>=8.3.5",
+    "pytest-cov>=4.1.0",
+    "mypy>=1.4.1",
+    "hypothesis>=6.79.4",
+    "coverage>=7.8.0",
+    "pipenv>=2024.4.1",
+]
+editor = []
+test = [
     "pytest>=7.4.4",
     "pytest-cov>=4.1.0",
     "mypy>=1.4.1",
     "hypothesis>=6.79.4",
+    "coverage>=7.8.0",
+    "pipenv>=2024.4.1",
 ]
-editor = []
-test = []

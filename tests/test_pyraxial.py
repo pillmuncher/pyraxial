@@ -90,7 +90,15 @@ def test_move():
 
 
 def test_eq():
-    boxes = ((1, 2, 3, 4), (2, 3, 4, 5), (6, 7, 8, 9), (), [], Rect.EMPTY, Rect.PLANE)
+    boxes = (
+        (1, 2, 3, 4),
+        (2, 3, 4, 5),
+        (6, 7, 8, 9),
+        (),
+        [],
+        Rect.EMPTY,
+        Rect.PLANE,
+    )
     from itertools import product
 
     for a, b in product(boxes, repeat=2):
@@ -265,7 +273,8 @@ def test_bounding_box():
     assert Rect.bounding_box(a, a) == a
     assert Rect.bounding_box(a, Rect.EMPTY) == a
     assert Rect.bounding_box(Rect.EMPTY, a) == a
-    rects = (Rect.EMPTY, Rect((1, 2, 3, 4)), Rect((2, 3, 4, 5)), Rect((6, 7, 8, 9)))
+    rects = (Rect.EMPTY, Rect((1, 2, 3, 4)),
+             Rect((2, 3, 4, 5)), Rect((6, 7, 8, 9)))
     expected = Rect((1, 2, 8, 9))
     for a, b, c, d in permutations(rects):
         assert Rect.bounding_box(a, b, c, d) == expected
@@ -435,8 +444,7 @@ def test_enclosures():
 
     data = [
         [
-            [  # an empty list returns an empty list.
-            ],
+            [],  # an empty list returns an empty list.
             [],
         ],
         [
@@ -528,7 +536,7 @@ def test_enclosures():
             ],
         ],
         [
-            [  # "Transitively" ntersecting Rects get joined into the same BBox.
+            [  # "Transitively" intersecting Rects get joined into the same BBox.
                 [1, 2, 3, 4],
                 [2, 3, 4, 5],
                 [4, 5, 6, 7],
