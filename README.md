@@ -110,11 +110,19 @@ groups = Rect.bounding_boxes(rects)
 r1 >= r2  # True if r1 contains r2 (r2 ≤ r1)
 r2 <= r1  # True if r2 is contained in r1
 
-# Check intersection
-r1 & r2 != Rect.EMPTY  # True if rectangles overlap
-
 # Check if empty
 r == Rect.EMPTY  # True if rectangle has zero area
+
+# Check intersection
+r1 & r2 != Rect.EMPTY  # True if rectangles overlap
+```
+This also works:
+```
+if r1 & r2:  # True iff r1 & r2 != Rect.EMPTY
+    ...
+
+if not r1 & r2:  # True iff r1 & r2 == Rect.EMPTY
+    ...
 ```
 
 ### Creating Rectangles
