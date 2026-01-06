@@ -99,7 +99,7 @@ groups = Rect.bounding_boxes(rects)
 # Returns bounding boxes for each connected component
 ```
 
-##Visualizing operations: rectangles with overlaps and their bounding box
+## Visualizing operations: rectangles with overlaps and their bounding box
 
 ![Bounding boxes visualization](docs/rects.png)
 
