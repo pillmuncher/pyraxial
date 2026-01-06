@@ -1,156 +1,260 @@
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/pillmuncher/pyraxial)
-[![license](https://img.shields.io/badge/license-MIT-blue)](https://img.shields.io/badge/license-MIT-blue)
-[![Build Status](https://app.travis-ci.com/pillmuncher/pyraxial.svg?branch=main)](https://app.travis-ci.com/pillmuncher/pyraxial)
-[![codecov](https://codecov.io/gh/pillmuncher/pyraxial/branch/main/graph/badge.svg?token=3Q4CRWL8SX)](https://codecov.io/gh/pillmuncher/pyraxial)
-
 # pyraxial
 
-## An algebraic take on axis-aligned rectangles.
+[![PyPI version](https://img.shields.io/pypi/v/pyraxial)](https://pypi.org/project/pyraxial/)
+[![license](https://img.shields.io/badge/license-MIT-blue)](https://github.com/pillmuncher/pyraxial/blob/main/LICENSE)
+[![codecov](https://codecov.io/gh/pillmuncher/pyraxial/branch/main/graph/badge.svg?token=3Q4CRWL8SX)](https://codecov.io/gh/pillmuncher/pyraxial)
 
-This module aims to simplify working with bounding boxes.
+An algebraic approach to axis-aligned rectangles with a focus on correctness and mathematical elegance.
 
-It defines the class Rect with the following methods and attributes:
+## Installation
 
-  * Two binary operators `|` ("join") and `&` ("meet").
-  * Two identity elements with respect to `|` and `&`, `Rect.EMPTY` and
-    `Rect.PLANE`.
-  * Two variadic class methods `Rect.bounding_box(*rects)` and
-    `Rect.intersection(*rects)` as generalizations of `|` and `&` over
-    arbitrary numbers of rectangles.
-  * A set of operators that define containment relations between rectangles.
-  * A class method `Rect.bounding_boxes(rects)` that computes the bounding boxes
-    for all subsets of "transitively" intersecting rectangles in a given set of
-    rectangles.
-
-To get a first intuition about what that could possibly mean, here's a picture:
-![alt text](docs/rects.png "example")
-
-The `Rect` class together with the `|` and `&` operations and the identity
-elements form a ***complete lattice*** so that for all Rect objects a, b and
-c the following laws hold:
-
-### Identity Elements:
-
-```
-    a | Rect.EMPTY  ==  a
-    a & Rect.PLANE  ==  a
+```bash
+pip install pyraxial
 ```
 
-### Absorbing Elements:
+## Quick Start
 
-```
-    a | Rect.PLANE  ==  Rect.PLANE
-    a & Rect.EMPTY  ==  Rect.EMPTY
-```
+```python
+from pyraxial import Rect
 
-### Idempotency:
+# Create rectangles (left, top, right, bottom)
+r1 = Rect(0, 0, 100, 100)
+r2 = Rect(50, 50, 150, 150)
 
-```
-    a | a  ==  a
-    a & a  ==  a
-```
+# Find bounding box using the | operator
+bbox = r1 | r2  # Rect(0, 0, 150, 150)
 
-### Commutativity:
+# Find intersection using the & operator
+overlap = r1 & r2  # Rect(50, 50, 100, 100)
 
-```
-    a | b  ==  b | a
-    a & b  ==  b & a
-```
+# Work with multiple rectangles
+rects = [Rect(0, 0, 50, 50), Rect(25, 25, 75, 75), Rect(100, 100, 150, 150)]
+overall_bbox = Rect.bounding_box(*rects)
 
-### Associativity:
-
-```
-    (a | b) | c  ==  a | (b | c)
-    (a & b) & c  ==  a & (b & c)
+# Check containment and relationships
+r1 >= Rect(25, 25, 75, 75)  # True (r1 contains the smaller rect)
+r1 & r2 != Rect.EMPTY  # True (they intersect)
 ```
 
-### Absorption:
+## Why pyraxial?
 
-```
-    a | (a & b)  ==  a
-    a & (a | b)  ==  a
-```
+Working with bounding boxes often involves tedious coordinate manipulation and edge cases. pyraxial provides a clean, algebraic interface that:
 
-Since these laws already define a ***partially ordered set***, the following laws also hold:
+- **Handles edge cases automatically**: Empty rectangles and degenerate cases just work
+- **Provides intuitive operators**: Use `|` for union (bounding box) and `&` for intersection
+- **Guarantees correctness**: Built on lattice theory with well-defined mathematical properties
+- **Integrates easily**: Drop-in compatible with libraries like Pillow that use 4-tuples
 
-### Least Element:
+## Use Cases
 
-```
-    Rect.EMPTY ≦ a
-```
+- **Image processing**: Compute bounding boxes for crops, object detection
+- **UI layout**: Calculate overlaps and containment in graphical interfaces  
+- **Collision detection**: Determine if and where rectangles intersect
+- **Spatial algorithms**: Partition and group overlapping regions
 
-### Greatest Element:
+## Core Features
 
-```
-    a ≦ Rect.PLANE
-```
+### Binary Operations
 
-### Reflexivity:
+The `|` (join) and `&` (meet) operators work intuitively:
 
-```
-    a ≦ a
-```
+```python
+# | creates the smallest rectangle containing both
+r1 | r2  # bounding box
 
-### Transitivity:
-
-```
-    a ≦ b  and  b ≦ c   🡒   a ≦ c
+# & creates the overlapping region (or EMPTY if no overlap)
+r1 & r2  # intersection
 ```
 
-### Antisymmetry:
+### Identity Elements
 
-```
-    a ≦ b  and  b ≦ a   🡘   a == b
-```
+```python
+# EMPTY is the identity for |
+r | Rect.EMPTY == r
 
-### Monotonicity:
-
-```
-    a1 ≦ a2  and  b1 ≦ b2   🡒   a1 | b1  ≦  a2 | b2
-    a1 ≦ a2  and  b1 ≦ b2   🡒   a1 & b1  ≦  a2 & b2
+# PLANE is the identity for &
+r & Rect.PLANE == r
 ```
 
-### Semidistributivity:
+### Variadic Operations
 
-```
-    (a & b) | (a & c)  ≦  a & (b | c)
-    a | (b & c)  ≦  (a | b) & (a | c)
-```
-
-Notice the absence of the laws of distribution and modularity.
-
-A rectangle is created like so:
-
-```
-    r = Rect(box)
+```python
+# Work with any number of rectangles
+Rect.bounding_box(*rects)      # generalizes |
+Rect.intersection(*rects)       # generalizes &
 ```
 
-where `box` is an already existing `Rect` object, tuple, list, iterator or other
-iterable, provided it is either empty or contains/yields four numbers that
-denote the `left`, `top`, `right` and `bottom` coordinates (in that order).  If
-`box` is empty or its values are such that the resulting `Rect` would have negative
-`width` or `height`, the result will be `Rect.EMPTY`. Otherwise, a `ValueError` is
-raised.
+### Grouping Intersecting Rectangles
 
-Coordinate values increase from left to right and from top to bottom.  Therefor,
-if `left ≦ right` and `top ≦ bottom` the resulting rectangle will be a Rect with the
-specified coordinates.  If `left > right` or `top > bottom` the resulting rectangle
-will equal `Rect.EMPTY`.
+The `bounding_boxes()` method computes bounding boxes for all groups of transitively intersecting rectangles:
 
-`Rect` objects are immutable and the properties have no setters.
+```python
+rects = [
+    Rect(0, 0, 10, 10),
+    Rect(5, 5, 15, 15),    # intersects first
+    Rect(100, 100, 110, 110)  # separate group
+]
 
-All method results are *covariant under subtyping*.
+groups = Rect.bounding_boxes(rects)
+# Returns bounding boxes for each connected component
+```
 
-`Rect()` and `bounding_boxes()` accept any type of iterable.  The operators
-however work reliably only on sequence-like objects, but not iterators.  If you
-pass an iterator as an argument, the behavior will be undefined, probably
-raising an exception, or worse, causing inexplicably wrong results.
+![Bounding boxes visualization](docs/rects.png)
 
-Rects can be used as a drop-in in contexts where axis-aligned rectangles are
-represented by 4-tuples, like e.g. Pillow's `Image.crop()` method. For contexts
-where such rectangles are represented as pairs of point coordinates the class
-method `Rect.from_points()` and the `Rect.points` property can be used.
+### Containment and Intersection Checks
 
-### See API documentation here:
+```python
+# Check containment using comparison operators
+r1 >= r2  # True if r1 contains r2 (r2 ≤ r1)
+r2 <= r1  # True if r2 is contained in r1
 
-<https://pillmuncher.github.io/pyraxial>
+# Check intersection
+r1 & r2 != Rect.EMPTY  # True if rectangles overlap
+
+# Check if empty
+r == Rect.EMPTY  # True if rectangle has zero area
+```
+
+### Creating Rectangles
+
+```python
+# From coordinates (left, top, right, bottom)
+r = Rect(0, 0, 100, 100)
+
+# From iterables
+r = Rect([0, 0, 100, 100])
+r = Rect((0, 0, 100, 100))
+
+# From point pairs
+r = Rect.from_points((0, 0), (100, 100))
+
+# Empty rectangles are created automatically for invalid inputs
+Rect(100, 100, 0, 0) == Rect.EMPTY  # True
+Rect([]) == Rect.EMPTY  # True
+```
+
+### Integration with Other Libraries
+
+Rects work as drop-in replacements for 4-tuples:
+
+```python
+from PIL import Image
+
+img = Image.open("photo.jpg")
+crop_region = Rect(10, 10, 110, 110)
+cropped = img.crop(crop_region)  # Works directly!
+
+# Or use point pairs where needed
+r = Rect(0, 0, 100, 100)
+top_left, bottom_right = r.points
+```
+
+## Mathematical Properties
+
+The `Rect` class forms a **complete lattice** under the `|` and `&` operations. This means it satisfies a rigorous set of algebraic laws that guarantee predictable, composable behavior.
+
+### Lattice Laws
+
+For all Rect objects a, b, and c:
+
+**Identity:**
+```
+a | Rect.EMPTY  ==  a
+a & Rect.PLANE  ==  a
+```
+
+**Absorption:**
+```
+a | Rect.PLANE  ==  Rect.PLANE
+a & Rect.EMPTY  ==  Rect.EMPTY
+```
+
+**Idempotency:**
+```
+a | a  ==  a
+a & a  ==  a
+```
+
+**Commutativity:**
+```
+a | b  ==  b | a
+a & b  ==  b & a
+```
+
+**Associativity:**
+```
+(a | b) | c  ==  a | (b | c)
+(a & b) & c  ==  a & (b & c)
+```
+
+**Absorption:**
+```
+a | (a & b)  ==  a
+a & (a | b)  ==  a
+```
+
+### Partial Order Properties
+
+The lattice structure induces a partial order (≦) where `a ≦ b` means "a is contained in b":
+
+**Bounds:**
+```
+Rect.EMPTY ≦ a ≦ Rect.PLANE
+```
+
+**Reflexivity:**
+```
+a ≦ a
+```
+
+**Transitivity:**
+```
+a ≦ b  and  b ≦ c   ⟹   a ≦ c
+```
+
+**Antisymmetry:**
+```
+a ≦ b  and  b ≦ a   ⟹   a == b
+```
+
+**Monotonicity:**
+```
+a1 ≦ a2  and  b1 ≦ b2   ⟹   a1 | b1  ≦  a2 | b2
+a1 ≦ a2  and  b1 ≦ b2   ⟹   a1 & b1  ≦  a2 & b2
+```
+
+**Semidistributivity:**
+```
+(a & b) | (a & c)  ≦  a & (b | c)
+a | (b & c)  ≦  (a | b) & (a | c)
+```
+
+Note: The lattice is *not* distributive or modular, which is characteristic of geometric lattices.
+
+## API Details
+
+### Coordinates
+
+Coordinates increase from left to right and top to bottom:
+- `left ≤ right` and `top ≤ bottom` for non-empty rectangles
+- If `left > right` or `top > bottom`, the result is `Rect.EMPTY`
+
+### Immutability
+
+`Rect` objects are immutable. All properties are read-only.
+
+### Type Covariance
+
+All methods return values that are covariant under subtyping, making `Rect` suitable for subclassing.
+
+### Iterator Compatibility
+
+`Rect()` and `bounding_boxes()` accept any iterable. However, the operators (`|`, `&`) work reliably only on sequence-like objects, not iterators. Using iterators with operators may cause undefined behavior.
+
+## Documentation
+
+Full API documentation: <https://pillmuncher.github.io/pyraxial>
+
+## License
+
+MIT License - see [LICENSE](LICENSE) file for details.
