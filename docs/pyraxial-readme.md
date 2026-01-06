@@ -48,7 +48,7 @@ Working with bounding boxes often involves tedious coordinate manipulation and e
 ## Use Cases
 
 - **Image processing**: Compute bounding boxes for crops, object detection
-- **UI layout**: Calculate overlaps and containment in graphical interfaces  
+- **UI layout**: Calculate overlaps and containment in graphical interfaces
 - **Collision detection**: Determine if and where rectangles intersect
 - **Spatial algorithms**: Partition and group overlapping regions
 
@@ -99,7 +99,7 @@ groups = Rect.bounding_boxes(rects)
 # Returns bounding boxes for each connected component
 ```
 
-![Bounding boxes visualization](docs/rects.png)
+![Bounding boxes visualization](rects.png)
 
 ### Containment Relations
 
