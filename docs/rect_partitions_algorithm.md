@@ -2,7 +2,9 @@
 
 ## Overview
 
-This document explains the algorithm behind `Rect.partitions()` and `Rect.bounding_boxes()`, which efficiently partition a collection of rectangles into groups of transitively intersecting rectangles and compute their bounding boxes.
+This document explains the algorithm behind `Rect.partitions()` and `Rect.bounding_boxes()`, which
+efficiently partition a collection of rectangles into groups of transitively intersecting
+rectangles and compute their bounding boxes.
 
 ## Problem Statement
 
@@ -57,7 +59,8 @@ rects = frozenset(filter(None, rects))
 - Remove `EMPTY` rectangles (represented as `None` or falsy values)
 - Convert to a `frozenset` to eliminate duplicates
 
-**Why remove EMPTY?** In lattice terms, `⧄` is the identity element for join, so it doesn't contribute to any bounding box. Geometrically, it has no area and doesn't connect anything.
+**Why remove EMPTY?** In lattice terms, `⧄` is the identity element for join, so it doesn't
+contribute to any bounding box. Geometrically, it has no area and doesn't connect anything.
 
 ### Step 2: Build Interval Trees
 
@@ -70,7 +73,8 @@ We build two **interval trees**:
 - `htree`: indexes rectangles by their horizontal extent `[left, right)`
 - `vtree`: indexes rectangles by their vertical extent `[top, bottom)`
 
-**Interval trees** support efficient queries: "find all intervals that overlap with a given interval."
+**Interval trees** support efficient queries: "find all intervals that overlap with a given
+interval."
 
 - **Construction**: O(n log n) for n rectangles
 - **Query**: O(log n + k) where k is the number of overlapping intervals
@@ -94,7 +98,8 @@ For each rectangle, we find all rectangles that intersect with it by:
 
 **Why does this work?**
 
-As established earlier, two rectangles intersect ⟺ they overlap both horizontally AND vertically. So:
+As established earlier, two rectangles intersect ⟺ they overlap both horizontally AND vertically.
+So:
 
 ```
 Intersecting rectangles = (Horizontally overlapping) ∩ (Vertically overlapping)
@@ -126,7 +131,8 @@ for node in neighbors:
         yield set(component(node))
 ```
 
-This is a standard **depth-first search (DFS)** / **breadth-first search (BFS)** for finding connected components:
+This is a standard **depth-first search (DFS)** / **breadth-first search (BFS)** for finding
+connected components:
 
 1. Start from an unvisited node
 2. Explore all its neighbors
@@ -134,9 +140,11 @@ This is a standard **depth-first search (DFS)** / **breadth-first search (BFS)**
 4. Mark all visited nodes as part of the same component
 5. Repeat for any remaining unvisited nodes
 
-**Complexity:** O(n + e) where n is the number of rectangles and e is the number of edges (intersection pairs).
+**Complexity:** O(n + e) where n is the number of rectangles and e is the number of edges
+(intersection pairs).
 
-Since we already computed all neighbors in Step 3, this is essentially just traversing the adjacency list.
+Since we already computed all neighbors in Step 3, this is essentially just traversing the
+adjacency list.
 
 ## Total Time Complexity
 
@@ -174,7 +182,8 @@ This method combines partitioning with the lattice join operation:
 
 In lattice terms: for each connected component C, compute `⋁ C` (the least upper bound).
 
-Since the join operation in the Rect lattice is the bounding box operation, this gives us the smallest rectangle containing all rectangles in the component.
+Since the join operation in the Rect lattice is the bounding box operation, this gives us the
+smallest rectangle containing all rectangles in the component.
 
 ## Connection to Lattice Theory
 
@@ -259,7 +268,8 @@ After bounding_boxes():
 └───────────┘
 ```
 
-Even though R₁ and R₃ don't directly intersect, they're in the same partition because they're both connected to R₂.
+Even though R₁ and R₃ don't directly intersect, they're in the same partition because they're both
+connected to R₂.
 
 ## Why Two Interval Trees?
 
@@ -267,12 +277,15 @@ You might wonder: why not use a single spatial index that handles 2D queries dir
 
 The two-tree approach has several advantages:
 
-1. **Simplicity**: 1D interval trees are simpler to implement and reason about than 2D spatial structures
+1. **Simplicity**: 1D interval trees are simpler to implement and reason about than 2D spatial
+   structures
 2. **Decomposition**: Separates the problem into two independent 1D overlap problems
 3. **Flexibility**: Each tree can be optimized independently
 4. **Correctness**: The intersection of results is exactly what we need
 
-More sophisticated spatial data structures (like R-trees, quadtrees, or kd-trees) could potentially be faster for certain distributions of rectangles, but the dual interval tree approach is elegant and efficient for general cases.
+More sophisticated spatial data structures (like R-trees, quadtrees, or kd-trees) could potentially
+be faster for certain distributions of rectangles, but the dual interval tree approach is elegant
+and efficient for general cases.
 
 ## Edge Cases
 
@@ -336,7 +349,8 @@ class Interval:
     end: Real
 ```
 
-This wraps a rectangle with its 1D projection (either horizontal or vertical) for the interval tree. The `dataclass` with `frozen=True` makes it immutable and hashable.
+This wraps a rectangle with its 1D projection (either horizontal or vertical) for the interval
+tree. The `dataclass` with `frozen=True` makes it immutable and hashable.
 
 ### The `component()` Generator
 
@@ -350,7 +364,8 @@ def component(node):
         yield node
 ```
 
-This is an **iterative DFS** that yields nodes as they're discovered. Using a generator allows the caller to consume components lazily without building all of them in memory at once.
+This is an **iterative DFS** that yields nodes as they're discovered. Using a generator allows the
+caller to consume components lazily without building all of them in memory at once.
 
 The `todo |= neighbors[node] - seen` line is particularly elegant:
 - Add all neighbors of the current node
@@ -359,6 +374,11 @@ The `todo |= neighbors[node] - seen` line is particularly elegant:
 
 ## Conclusion
 
-The rectangle partitioning algorithm demonstrates how viewing a geometric problem through the lens of graph theory can lead to an elegant and efficient solution. By decomposing 2D rectangle intersection into two 1D overlap problems and leveraging interval trees, we achieve O(n log n + k) time complexity—much better than the naive O(n²) approach.
+The rectangle partitioning algorithm demonstrates how viewing a geometric problem through the lens
+of graph theory can lead to an elegant and efficient solution. By decomposing 2D rectangle
+intersection into two 1D overlap problems and leveraging interval trees, we achieve O(n log n + k)
+time complexity—much better than the naive O(n²) approach.
 
-The connection to lattice theory provides additional insight: we're computing equivalence classes under the transitive closure of the meet operation, then computing the join (supremum) for each class.
+The connection to lattice theory provides additional insight: we're computing equivalence classes
+under the transitive closure of the meet operation, then computing the join (supremum) for each
+class.

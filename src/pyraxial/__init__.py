@@ -203,7 +203,6 @@ from operator import itemgetter
 
 from itree import ITree
 
-
 __all__ = ["Rect"]
 
 
@@ -270,8 +269,7 @@ prop_doc = "The {0} of the rectangle.".format
 coor_doc = prop_doc("{0} coordinate").format
 
 
-invalid = ValueError(
-    'Argument "box" must be an iterable of zero or four numbers.')
+invalid = ValueError('Argument "box" must be an iterable of zero or four numbers.')
 
 
 class MetaRect(type(tuple)):
@@ -309,11 +307,9 @@ class Rect(tuple, metaclass=MetaRect):
     right_bottom = property(right_bottom, doc=coor_doc("right bottom"))
 
     vertical = property(vertical, doc=prop_doc("top and bottom coordinates"))
-    horizontal = property(horizontal, doc=prop_doc(
-        "left and right coordinates"))
+    horizontal = property(horizontal, doc=prop_doc("left and right coordinates"))
 
-    points = property(points, doc=prop_doc(
-        "left top and right bottom coordinates"))
+    points = property(points, doc=prop_doc("left top and right bottom coordinates"))
 
     width = property(width, doc=prop_doc("width"))
     height = property(height, doc=prop_doc("height"))
@@ -401,7 +397,7 @@ class Rect(tuple, metaclass=MetaRect):
         it is always discarded.
 
         Time complexity is O(n log n + k) with respect to the number of distinct
-        rects n and the number of intersections k. I hope.
+        rects n and the number of intersections k.
         """
         return _connected_components(rects)
 
