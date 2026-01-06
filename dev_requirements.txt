@@ -1,3 +1,0 @@
-itree
-coverage
-pytest-coverage
