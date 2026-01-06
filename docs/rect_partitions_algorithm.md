@@ -41,8 +41,8 @@ l₁ < r₂  AND  r₁ > l₂  AND  t₁ < b₂  AND  b₁ > t₂
 
 This can be decomposed into two independent conditions:
 
-1. **Horizontal overlap**: `[l₁, r₁)` overlaps `[l₂, r₂)`
-2. **Vertical overlap**: `[t₁, b₁)` overlaps `[t₂, b₂)`
+1. **Horizontal overlap**: `[l₁, r₁]` overlaps `[l₂, r₂]`
+2. **Vertical overlap**: `[t₁, b₁]` overlaps `[t₂, b₂]`
 
 Two rectangles intersect **if and only if** they overlap both horizontally AND vertically.
 
