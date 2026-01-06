@@ -32,8 +32,8 @@ rects = [Rect(0, 0, 50, 50), Rect(25, 25, 75, 75), Rect(100, 100, 150, 150)]
 overall_bbox = Rect.bounding_box(*rects)
 
 # Check containment and relationships
-r1.contains(Rect(25, 25, 75, 75))  # True
-r1.intersects(r2)  # True
+r1 >= Rect(25, 25, 75, 75)  # True (r1 contains the smaller rect)
+r1 & r2 != Rect.EMPTY  # True (they intersect)
 ```
 
 ## Why pyraxial?
@@ -48,7 +48,7 @@ Working with bounding boxes often involves tedious coordinate manipulation and e
 ## Use Cases
 
 - **Image processing**: Compute bounding boxes for crops, object detection
-- **UI layout**: Calculate overlaps and containment in graphical interfaces
+- **UI layout**: Calculate overlaps and containment in graphical interfaces  
 - **Collision detection**: Determine if and where rectangles intersect
 - **Spatial algorithms**: Partition and group overlapping regions
 
@@ -99,14 +99,20 @@ groups = Rect.bounding_boxes(rects)
 # Returns bounding boxes for each connected component
 ```
 
-![Bounding boxes visualization](rects.png)
+![Bounding boxes visualization](docs/rects.png)
 
-### Containment Relations
+### Containment and Intersection Checks
 
 ```python
-r1.contains(r2)      # True if r2 is fully inside r1
-r1.intersects(r2)    # True if rectangles overlap
-r1.is_empty()        # True if rectangle has zero area
+# Check containment using comparison operators
+r1 >= r2  # True if r1 contains r2 (r2 ≤ r1)
+r2 <= r1  # True if r2 is contained in r1
+
+# Check intersection
+r1 & r2 != Rect.EMPTY  # True if rectangles overlap
+
+# Check if empty
+r == Rect.EMPTY  # True if rectangle has zero area
 ```
 
 ### Creating Rectangles
