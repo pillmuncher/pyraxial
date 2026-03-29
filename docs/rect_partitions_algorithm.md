@@ -70,8 +70,8 @@ vtree = ITree(Interval(rect, *vertical(rect)) for rect in rects)
 ```
 
 We build two **interval trees**:
-- `htree`: indexes rectangles by their horizontal extent `[left, right)`
-- `vtree`: indexes rectangles by their vertical extent `[top, bottom)`
+- `htree`: indexes rectangles by their horizontal extent `[left, right]`
+- `vtree`: indexes rectangles by their vertical extent `[top, bottom]`
 
 **Interval trees** support efficient queries: "find all intervals that overlap with a given
 interval."
@@ -98,7 +98,7 @@ For each rectangle, we find all rectangles that intersect with it by:
 
 **Why does this work?**
 
-As established earlier, two rectangles intersect ⟺ they overlap both horizontally AND vertically.
+As established earlier, two rectangles intersect ⟺  they overlap both horizontally AND vertically.
 So:
 
 ```

@@ -439,7 +439,6 @@ def test_semidistributivity():
 
 
 def test_enclosures():
-    from itertools import permutations
 
     data = [
         [

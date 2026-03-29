@@ -453,7 +453,7 @@ class Rect(tuple, metaclass=MetaRect):
         is Rect.EMPTY.  This is also called the greatest lower bound or infimum
         of self and other.
 
-        r1 & r2 & ... & rn is equivalent to Rect.ntersection(r1, r2, ..., rn).
+        r1 & r2 & ... & rn is equivalent to Rect.intersection(r1, r2, ..., rn).
         """
         return self.intersection(self, other)
 
