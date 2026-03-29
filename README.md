@@ -81,7 +81,7 @@ r & Rect.PLANE == r
 ```python
 # Work with any number of rectangles
 Rect.bounding_box(*rects)      # generalizes |
-Rect.intersection(*rects)       # generalizes &
+Rect.intersection(*rects)      # generalizes &
 ```
 
 ### Grouping Intersecting Rectangles
